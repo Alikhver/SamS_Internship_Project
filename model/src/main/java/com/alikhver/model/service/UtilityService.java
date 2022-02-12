@@ -1,4 +1,4 @@
 package com.alikhver.model.service;
 
-public interface ServiceService {
+public interface UtilityService {
 }

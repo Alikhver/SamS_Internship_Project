@@ -1,10 +1,11 @@
 package com.alikhver.model.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "service")
-public class Service {
+@Table(name = "utility")
+public class Utility {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +25,10 @@ public class Service {
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
-    public Organisation getOrganisation() {
-        return organisation;
-    }
-
+    @ManyToMany
+    @JoinTable(name = "worker_utility",
+            joinColumns = @JoinColumn(name = "worker_id"),
+            inverseJoinColumns = @JoinColumn(name = "utility_id")
+    )
+    private List<Worker> workers;
 }

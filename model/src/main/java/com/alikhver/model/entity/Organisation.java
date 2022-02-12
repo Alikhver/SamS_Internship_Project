@@ -2,6 +2,7 @@ package com.alikhver.model.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "organisation")
@@ -27,4 +28,13 @@ public class Organisation {
     @Column(name = "address")
     private String address;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User redactor;
+
+    @OneToMany(mappedBy = "organisation")
+    private List<Worker> workers;
+
+    @OneToMany(mappedBy = "organisation")
+    private List<Utility> utilities;
 }
