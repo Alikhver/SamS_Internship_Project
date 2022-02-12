@@ -1,8 +1,11 @@
 package com.alikhver.model.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "utility")
 public class Utility {

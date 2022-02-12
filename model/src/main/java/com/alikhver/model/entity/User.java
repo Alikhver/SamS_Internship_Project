@@ -1,7 +1,10 @@
 package com.alikhver.model.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
+@Data
 @Entity
 @Table(name = "user")
 public class User {

@@ -1,8 +1,11 @@
 package com.alikhver.model.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Date;
 
+@Data
 @Entity
 @Table(name = "schedule_record")
 public class ScheduleRecord {
