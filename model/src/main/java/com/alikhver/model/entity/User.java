@@ -1,7 +1,20 @@
 package com.alikhver.model.entity;
 
-import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
+@Getter
+@Setter
 @Entity
 @Table(name = "user")
 public class User {
@@ -9,11 +22,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "login")
     private String login;
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "role")
+    @Enumerated(value = EnumType.STRING)
+    private UserRole role;
 }

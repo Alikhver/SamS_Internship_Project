@@ -19,36 +19,30 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "organisation")
-public class Organisation {
+@Table(name = "profile")
+public class Profile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "first_name")
+    private String firstName;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "last_name")
+    private String lastName;
 
-    @Column(name = "is_active")
-    private boolean isActive;
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "date_created")
     private Date dateCreated;
 
-    @Column(name = "address")
-    private String address;
-
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User redactor;
+    private User user;
 
-    @OneToMany(mappedBy = "organisation")
-    private List<Worker> workers;
-
-    @OneToMany(mappedBy = "organisation")
-    private List<Utility> utilities;
+    @OneToMany(mappedBy = "clientProfile")
+    private List<ScheduleRecord> records;
 }

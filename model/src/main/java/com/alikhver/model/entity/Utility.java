@@ -9,18 +9,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.Date;
 import java.util.List;
 
 
 @Getter
 @Setter
 @Entity
-@Table(name = "organisation")
-public class Organisation {
+@Table(name = "utility")
+public class Utility {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,25 +30,20 @@ public class Organisation {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "price")
+    private double price;
+
     @Column(name = "description")
     private String description;
 
-    @Column(name = "is_active")
-    private boolean isActive;
+    @ManyToOne
+    @JoinColumn(name = "organisation_id")
+    private Organisation organisation;
 
-    @Column(name = "date_created")
-    private Date dateCreated;
-
-    @Column(name = "address")
-    private String address;
-
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User redactor;
-
-    @OneToMany(mappedBy = "organisation")
+    @ManyToMany
+    @JoinTable(name = "worker_utility",
+            joinColumns = @JoinColumn(name = "worker_id"),
+            inverseJoinColumns = @JoinColumn(name = "utility_id")
+    )
     private List<Worker> workers;
-
-    @OneToMany(mappedBy = "organisation")
-    private List<Utility> utilities;
 }
