@@ -10,7 +10,7 @@
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/my_db" />
             <property name="javax.persistence.jdbc.user" value="bestuser" />
             <property name="javax.persistence.jdbc.password" value="bestuser" />
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />
         </properties>

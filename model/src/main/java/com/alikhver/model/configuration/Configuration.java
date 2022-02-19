@@ -7,8 +7,9 @@ import org.springframework.orm.jpa.LocalEntityManagerFactoryBean;
 
 import javax.persistence.EntityManagerFactory;
 
-@org.springframework.context.annotation.Configuration
-@EnableJpaRepositories(basePackages = "com.alikhver.model")
+@org.springframework.context.annotation.Configuration("com.alikhver")
+@EnableJpaRepositories(basePackages = "com.alikhver.model.repository")
+
 public class Configuration {
 
     @Bean
