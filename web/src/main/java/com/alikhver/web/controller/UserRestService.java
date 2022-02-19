@@ -1,6 +1,6 @@
 package com.alikhver.web.controller;
 
-import com.alikhver.model.entity.User;
+import com.alikhver.web.dto.user.response.GetUserResponse;
 import com.alikhver.web.facade.UserFacade;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +20,8 @@ public class UserRestService {
 
     @GetMapping("/{id}")
     @ApiOperation("Get User by ID")
-    public ResponseEntity<User> getUser(@PathVariable String id) {
-        User user = userFacade.getUser(id);
+    public ResponseEntity<GetUserResponse> getUser(@PathVariable String id) {
+        GetUserResponse user = userFacade.getUser(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
