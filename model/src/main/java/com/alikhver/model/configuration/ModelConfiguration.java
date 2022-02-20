@@ -1,7 +1,10 @@
 package com.alikhver.model.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -18,7 +21,11 @@ import java.util.Properties;
 @Configuration("com.alikhver")
 @EnableJpaRepositories(basePackages = "com.alikhver.model.repository")
 @EnableTransactionManagement
+@PropertySource("classpath:db/db.properties")
 public class ModelConfiguration {
+
+    @Autowired
+    private Environment env;
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -39,9 +46,9 @@ public class ModelConfiguration {
     public DataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/my_db"); // TODO move to properties and inject
-        dataSource.setUsername("root"); // TODO move to properties and inject
-        dataSource.setPassword("admin123"); // TODO move to properties and inject
+        dataSource.setUrl(env.getProperty("db.url"));
+        dataSource.setUsername(env.getProperty("db.username"));
+        dataSource.setPassword(env.getProperty("db.password"));
         return dataSource;
     }
 
