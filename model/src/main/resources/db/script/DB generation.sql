@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `my_db`.`user` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `login` VARCHAR(45) NULL DEFAULT NULL,
   `password` VARCHAR(45) NULL DEFAULT NULL,
-  `role` ENUM('user', 'redactor', 'admin') NULL DEFAULT NULL,
+  `role` ENUM('USER', 'REDACTOR', 'ADMIN') NULL DEFAULT NULL,
   `version` BIGINT NULL DEFAULT NULL,
   PRIMARY KEY (`id`));
   
