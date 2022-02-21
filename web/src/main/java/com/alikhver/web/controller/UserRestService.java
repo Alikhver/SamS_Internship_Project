@@ -1,5 +1,6 @@
 package com.alikhver.web.controller;
 
+import com.alikhver.web.dto.user.response.GetAllUsersResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
 import com.alikhver.web.facade.UserFacade;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +24,14 @@ public class UserRestService {
     public ResponseEntity<GetUserResponse> getUser(@PathVariable String id) {
         GetUserResponse user = userFacade.getUser(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/")
+    @ApiOperation("Get all Users")
+    public ResponseEntity<GetAllUsersResponse> getAllUsers() {
+        GetAllUsersResponse users = userFacade.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+
     }
 
 //    @PostMapping(value = "/")
