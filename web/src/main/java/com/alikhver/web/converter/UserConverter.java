@@ -1,15 +1,20 @@
 package com.alikhver.web.converter;
 
 import com.alikhver.model.entity.User;
+import com.alikhver.model.entity.UserRole;
+import com.alikhver.web.dto.user.request.CreateUserRequest;
+import com.alikhver.web.dto.user.response.CreateUserResponse;
 import com.alikhver.web.dto.user.response.GetAllUsersResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class UserConverter {
 
-    public static GetUserResponse convertUserToUserResponse(User user) {
+    public GetUserResponse convertUserToGetUserResponse(User user) {
         return GetUserResponse.builder()
                 .login(user.getLogin())
                 .password(user.getPassword())
@@ -17,12 +22,28 @@ public class UserConverter {
                 .build();
     }
 
-    public static GetAllUsersResponse convertUsersToGetAllUsersResponse(List<User> users) {
+    public GetAllUsersResponse convertUsersToGetAllUsersResponse(List<User> users) {
 
         return GetAllUsersResponse.builder()
                 .users(users.stream()
-                        .map(UserConverter::convertUserToUserResponse)
+                        .map(this::convertUserToGetUserResponse)
                         .collect(Collectors.toList()))
+                .build();
+    }
+
+    public User convertCreateUserResponseToUser(CreateUserRequest request) {
+        return User.builder()
+                .login(request.getLogin())
+                .password(request.getPassword())
+                .role(UserRole.valueOf(request.getRole().toUpperCase()))
+                .build();
+    }
+
+    public CreateUserResponse convertUserToCreateUserResponse(User user) {
+        return CreateUserResponse.builder()
+                .login(user.getLogin())
+                .password(user.getPassword())
+                .role(user.getRole().toString())
                 .build();
     }
 }

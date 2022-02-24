@@ -1,6 +1,9 @@
 package com.alikhver.model.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -16,7 +19,10 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
 @Table(name = "user")
+@NoArgsConstructor
 public class User {
 
     @Id
