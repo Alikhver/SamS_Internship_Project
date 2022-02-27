@@ -6,9 +6,10 @@ import com.alikhver.web.converter.UserConverter;
 import com.alikhver.web.dto.user.request.CreateUserRequest;
 import com.alikhver.web.dto.user.request.UpdateUserRequest;
 import com.alikhver.web.dto.user.response.CreateUserResponse;
-import com.alikhver.web.dto.user.response.DeleteUserResponse;
 import com.alikhver.web.dto.user.response.GetAllUsersResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
+import com.alikhver.web.exeption.user.UserAlreadyExistsException;
+import com.alikhver.web.exeption.user.NoUserFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,39 +25,47 @@ public class UserFacade {
 
     private final UserConverter userConverter;
 
-    public GetUserResponse getUser(Long id) {
-        User user = userService.getUser(id);
-
-        return userConverter.convertUserToGetUserResponse(user);
+    public GetUserResponse getUser(Long id) throws NoUserFoundException {
+        if (userService.userExistsById(id)) {
+            User user = userService.getUser(id);
+            return userConverter.convertUserToGetUserResponse(user);
+        } else {
+            throw new NoUserFoundException(
+                    "User with id = " + id + " does not exist"
+            );
+        }
     }
 
     public GetAllUsersResponse getAllUsers() {
         List<User> users = userService.getAllUsers();
-
         return userConverter.convertUsersToGetAllUsersResponse(users);
     }
 
     @Transactional
-    public CreateUserResponse createUser(CreateUserRequest request) {
+    public CreateUserResponse createUser(CreateUserRequest request) throws UserAlreadyExistsException {
         // TODO validate
 
         if (userService.userExistsByLogin(request.getLogin())) {
-            // TODO implement if user exists
-            return null;
+            throw new UserAlreadyExistsException(
+                    "User with login=" + request.getLogin() + " already exists"
+            );
+        } else {
+            User user = userConverter.convertCreateUserResponseToUser(request);
+            user = userService.createUser(user);
+            return userConverter.convertUserToCreateUserResponse(user);
         }
-
-        // TODO create if not exists
-        User user = userConverter.convertCreateUserResponseToUser(request);
-        user = userService.createUser(user);
-        return userConverter.convertUserToCreateUserResponse(user);
     }
 
-    public DeleteUserResponse deleteUser(Long id) {
+
+    public void deleteUser(Long id) throws NoUserFoundException {
         // TODO implement if user does not exist
-        userService.deleteUser(id);
-
-
-        return null;
+        if (userService.userExistsById(id)) {
+            userService.deleteUser(id);
+        } else {
+            throw new NoUserFoundException(
+                    "User with id = " + id + " does not exist"
+            );
+        }
     }
 
     public void updateUser(Long id, UpdateUserRequest request) {

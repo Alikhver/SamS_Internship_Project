@@ -3,7 +3,6 @@ package com.alikhver.model.service;
 import com.alikhver.model.entity.User;
 import com.alikhver.model.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,17 +16,10 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final ConversionService conversionService;
-
     @Override
     @Transactional(readOnly = true)
     public User getUser(Long id) {
-        // TODO use spring converter
-        if (userRepository.existsById(id)) {
-            return userRepository.getById(id);
-        } else {
-            return null;
-        }
+        return userRepository.getById(id);
     }
 
     @Override
@@ -39,8 +31,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public boolean userExistsByLogin(String login) {
-//        return userRepository.;
-        return false;
+        return userRepository.existsUserByLogin(login);
     }
 
     // TODO refactor create user
@@ -65,15 +56,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
-
+        userRepository.deleteById(id);
     }
-
-
 
     @Override
     @Transactional(readOnly = true)
     public boolean userExistsById(Long id) {
-        // TODO use spring converter
         return userRepository.existsById(id);
     }
 
