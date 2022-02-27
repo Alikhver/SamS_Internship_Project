@@ -1,6 +1,9 @@
 package com.alikhver.model.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -19,6 +22,9 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "profile")
 public class Profile {
 
@@ -35,6 +41,9 @@ public class Profile {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
     @Column(name = "date_created")
     private Date dateCreated;
