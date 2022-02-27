@@ -17,4 +17,10 @@ public class OrganisationServiceImpl implements OrganisationService {
     public Organisation getOrganisation(long id) {
         return repository.getById(id);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean organisationExistsById(Long id) {
+        return repository.existsById(id);
+    }
 }
