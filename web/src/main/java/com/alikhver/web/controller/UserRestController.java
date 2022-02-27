@@ -8,6 +8,7 @@ import com.alikhver.web.dto.user.response.GetAllUsersResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
 import com.alikhver.web.facade.UserFacade;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +23,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserRestController {
-
-    @Autowired
-    private UserFacade userFacade;
+    private final UserFacade userFacade;
 
     @GetMapping("/{id}")
     @ApiOperation("Get User by ID")

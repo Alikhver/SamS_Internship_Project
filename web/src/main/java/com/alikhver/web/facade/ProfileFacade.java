@@ -1,10 +1,9 @@
 package com.alikhver.web.facade;
 
-import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 
-@Service
+@RequiredArgsConstructor
 public class ProfileFacade {
-
 
 
 }

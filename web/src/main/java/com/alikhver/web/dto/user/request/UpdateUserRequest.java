@@ -8,7 +8,3 @@ public class UpdateUserRequest {
     private String password;
     private String role;
 }
-
-{
-    "password": 123,
-        }

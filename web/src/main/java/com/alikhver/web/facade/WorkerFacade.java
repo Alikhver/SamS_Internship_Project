@@ -3,16 +3,18 @@ package com.alikhver.web.facade;
 import com.alikhver.model.service.WorkerService;
 import com.alikhver.web.converter.WorkerConverter;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class WorkerFacade {
 
-    private WorkerService workerService;
+    private final WorkerService workerService;
 
-    private WorkerConverter workerConverter;
+    private final WorkerConverter workerConverter;
 
-    public GetWorkerResponse getWorker(String id) {
+    public GetWorkerResponse getWorker(Long id) {
 
         return null;
     }

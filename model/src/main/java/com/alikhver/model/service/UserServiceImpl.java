@@ -21,10 +21,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public User getUser(String id) {
+    public User getUser(Long id) {
         // TODO use spring converter
-        if (userRepository.existsById(Objects.requireNonNull(conversionService.convert(id, Long.class)))) {
-            return userRepository.getById(Objects.requireNonNull(conversionService.convert(id, Long.class)));
+        if (userRepository.existsById(id)) {
+            return userRepository.getById(id);
         } else {
             return null;
         }
@@ -33,33 +33,48 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public List<User> getAllUsers() {
-        // TODO use spring converter
         return userRepository.findAll();
     }
 
     @Override
-    public boolean userExistsByLogin(String id) {
-        // TODO use spring converter
+    @Transactional(readOnly = true)
+    public boolean userExistsByLogin(String login) {
 //        return userRepository.;
         return false;
     }
 
+    // TODO refactor create user
     @Override
     public User createUser(User user) {
-        userRepository.save(user);
-        return user;
+        Objects.requireNonNull(user.getLogin());
+        Objects.requireNonNull(user.getPassword());
+        Objects.requireNonNull(user.getRole());
+        return userRepository.save(user);
+
     }
 
     @Override
-    public void deleteUser(String id) {
+    public void updateUser(Long id, User user) {
+
+//        userRepository.findById(id)
+//                .map(user -> {
+//                    user.set
+//                })
+//                //save
+    }
+
+    @Override
+    public void deleteUser(Long id) {
 
     }
+
+
 
     @Override
     @Transactional(readOnly = true)
-    public boolean userExistsById(String id) {
+    public boolean userExistsById(Long id) {
         // TODO use spring converter
-        return userRepository.existsById(Long.parseLong(id));
+        return userRepository.existsById(id);
     }
 
 }

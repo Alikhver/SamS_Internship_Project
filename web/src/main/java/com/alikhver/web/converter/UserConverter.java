@@ -3,6 +3,7 @@ package com.alikhver.web.converter;
 import com.alikhver.model.entity.User;
 import com.alikhver.model.entity.UserRole;
 import com.alikhver.web.dto.user.request.CreateUserRequest;
+import com.alikhver.web.dto.user.request.UpdateUserRequest;
 import com.alikhver.web.dto.user.response.CreateUserResponse;
 import com.alikhver.web.dto.user.response.GetAllUsersResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
@@ -23,7 +24,6 @@ public class UserConverter {
     }
 
     public GetAllUsersResponse convertUsersToGetAllUsersResponse(List<User> users) {
-
         return GetAllUsersResponse.builder()
                 .users(users.stream()
                         .map(this::convertUserToGetUserResponse)
@@ -45,5 +45,16 @@ public class UserConverter {
                 .password(user.getPassword())
                 .role(user.getRole().toString())
                 .build();
+    }
+
+
+    public User convertUpdateUserRequestToUser(UpdateUserRequest request) {
+        User user = User.builder()
+                .login(request.getLogin())
+                .password(request.getPassword())
+                .role(UserRole.valueOf(""))
+                .build();
+        // TODO UserRole.valueOf
+        return user;
     }
 }
