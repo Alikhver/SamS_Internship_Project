@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -18,8 +19,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public User getUser(Long id) {
-        return userRepository.getById(id);
+    public Optional<User> getUser(Long id) {
+        return userRepository.findById(id);
     }
 
     @Override
@@ -45,13 +46,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(Long id, User user) {
-
-//        userRepository.findById(id)
-//                .map(user -> {
-//                    user.set
-//                })
-//                //save
+    public void updateUser(User user) {
+        userRepository.save(user);
     }
 
     @Override

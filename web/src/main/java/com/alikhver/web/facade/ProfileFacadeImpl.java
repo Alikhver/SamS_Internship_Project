@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,17 +24,18 @@ public class ProfileFacadeImpl implements ProfileFacade{
     private final UserService userService;
     private final ProfileConverter profileConverter;
 
-    @Transactional
     @Override
+    @Transactional
     public CreateProfileResponse createProfile(CreateProfileRequest request) throws NoUserFoundException {
         Objects.requireNonNull(request.getUserId());
         Objects.requireNonNull(request.getFirstName());
         Objects.requireNonNull(request.getLastName());
         Objects.requireNonNull(request.getEmail());
 
+        Optional<User> optionalUser = userService.getUser(request.getUserId());
         User user;
-        if (userService.userExistsById(request.getUserId())) {
-            user = userService.getUser(request.getUserId());
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
         } else {
             throw new NoUserFoundException(
               "No user with id = " + request.getUserId() + " found"
@@ -50,8 +52,9 @@ public class ProfileFacadeImpl implements ProfileFacade{
 
     @Override
     public GetProfileResponse getProfile(Long id) throws NoProfileFoundException {
-        if (profileService.profileExistsById(id)) {
-            Profile profile = profileService.getProfile(id);
+        Optional<Profile> optionalProfile = profileService.getProfile(id);
+        if (optionalProfile.isPresent()) {
+            Profile profile = optionalProfile.get();
             return profileConverter.mapToGetProfileResponse(profile);
         } else {
             throw new NoProfileFoundException(

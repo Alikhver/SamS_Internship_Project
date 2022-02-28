@@ -10,6 +10,8 @@ import com.alikhver.web.exeption.organisation.NoOrganisationFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class OrganisationFacadeImpl implements OrganisationFacade {
@@ -18,8 +20,9 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
     @Override
     public GetOrganisationResponse getOrganisation(Long id) throws NoOrganisationFoundException {
-        if (organisationService.organisationExistsById(id)) {
-            Organisation organisation = organisationService.getOrganisation(id);
+        Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(id);
+        if (optionalOrganisation.isPresent()) {
+            Organisation organisation = optionalOrganisation.get();
             return organisationConverter.mapToGetOrganisationResponse(organisation);
         } {
             throw new NoOrganisationFoundException(

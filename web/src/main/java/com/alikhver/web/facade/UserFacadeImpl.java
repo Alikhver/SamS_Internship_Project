@@ -8,8 +8,8 @@ import com.alikhver.web.dto.user.request.UpdateUserRequest;
 import com.alikhver.web.dto.user.response.CreateUserResponse;
 import com.alikhver.web.dto.user.response.GetAllUsersResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
-import com.alikhver.web.exeption.user.UserAlreadyExistsException;
 import com.alikhver.web.exeption.user.NoUserFoundException;
+import com.alikhver.web.exeption.user.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +26,9 @@ public class UserFacadeImpl implements UserFacade {
     private final UserConverter userConverter;
 
     public GetUserResponse getUser(Long id) throws NoUserFoundException {
-        if (userService.userExistsById(id)) {
-            User user = userService.getUser(id);
+        Optional<User> optionalUser = userService.getUser(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
             return userConverter.mapToGetUserResponse(user);
         } else {
             throw new NoUserFoundException(
@@ -38,7 +39,7 @@ public class UserFacadeImpl implements UserFacade {
 
     public GetAllUsersResponse getAllUsers() {
         List<User> users = userService.getAllUsers();
-        return userConverter.mapGetAllUsersResponse(users);
+        return userConverter.mapToGetAllUsersResponse(users);
     }
 
     @Transactional
@@ -56,23 +57,32 @@ public class UserFacadeImpl implements UserFacade {
         }
     }
 
-
+    @Transactional
     public void deleteUser(Long id) throws NoUserFoundException {
         // TODO implement if user does not exist
         if (userService.userExistsById(id)) {
             userService.deleteUser(id);
         } else {
             throw new NoUserFoundException(
-                    "User with id = " + id + " does not exist"
+                    "No User with id = " + id + " found"
             );
         }
     }
 
+    @Transactional
     public void updateUser(Long id, UpdateUserRequest request) {
-        User user = userConverter.mapToUser(request);
+        Optional<User> optionalUser = userService.getUser(id);
+        User user;
+        if (optionalUser.isPresent()) {
+            user = optionalUser.get();
+        } else {
+            throw new NoUserFoundException(
+                    "No user with id = " + id + " found"
+            );
+        }
         Optional.ofNullable(request.getLogin()).ifPresent(user::setLogin);
         Optional.ofNullable(request.getPassword()).ifPresent(user::setPassword);
-        // TODO UserRole
-        userService.updateUser(id, user);
+        //TODO user role
+        userService.updateUser(user);
     }
 }

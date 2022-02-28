@@ -23,7 +23,7 @@ public class UserConverter {
                 .build();
     }
 
-    public GetAllUsersResponse mapGetAllUsersResponse(List<User> users) {
+    public GetAllUsersResponse mapToGetAllUsersResponse(List<User> users) {
         return GetAllUsersResponse.builder()
                 .users(users.stream()
                         .map(this::mapToGetUserResponse)

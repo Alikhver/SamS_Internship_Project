@@ -3,9 +3,10 @@ package com.alikhver.model.service;
 import com.alikhver.model.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
-    User getUser(Long id);
+    Optional<User> getUser(Long id);
 
     List<User> getAllUsers();
 
@@ -17,5 +18,5 @@ public interface UserService {
 
     void deleteUser(Long id);
 
-    void updateUser(Long id, User user);
+    void updateUser(User user);
 }
