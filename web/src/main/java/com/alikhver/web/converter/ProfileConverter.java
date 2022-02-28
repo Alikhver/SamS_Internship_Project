@@ -11,7 +11,7 @@ import java.util.Date;
 @Component
 public class ProfileConverter {
 
-    public Profile convertCreateProfileRequestToProfile(CreateProfileRequest request) {
+    public Profile mapToCreateProfileRequest(CreateProfileRequest request) {
         return Profile.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -20,7 +20,7 @@ public class ProfileConverter {
                 .build();
     }
 
-    public CreateProfileResponse convertProfileToCreateProfileResponse(Profile profile) {
+    public CreateProfileResponse mapToCreateProfileResponse(Profile profile) {
         return CreateProfileResponse.builder()
                 .firstName(profile.getFirstName())
                 .lastName(profile.getLastName())
@@ -29,7 +29,7 @@ public class ProfileConverter {
                 .build();
     }
 
-    public GetProfileResponse convertProfileToGetProfileResponse(Profile profile) {
+    public GetProfileResponse mapToGetProfileResponse(Profile profile) {
         return GetProfileResponse.builder()
                 .firstName(profile.getFirstName())
                 .lastName(profile.getLastName())

@@ -28,7 +28,7 @@ public class UserFacadeImpl implements UserFacade {
     public GetUserResponse getUser(Long id) throws NoUserFoundException {
         if (userService.userExistsById(id)) {
             User user = userService.getUser(id);
-            return userConverter.convertUserToGetUserResponse(user);
+            return userConverter.mapToGetUserResponse(user);
         } else {
             throw new NoUserFoundException(
                     "User with id = " + id + " does not exist"
@@ -38,7 +38,7 @@ public class UserFacadeImpl implements UserFacade {
 
     public GetAllUsersResponse getAllUsers() {
         List<User> users = userService.getAllUsers();
-        return userConverter.convertUsersToGetAllUsersResponse(users);
+        return userConverter.mapGetAllUsersResponse(users);
     }
 
     @Transactional
@@ -50,9 +50,9 @@ public class UserFacadeImpl implements UserFacade {
                     "User with login=" + request.getLogin() + " already exists"
             );
         } else {
-            User user = userConverter.convertCreateUserResponseToUser(request);
+            User user = userConverter.mapToUser(request);
             user = userService.createUser(user);
-            return userConverter.convertUserToCreateUserResponse(user);
+            return userConverter.mapToCreateUserResponse(user);
         }
     }
 
@@ -69,7 +69,7 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     public void updateUser(Long id, UpdateUserRequest request) {
-        User user = userConverter.convertUpdateUserRequestToUser(request);
+        User user = userConverter.mapToUser(request);
         Optional.ofNullable(request.getLogin()).ifPresent(user::setLogin);
         Optional.ofNullable(request.getPassword()).ifPresent(user::setPassword);
         // TODO UserRole

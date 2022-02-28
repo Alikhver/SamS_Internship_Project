@@ -20,7 +20,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     public GetOrganisationResponse getOrganisation(Long id) throws NoOrganisationFoundException {
         if (organisationService.organisationExistsById(id)) {
             Organisation organisation = organisationService.getOrganisation(id);
-            return organisationConverter.convertOrganisationToGetOrganisationResponse(organisation);
+            return organisationConverter.mapToGetOrganisationResponse(organisation);
         } {
             throw new NoOrganisationFoundException(
                     "No Organisation with id = " + id + " found"

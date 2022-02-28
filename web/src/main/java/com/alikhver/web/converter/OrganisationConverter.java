@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OrganisationConverter {
-    public GetOrganisationResponse convertOrganisationToGetOrganisationResponse(Organisation organisation) {
+    public GetOrganisationResponse mapToGetOrganisationResponse(Organisation organisation) {
         return GetOrganisationResponse.builder()
                 .name(organisation.getName())
                 .description(organisation.getDescription())

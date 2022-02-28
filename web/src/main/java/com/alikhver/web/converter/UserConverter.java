@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Component
 public class UserConverter {
 
-    public GetUserResponse convertUserToGetUserResponse(User user) {
+    public GetUserResponse mapToGetUserResponse(User user) {
         return GetUserResponse.builder()
                 .login(user.getLogin())
                 .password(user.getPassword())
@@ -23,15 +23,15 @@ public class UserConverter {
                 .build();
     }
 
-    public GetAllUsersResponse convertUsersToGetAllUsersResponse(List<User> users) {
+    public GetAllUsersResponse mapGetAllUsersResponse(List<User> users) {
         return GetAllUsersResponse.builder()
                 .users(users.stream()
-                        .map(this::convertUserToGetUserResponse)
+                        .map(this::mapToGetUserResponse)
                         .collect(Collectors.toList()))
                 .build();
     }
 
-    public User convertCreateUserResponseToUser(CreateUserRequest request) {
+    public User mapToUser(CreateUserRequest request) {
         return User.builder()
                 .login(request.getLogin())
                 .password(request.getPassword())
@@ -39,7 +39,7 @@ public class UserConverter {
                 .build();
     }
 
-    public CreateUserResponse convertUserToCreateUserResponse(User user) {
+    public CreateUserResponse mapToCreateUserResponse(User user) {
         return CreateUserResponse.builder()
                 .login(user.getLogin())
                 .password(user.getPassword())
@@ -48,7 +48,7 @@ public class UserConverter {
     }
 
 
-    public User convertUpdateUserRequestToUser(UpdateUserRequest request) {
+    public User mapToUser(UpdateUserRequest request) {
         User user = User.builder()
                 .login(request.getLogin())
                 .password(request.getPassword())

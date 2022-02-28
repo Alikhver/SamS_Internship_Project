@@ -40,19 +40,19 @@ public class ProfileFacadeImpl implements ProfileFacade{
             );
         }
 
-        Profile profile = profileConverter.convertCreateProfileRequestToProfile(request);
+        Profile profile = profileConverter.mapToCreateProfileRequest(request);
         profile.setUser(user);
 
         profileService.createProfile(profile);
 
-        return profileConverter.convertProfileToCreateProfileResponse(profile);
+        return profileConverter.mapToCreateProfileResponse(profile);
     }
 
     @Override
     public GetProfileResponse getProfile(Long id) throws NoProfileFoundException {
         if (profileService.profileExistsById(id)) {
             Profile profile = profileService.getProfile(id);
-            return profileConverter.convertProfileToGetProfileResponse(profile);
+            return profileConverter.mapToGetProfileResponse(profile);
         } else {
             throw new NoProfileFoundException(
                     "No Profile with id = " + id + " found"
