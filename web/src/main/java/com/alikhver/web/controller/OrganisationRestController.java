@@ -17,17 +17,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/organisations")
 public class OrganisationRestController {
     private final OrganisationFacade organisationFacade;
 
-    //TODO implement
     @GetMapping("/{id}")
     @ApiOperation("Get Organisation")
     public ResponseEntity<GetOrganisationResponse> getOrganisation(@PathVariable Long id) throws NoOrganisationFoundException {
         GetOrganisationResponse response = organisationFacade.getOrganisation(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/")
+    @ApiOperation("Get All Organisation")
+    public ResponseEntity<List<GetOrganisationResponse>> getOrganisations() {
+        List<GetOrganisationResponse> response = organisationFacade.getOrganisations();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

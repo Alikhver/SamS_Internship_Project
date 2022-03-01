@@ -10,6 +10,7 @@ import com.alikhver.web.exeption.organisation.NoOrganisationFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,5 +36,11 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     public CreateOrganisationResponse createOrganisation(CreateOrganisationRequest request) {
         // TODO create user ?
         return null;
+    }
+
+    @Override
+    public List<GetOrganisationResponse> getOrganisations() {
+        List<Organisation> organisations = organisationService.getOrganisations();
+        return organisationConverter.mapToListOfGetOrganisationResponse(organisations);
     }
 }
