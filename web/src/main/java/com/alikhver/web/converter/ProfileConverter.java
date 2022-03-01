@@ -7,6 +7,8 @@ import com.alikhver.web.dto.profile.response.GetProfileResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ProfileConverter {
@@ -17,6 +19,7 @@ public class ProfileConverter {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .dateCreated(new Date())
+                .phoneNumber(request.getPhoneNumber())
                 .build();
     }
 
@@ -26,6 +29,7 @@ public class ProfileConverter {
                 .lastName(profile.getLastName())
                 .email(profile.getEmail())
                 .userId(profile.getUser().getId())
+                .phoneNumber(profile.getPhoneNumber())
                 .build();
     }
 
@@ -35,6 +39,13 @@ public class ProfileConverter {
                 .lastName(profile.getLastName())
                 .email(profile.getEmail())
                 .userId(profile.getUser().getId())
+                .phoneNumber(profile.getPhoneNumber())
                 .build();
+    }
+
+    public List<GetProfileResponse> mapToListOfGetProfileResponse(List<Profile> profiles) {
+        return profiles.stream()
+                .map(this::mapToGetProfileResponse)
+                .collect(Collectors.toList());
     }
 }

@@ -8,10 +8,12 @@ import javax.validation.constraints.Positive;
 
 @Getter
 public class CreateProfileRequest {
+    //TODO validate
     @NotBlank
     private String firstName;
     @NotBlank
     private String lastName;
+    private String phoneNumber;
     @Email
     private String email;
     @Positive

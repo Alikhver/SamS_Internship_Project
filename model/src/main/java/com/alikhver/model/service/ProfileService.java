@@ -2,6 +2,7 @@ package com.alikhver.model.service;
 
 import com.alikhver.model.entity.Profile;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ProfileService {
@@ -11,4 +12,8 @@ public interface ProfileService {
     boolean profileExistsById(Long id);
 
     Optional<Profile> getProfile(Long id);
+
+    List<Profile> getProfiles();
+
+    void updateProfile(Profile profile);
 }

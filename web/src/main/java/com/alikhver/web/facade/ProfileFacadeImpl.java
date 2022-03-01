@@ -6,6 +6,7 @@ import com.alikhver.model.service.ProfileService;
 import com.alikhver.model.service.UserService;
 import com.alikhver.web.converter.ProfileConverter;
 import com.alikhver.web.dto.profile.request.CreateProfileRequest;
+import com.alikhver.web.dto.profile.request.UpdateProfileRequest;
 import com.alikhver.web.dto.profile.response.CreateProfileResponse;
 import com.alikhver.web.dto.profile.response.GetProfileResponse;
 import com.alikhver.web.exeption.profile.NoProfileFoundException;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -61,5 +63,32 @@ public class ProfileFacadeImpl implements ProfileFacade{
                     "No Profile with id = " + id + " found"
             );
         }
+    }
+
+    @Override
+    public List<GetProfileResponse> getProfiles() {
+        List<Profile> profiles = profileService.getProfiles();
+        return profileConverter.mapToListOfGetProfileResponse(profiles);
+    }
+
+    @Override
+    @Transactional
+    public void updateProfile(Long id, UpdateProfileRequest request) {
+        Optional<Profile> optionalProfile = profileService.getProfile(id);
+        Profile profile;
+        if (optionalProfile.isPresent()) {
+            profile = optionalProfile.get();
+        } else {
+            throw new NoProfileFoundException(
+              "No profile with id = " + id + "found"
+            );
+        }
+
+        Optional.ofNullable(request.getFirstName()).ifPresent(profile::setFirstName);
+        Optional.ofNullable(request.getLastName()).ifPresent(profile::setLastName);
+        Optional.ofNullable(request.getPhoneNumber()).ifPresent(profile::setPhoneNumber);
+        Optional.ofNullable(request.getEmail()).ifPresent(profile::setEmail);
+
+        profileService.updateProfile(profile);
     }
 }
