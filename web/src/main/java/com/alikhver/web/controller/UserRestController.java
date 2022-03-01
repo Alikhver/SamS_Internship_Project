@@ -3,7 +3,6 @@ package com.alikhver.web.controller;
 import com.alikhver.web.dto.user.request.CreateUserRequest;
 import com.alikhver.web.dto.user.request.UpdateUserRequest;
 import com.alikhver.web.dto.user.response.CreateUserResponse;
-import com.alikhver.web.dto.user.response.GetAllUsersResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
 import com.alikhver.web.exeption.user.NoUserFoundException;
 import com.alikhver.web.exeption.user.UserAlreadyExistsException;
@@ -22,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -37,8 +38,8 @@ public class UserRestController {
 
     @GetMapping("/")
     @ApiOperation("Get all Users")
-    public ResponseEntity<GetAllUsersResponse> getAllUsers() {
-        GetAllUsersResponse response = userFacade.getAllUsers();
+    public ResponseEntity<List<GetUserResponse>> getAllUsers() {
+        List<GetUserResponse> response = userFacade.getAllUsers();
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }

@@ -6,7 +6,6 @@ import com.alikhver.web.converter.UserConverter;
 import com.alikhver.web.dto.user.request.CreateUserRequest;
 import com.alikhver.web.dto.user.request.UpdateUserRequest;
 import com.alikhver.web.dto.user.response.CreateUserResponse;
-import com.alikhver.web.dto.user.response.GetAllUsersResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
 import com.alikhver.web.exeption.user.NoUserFoundException;
 import com.alikhver.web.exeption.user.UserAlreadyExistsException;
@@ -37,9 +36,9 @@ public class UserFacadeImpl implements UserFacade {
         }
     }
 
-    public GetAllUsersResponse getAllUsers() {
+    public List<GetUserResponse> getAllUsers() {
         List<User> users = userService.getAllUsers();
-        return userConverter.mapToGetAllUsersResponse(users);
+        return userConverter.mapToListOfGetUserResponse(users);
     }
 
     @Transactional

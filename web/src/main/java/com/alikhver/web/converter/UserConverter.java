@@ -5,7 +5,6 @@ import com.alikhver.model.entity.UserRole;
 import com.alikhver.web.dto.user.request.CreateUserRequest;
 import com.alikhver.web.dto.user.request.UpdateUserRequest;
 import com.alikhver.web.dto.user.response.CreateUserResponse;
-import com.alikhver.web.dto.user.response.GetAllUsersResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
 import org.springframework.stereotype.Component;
 
@@ -23,12 +22,10 @@ public class UserConverter {
                 .build();
     }
 
-    public GetAllUsersResponse mapToGetAllUsersResponse(List<User> users) {
-        return GetAllUsersResponse.builder()
-                .users(users.stream()
-                        .map(this::mapToGetUserResponse)
-                        .collect(Collectors.toList()))
-                .build();
+    public List<GetUserResponse> mapToListOfGetUserResponse(List<User> users) {
+        return users.stream()
+                .map(this::mapToGetUserResponse)
+                .collect(Collectors.toList());
     }
 
     public User mapToUser(CreateUserRequest request) {
