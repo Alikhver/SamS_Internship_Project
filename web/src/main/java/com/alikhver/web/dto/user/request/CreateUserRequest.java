@@ -9,9 +9,6 @@ import javax.validation.constraints.NotBlank;
 public class CreateUserRequest {
     @NotBlank
     private String login;
-
     @NotBlank
     private String password;
-
-    private String role;
 }
