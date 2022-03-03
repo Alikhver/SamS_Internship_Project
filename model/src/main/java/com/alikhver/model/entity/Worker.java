@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,13 +37,13 @@ public class Worker {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
-    @OneToMany(mappedBy = "worker")
+    @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY)
     private List<ScheduleRecord> records;
 
-    @ManyToMany(mappedBy = "workers")
+    @ManyToMany(mappedBy = "workers", fetch = FetchType.LAZY)
     private List<Utility> utilities;
 }

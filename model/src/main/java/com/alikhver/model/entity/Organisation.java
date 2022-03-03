@@ -6,8 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -48,13 +50,14 @@ public class Organisation {
     @Column(name = "address")
     private String address;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User redactor;
 
-    @OneToMany(mappedBy = "organisation")
+    @OneToMany(mappedBy = "organisation", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE,
+            CascadeType.PERSIST})
     private List<Worker> workers;
 
-    @OneToMany(mappedBy = "organisation")
+    @OneToMany(mappedBy = "organisation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Utility> utilities;
 }
