@@ -31,4 +31,9 @@ public class OrganisationServiceImpl implements OrganisationService {
     public List<Organisation> getOrganisations() {
         return repository.findAll();
     }
+
+    @Override
+    public boolean organisationExistsByName(String name) {
+        return repository.existsOrganisationByName(name);
+    }
 }

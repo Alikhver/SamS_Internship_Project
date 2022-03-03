@@ -11,4 +11,6 @@ public interface OrganisationService {
     boolean organisationExistsById(Long id);
 
     List<Organisation> getOrganisations();
+
+    boolean organisationExistsByName(String name);
 }

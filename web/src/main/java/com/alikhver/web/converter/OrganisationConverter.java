@@ -1,6 +1,7 @@
 package com.alikhver.web.converter;
 
 import com.alikhver.model.entity.Organisation;
+import com.alikhver.web.dto.organisation.request.CreateOrganisationRequest;
 import com.alikhver.web.dto.organisation.response.GetOrganisationResponse;
 import org.springframework.stereotype.Component;
 
@@ -23,5 +24,13 @@ public class OrganisationConverter {
         return orgs.stream()
                 .map(this::mapToGetOrganisationResponse)
                 .collect(Collectors.toList());
+    }
+
+    public Organisation mapToOrganisation(CreateOrganisationRequest request) {
+        return Organisation.builder()
+                .name(request.getName())
+                .address(request.getAddress())
+                .description(request.getDescription())
+                .build();
     }
 }

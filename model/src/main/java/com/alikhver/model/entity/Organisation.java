@@ -1,6 +1,9 @@
 package com.alikhver.model.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -16,8 +19,11 @@ import java.util.Date;
 import java.util.List;
 
 
+@Builder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "organisation")
 public class Organisation {

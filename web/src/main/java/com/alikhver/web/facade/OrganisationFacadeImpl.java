@@ -7,8 +7,10 @@ import com.alikhver.web.dto.organisation.request.CreateOrganisationRequest;
 import com.alikhver.web.dto.organisation.response.CreateOrganisationResponse;
 import com.alikhver.web.dto.organisation.response.GetOrganisationResponse;
 import com.alikhver.web.exeption.organisation.NoOrganisationFoundException;
+import com.alikhver.web.exeption.organisation.OrganisationAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +35,16 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     }
 
     @Override
+    @Transactional
     public CreateOrganisationResponse createOrganisation(CreateOrganisationRequest request) {
+        if (!organisationService.organisationExistsByName(request.getName())) {
+            throw new OrganisationAlreadyExistsException(
+              "Organisation with name = " + request.getName() + " already exists"
+            );
+        }
+        Organisation organisation = organisationConverter.mapToOrganisation(request);
+
+
         // TODO create user ?
         return null;
     }
