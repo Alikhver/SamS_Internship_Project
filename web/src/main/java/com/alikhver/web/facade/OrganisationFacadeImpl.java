@@ -1,6 +1,7 @@
 package com.alikhver.web.facade;
 
 import com.alikhver.model.entity.Organisation;
+import com.alikhver.model.entity.User;
 import com.alikhver.model.service.OrganisationService;
 import com.alikhver.web.converter.OrganisationConverter;
 import com.alikhver.web.dto.organisation.request.CreateOrganisationRequest;
@@ -43,10 +44,12 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             );
         }
         Organisation organisation = organisationConverter.mapToOrganisation(request);
+        User redactor = organisationConverter.mapToRedactor(request);
+        organisation.setRedactor(redactor);
 
+        organisation = organisationService.createOrganisation(organisation);
 
-        // TODO create user ?
-        return null;
+        return organisationConverter.mapToCreateOrganisationResponse(organisation);
     }
 
     @Override

@@ -12,4 +12,8 @@ public class CreateOrganisationRequest {
     private String description;
     @NotBlank
     private String address;
+    @NotBlank
+    private String redactorLogin;
+    @NotBlank
+    private String redactorPassword;
 }

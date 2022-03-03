@@ -13,4 +13,6 @@ public interface OrganisationService {
     List<Organisation> getOrganisations();
 
     boolean organisationExistsByName(String name);
+
+    Organisation createOrganisation(Organisation organisation);
 }
