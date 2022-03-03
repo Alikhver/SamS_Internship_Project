@@ -41,9 +41,13 @@ public class Worker {
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
-    @OneToMany(mappedBy = "worker", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "worker",
+            fetch = FetchType.LAZY,
+            cascade = {})
     private List<ScheduleRecord> records;
 
-    @ManyToMany(mappedBy = "workers", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "workers",
+            fetch = FetchType.LAZY,
+            cascade = {})
     private List<Utility> utilities;
 }
