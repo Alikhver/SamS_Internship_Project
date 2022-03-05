@@ -9,6 +9,7 @@ import com.alikhver.web.dto.worker.request.CreateWorkerRequest;
 import com.alikhver.web.dto.worker.response.CreateWorkerResponse;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import com.alikhver.web.exeption.organisation.NoOrganisationFoundException;
+import com.alikhver.web.exeption.worker.NoWorkerFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,9 +25,22 @@ public class WorkerFacadeImpl implements WorkerFacade {
 
     @Override
     public GetWorkerResponse getWorkerById(Long id) {
-
-        return null;
+        Optional<Worker> optionalWorker = workerService.getWorkerById(id);
+        if (optionalWorker.isPresent()) {
+            Worker worker = optionalWorker.get();
+            return workerConverter.mapToGetWorkerResponse(worker);
+        } else {
+            throw new NoWorkerFoundException(
+                    "No Worker with id = " + id + " found"
+            );
+        }
     }
+
+//    @Override
+//    public List<GetWorkerResponse> getAllUsers() {
+//        List<Worker> workers = workerService.getAllUsers();
+//        return null;
+//    }
 
     @Override
     @Transactional
