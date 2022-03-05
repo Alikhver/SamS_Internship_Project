@@ -31,7 +31,7 @@ public class OrganisationServiceImpl implements OrganisationService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Organisation> getOrganisations() {
+    public List<Organisation> getAllOrganisations() {
         return repository.findAll();
     }
 
@@ -48,5 +48,10 @@ public class OrganisationServiceImpl implements OrganisationService {
         Objects.requireNonNull(organisation.getRedactor());
         organisation.setDateCreated(new Date());
         return repository.save(organisation);
+    }
+
+    @Override
+    public void updateOrganisation(Organisation organisation) {
+        repository.save(organisation);
     }
 }

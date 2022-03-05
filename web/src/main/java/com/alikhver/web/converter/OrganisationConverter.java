@@ -23,8 +23,8 @@ public class OrganisationConverter {
                 .build();
     }
 
-    public List<GetOrganisationResponse> mapToListOfGetOrganisationResponse(List<Organisation> orgs) {
-        return orgs.stream()
+    public List<GetOrganisationResponse> mapToListOfGetOrganisationResponse(List<Organisation> organisations) {
+        return organisations.stream()
                 .map(this::mapToGetOrganisationResponse)
                 .collect(Collectors.toList());
     }

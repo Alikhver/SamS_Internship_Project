@@ -10,9 +10,11 @@ public interface OrganisationService {
 
     boolean organisationExistsById(Long id);
 
-    List<Organisation> getOrganisations();
+    List<Organisation> getAllOrganisations();
 
     boolean organisationExistsByName(String name);
 
     Organisation createOrganisation(Organisation organisation);
+
+    void updateOrganisation(Organisation organisation);
 }
