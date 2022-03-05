@@ -1,6 +1,7 @@
 package com.alikhver.web.controller;
 
 import com.alikhver.web.dto.worker.request.CreateWorkerRequest;
+import com.alikhver.web.dto.worker.request.UpdateWorkerRequest;
 import com.alikhver.web.dto.worker.response.CreateWorkerResponse;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import com.alikhver.web.facade.WorkerFacade;
@@ -12,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,5 +43,12 @@ public class WorkerRestController {
     public ResponseEntity<CreateWorkerResponse> createWorker(@RequestBody @Validated CreateWorkerRequest request) {
         CreateWorkerResponse response = workerFacade.createWorker(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    @ApiOperation("Update Worker")
+    public ResponseEntity<Void> updateWorker(@PathVariable Long id, @RequestBody @Validated UpdateWorkerRequest request) {
+        workerFacade.updateWorker(id, request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
