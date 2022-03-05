@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,5 +53,12 @@ public class OrganisationRestController {
     @ApiOperation("Update Organisation")
     public void updateOrganisation(@PathVariable Long id, @RequestBody @Validated UpdateOrganisationRequest request) {
         organisationFacade.updateOrganisation(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation("Delete Organisation")
+    public ResponseEntity<Long> deleteOrganisation(@PathVariable Long id) {
+        organisationFacade.deleteOrganisation(id);
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 }
