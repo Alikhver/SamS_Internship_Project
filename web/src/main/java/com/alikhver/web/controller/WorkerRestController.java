@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,13 +32,6 @@ public class WorkerRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-//    @GetMapping("/")
-//    @ApiOperation("Get All Workers")
-//    public ResponseEntity<List<GetWorkerResponse>> getAllWorkers() {
-//        List<GetWorkerResponse> response = workerFacade.getAllUsers();
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
-
     @PostMapping("/")
     @ApiOperation("Create Worker")
     public ResponseEntity<CreateWorkerResponse> createWorker(@RequestBody @Validated CreateWorkerRequest request) {
@@ -50,5 +44,12 @@ public class WorkerRestController {
     public ResponseEntity<Void> updateWorker(@PathVariable Long id, @RequestBody @Validated UpdateWorkerRequest request) {
         workerFacade.updateWorker(id, request);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation("Delete Worker")
+    public ResponseEntity<Long> deleteWorker(@PathVariable Long id) {
+        workerFacade.deleteWorker(id);
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 }

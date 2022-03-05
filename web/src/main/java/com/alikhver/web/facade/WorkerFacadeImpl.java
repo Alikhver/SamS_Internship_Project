@@ -26,7 +26,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
 
     @Override
     public GetWorkerResponse getWorkerById(Long id) {
-        Optional<Worker> optionalWorker = workerService.getWorkerById(id);
+        Optional<Worker> optionalWorker = workerService.getWorker(id);
         if (optionalWorker.isPresent()) {
             Worker worker = optionalWorker.get();
             return workerConverter.mapToGetWorkerResponse(worker);
@@ -40,7 +40,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
     @Override
     @Transactional
     public void updateWorker(Long id, UpdateWorkerRequest request) {
-        Optional<Worker> optionalWorker = workerService.getWorkerById(id);
+        Optional<Worker> optionalWorker = workerService.getWorker(id);
         Worker worker;
         if (optionalWorker.isPresent()) {
             worker = optionalWorker.get();
@@ -56,11 +56,17 @@ public class WorkerFacadeImpl implements WorkerFacade {
         workerService.saveWorker(worker);
     }
 
-//    @Override
-//    public List<GetWorkerResponse> getAllUsers() {
-//        List<Worker> workers = workerService.getAllUsers();
-//        return null;
-//    }
+    @Override
+    @Transactional
+    public void deleteWorker(Long id) {
+        if (workerService.existsWorkerById(id)) {
+            workerService.deleteWorker(id);
+        } else {
+            throw new NoWorkerFoundException(
+              "No Worker with id = " + id + " found"
+            );
+        }
+    }
 
     @Override
     @Transactional

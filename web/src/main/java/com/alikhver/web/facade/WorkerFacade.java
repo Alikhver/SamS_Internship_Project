@@ -8,7 +8,6 @@ import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 public interface WorkerFacade {
     CreateWorkerResponse createWorker(CreateWorkerRequest request);
     GetWorkerResponse getWorkerById(Long id);
-
     void updateWorker(Long id, UpdateWorkerRequest request);
-//    List<GetWorkerResponse> getAllUsers();
+    void deleteWorker(Long id);
 }
