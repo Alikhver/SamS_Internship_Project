@@ -2,6 +2,8 @@ package com.alikhver.web.exeption.handler;
 
 import com.alikhver.web.exeption.organisation.NoOrganisationFoundException;
 import com.alikhver.web.exeption.organisation.OrganisationAlreadyExistsException;
+import com.alikhver.web.exeption.organisation.OrganisationIsAlreadyLaunchedException;
+import com.alikhver.web.exeption.organisation.OrganisationIsAlreadySuspendedException;
 import com.alikhver.web.exeption.profile.NoProfileFoundException;
 import com.alikhver.web.exeption.user.NoUserFoundException;
 import com.alikhver.web.exeption.user.UserAlreadyExistsException;
@@ -52,6 +54,22 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<ErrorResponse> handleOrganisationAlreadyExistsException(
             OrganisationAlreadyExistsException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(OrganisationIsAlreadySuspendedException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handleOrganisationIsAlreadySuspendedException(
+            OrganisationIsAlreadySuspendedException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(OrganisationIsAlreadyLaunchedException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handleOrganisationIsAlreadyLaunchedException(
+            OrganisationIsAlreadyLaunchedException e, HttpServletRequest request) {
         ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }

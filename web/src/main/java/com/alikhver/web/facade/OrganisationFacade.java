@@ -17,4 +17,8 @@ public interface OrganisationFacade {
     void updateOrganisation(Long id, UpdateOrganisationRequest request);
 
     void deleteOrganisation(Long id);
+
+    void suspendOrganisation(Long id);
+
+    void launchOrganisation(Long id);
 }

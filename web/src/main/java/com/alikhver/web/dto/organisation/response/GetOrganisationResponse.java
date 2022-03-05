@@ -10,9 +10,11 @@ import java.util.List;
 @Builder
 @Getter
 public class GetOrganisationResponse {
-    private String name;
-    private String address;
-    private String description;
-    private List<Worker> workers;
-    private List<Utility> utilities;
+    private final long id;
+    private final String name;
+    private final String address;
+    private final String description;
+    private final boolean isActive;
+    private final List<Worker> workers;
+    private final List<Utility> utilities;
 }

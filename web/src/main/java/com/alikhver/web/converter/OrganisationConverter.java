@@ -15,11 +15,13 @@ import java.util.stream.Collectors;
 public class OrganisationConverter {
     public GetOrganisationResponse mapToGetOrganisationResponse(Organisation organisation) {
         return GetOrganisationResponse.builder()
+                .id(organisation.getId())
                 .name(organisation.getName())
                 .description(organisation.getDescription())
                 .address(organisation.getAddress())
                 .utilities(organisation.getUtilities())
                 .workers(organisation.getWorkers())
+                .isActive(organisation.isActive())
                 .build();
     }
 
@@ -47,6 +49,7 @@ public class OrganisationConverter {
 
     public CreateOrganisationResponse mapToCreateOrganisationResponse(Organisation organisation) {
         return CreateOrganisationResponse.builder()
+                .id(organisation.getId())
                 .name(organisation.getName())
                 .description(organisation.getDescription())
                 .address(organisation.getAddress())
