@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -28,12 +30,28 @@ public class OrganisationServiceImpl implements OrganisationService {
     }
 
     @Override
-    public List<Organisation> getOrganisations() {
+    @Transactional(readOnly = true)
+    public List<Organisation> getAllOrganisations() {
         return repository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean organisationExistsByName(String name) {
         return repository.existsOrganisationByName(name);
+    }
+
+    @Override
+    public Organisation createOrganisation(Organisation organisation) {
+        Objects.requireNonNull(organisation.getName());
+        Objects.requireNonNull(organisation.getDescription());
+        Objects.requireNonNull(organisation.getRedactor());
+        organisation.setDateCreated(new Date());
+        return repository.save(organisation);
+    }
+
+    @Override
+    public void updateOrganisation(Organisation organisation) {
+        repository.save(organisation);
     }
 }

@@ -3,10 +3,12 @@ package com.alikhver.web.dto.organisation.response;
 import com.alikhver.model.entity.Utility;
 import com.alikhver.model.entity.Worker;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.List;
 
 @Builder
+@Getter
 public class GetOrganisationResponse {
     private String name;
     private String address;

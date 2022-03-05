@@ -19,9 +19,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserFacadeImpl implements UserFacade {
-
     private final UserService userService;
-
     private final UserConverter userConverter;
 
     public GetUserResponse getUser(Long id) throws NoUserFoundException {
@@ -47,7 +45,7 @@ public class UserFacadeImpl implements UserFacade {
 
         if (userService.userExistsByLogin(request.getLogin())) {
             throw new UserAlreadyExistsException(
-                    "User with login=" + request.getLogin() + " already exists"
+                    "User with login = " + request.getLogin() + " already exists"
             );
         } else {
             User user = userConverter.mapToUser(request);
@@ -58,13 +56,12 @@ public class UserFacadeImpl implements UserFacade {
 
     @Transactional
     public void deleteUser(Long id) throws NoUserFoundException {
-        // TODO implement if user does not exist
-        if (userService.userExistsById(id)) {
-            userService.deleteUser(id);
-        } else {
+        if (!userService.userExistsById(id)) {
             throw new NoUserFoundException(
                     "No User with id = " + id + " found"
             );
+        } else {
+            userService.deleteUser(id);
         }
     }
 
@@ -81,7 +78,6 @@ public class UserFacadeImpl implements UserFacade {
         }
         Optional.ofNullable(request.getLogin()).ifPresent(user::setLogin);
         Optional.ofNullable(request.getPassword()).ifPresent(user::setPassword);
-        //TODO user role
         userService.updateUser(user);
     }
 }

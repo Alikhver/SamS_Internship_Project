@@ -32,7 +32,7 @@ public class UserConverter {
         return User.builder()
                 .login(request.getLogin())
                 .password(request.getPassword())
-                .role(UserRole.valueOf(request.getRole().toUpperCase()))
+                .role(UserRole.USER)
                 .build();
     }
 
@@ -46,12 +46,9 @@ public class UserConverter {
 
 
     public User mapToUser(UpdateUserRequest request) {
-        User user = User.builder()
+        return User.builder()
                 .login(request.getLogin())
                 .password(request.getPassword())
-                .role(UserRole.valueOf(""))
                 .build();
-        // TODO UserRole.valueOf
-        return user;
     }
 }

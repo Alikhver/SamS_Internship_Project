@@ -1,7 +1,10 @@
 package com.alikhver.web.converter;
 
 import com.alikhver.model.entity.Organisation;
+import com.alikhver.model.entity.User;
+import com.alikhver.model.entity.UserRole;
 import com.alikhver.web.dto.organisation.request.CreateOrganisationRequest;
+import com.alikhver.web.dto.organisation.response.CreateOrganisationResponse;
 import com.alikhver.web.dto.organisation.response.GetOrganisationResponse;
 import org.springframework.stereotype.Component;
 
@@ -20,8 +23,8 @@ public class OrganisationConverter {
                 .build();
     }
 
-    public List<GetOrganisationResponse> mapToListOfGetOrganisationResponse(List<Organisation> orgs) {
-        return orgs.stream()
+    public List<GetOrganisationResponse> mapToListOfGetOrganisationResponse(List<Organisation> organisations) {
+        return organisations.stream()
                 .map(this::mapToGetOrganisationResponse)
                 .collect(Collectors.toList());
     }
@@ -31,6 +34,22 @@ public class OrganisationConverter {
                 .name(request.getName())
                 .address(request.getAddress())
                 .description(request.getDescription())
+                .build();
+    }
+
+    public User mapToRedactor(CreateOrganisationRequest request) {
+        return User.builder()
+                .login(request.getRedactorLogin())
+                .password(request.getRedactorPassword())
+                .role(UserRole.REDACTOR)
+                .build();
+    }
+
+    public CreateOrganisationResponse mapToCreateOrganisationResponse(Organisation organisation) {
+        return CreateOrganisationResponse.builder()
+                .name(organisation.getName())
+                .description(organisation.getDescription())
+                .address(organisation.getAddress())
                 .build();
     }
 }

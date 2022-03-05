@@ -1,6 +1,7 @@
 package com.alikhver.web.controller;
 
 import com.alikhver.web.dto.organisation.request.CreateOrganisationRequest;
+import com.alikhver.web.dto.organisation.request.UpdateOrganisationRequest;
 import com.alikhver.web.dto.organisation.response.CreateOrganisationResponse;
 import com.alikhver.web.dto.organisation.response.GetOrganisationResponse;
 import com.alikhver.web.exeption.organisation.NoOrganisationFoundException;
@@ -13,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,5 +46,11 @@ public class OrganisationRestController {
     public ResponseEntity<CreateOrganisationResponse> createOrganisation(@RequestBody @Validated CreateOrganisationRequest request) {
         CreateOrganisationResponse response = organisationFacade.createOrganisation(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    @ApiOperation("Update Organisation")
+    public void updateOrganisation(@PathVariable Long id, @RequestBody @Validated UpdateOrganisationRequest request) {
+        organisationFacade.updateOrganisation(id, request);
     }
 }
