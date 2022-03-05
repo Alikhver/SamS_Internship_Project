@@ -3,7 +3,6 @@ package com.alikhver.web.converter;
 import com.alikhver.model.entity.User;
 import com.alikhver.model.entity.UserRole;
 import com.alikhver.web.dto.user.request.CreateUserRequest;
-import com.alikhver.web.dto.user.request.UpdateUserRequest;
 import com.alikhver.web.dto.user.response.CreateUserResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
 import org.springframework.stereotype.Component;
@@ -16,6 +15,7 @@ public class UserConverter {
 
     public GetUserResponse mapToGetUserResponse(User user) {
         return GetUserResponse.builder()
+                .id(user.getId())
                 .login(user.getLogin())
                 .password(user.getPassword())
                 .role(user.getRole().name())
@@ -38,17 +38,10 @@ public class UserConverter {
 
     public CreateUserResponse mapToCreateUserResponse(User user) {
         return CreateUserResponse.builder()
+                .id(user.getId())
                 .login(user.getLogin())
                 .password(user.getPassword())
                 .role(user.getRole().toString())
-                .build();
-    }
-
-
-    public User mapToUser(UpdateUserRequest request) {
-        return User.builder()
-                .login(request.getLogin())
-                .password(request.getPassword())
                 .build();
     }
 }
