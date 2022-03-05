@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class GetWorkerResponse {
+public class CreateWorkerResponse {
     private final long id;
     private final String firstName;
     private final String lastName;

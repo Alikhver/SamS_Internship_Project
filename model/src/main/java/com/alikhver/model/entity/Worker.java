@@ -1,6 +1,9 @@
 package com.alikhver.model.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -17,9 +20,12 @@ import javax.persistence.Table;
 import java.util.List;
 
 
+@Builder
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "worker")
 public class Worker {
 
