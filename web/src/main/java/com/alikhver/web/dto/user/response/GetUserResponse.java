@@ -6,7 +6,8 @@ import lombok.Getter;
 @Builder
 @Getter
 public class GetUserResponse {
-    private String login;
-    private String password;
-    private String role;
+    private final long id;
+    private final String login;
+    private final String password;
+    private final String role;
 }

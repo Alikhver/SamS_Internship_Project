@@ -55,6 +55,20 @@ public class OrganisationRestController {
         organisationFacade.updateOrganisation(id, request);
     }
 
+    @GetMapping("/{id}/suspend")
+    @ApiOperation("Suspend working process of Organisation")
+    public ResponseEntity<Void> suspendOrganisation(@PathVariable Long id) {
+        organisationFacade.suspendOrganisation(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("{id}/launch")
+    @ApiOperation("Launch working process of Organisation")
+    public ResponseEntity<Void> launchOrganisation(@PathVariable Long id) {
+        organisationFacade.launchOrganisation(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     @ApiOperation("Delete Organisation")
     public ResponseEntity<Long> deleteOrganisation(@PathVariable Long id) {

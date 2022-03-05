@@ -11,6 +11,8 @@ import com.alikhver.web.dto.organisation.response.CreateOrganisationResponse;
 import com.alikhver.web.dto.organisation.response.GetOrganisationResponse;
 import com.alikhver.web.exeption.organisation.NoOrganisationFoundException;
 import com.alikhver.web.exeption.organisation.OrganisationAlreadyExistsException;
+import com.alikhver.web.exeption.organisation.OrganisationIsAlreadyLaunchedException;
+import com.alikhver.web.exeption.organisation.OrganisationIsAlreadySuspendedException;
 import com.alikhver.web.exeption.user.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -95,6 +97,52 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         } else {
             throw new NoOrganisationFoundException(
               "No Organisation with id = " + id + " found"
+            );
+        }
+    }
+
+    @Override
+    @Transactional
+    public void suspendOrganisation(Long id) {
+        Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(id);
+        Organisation organisation;
+        if (optionalOrganisation.isEmpty()) {
+            throw new NoOrganisationFoundException(
+                    "No organisation with id = " + id + " found"
+            );
+        } else {
+            organisation = optionalOrganisation.get();
+        }
+
+        if (organisation.isActive()) {
+            organisation.setActive(false);
+            organisationService.updateOrganisation(organisation);
+        } else {
+            throw new OrganisationIsAlreadySuspendedException(
+                    "Organisation with id = " + id + " is already suspended"
+            );
+        }
+    }
+
+    @Override
+    @Transactional
+    public void launchOrganisation(Long id) {
+        Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(id);
+        Organisation organisation;
+        if (optionalOrganisation.isEmpty()) {
+            throw new NoOrganisationFoundException(
+                    "No organisation with id = " + id + " found"
+            );
+        } else {
+            organisation = optionalOrganisation.get();
+        }
+
+        if (!organisation.isActive()) {
+            organisation.setActive(true);
+            organisationService.updateOrganisation(organisation);
+        } else {
+            throw new OrganisationIsAlreadyLaunchedException(
+                    "Organisation with id = " + id + " is already running"
             );
         }
     }
