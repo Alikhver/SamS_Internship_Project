@@ -87,4 +87,15 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         Optional.ofNullable(request.getAddress()).ifPresent(organisation::setAddress);
         organisationService.updateOrganisation(organisation);
     }
+
+    @Override
+    public void deleteOrganisation(Long id) {
+        if (organisationService.organisationExistsById(id)) {
+            organisationService.deleteOrganisation(id);
+        } else {
+            throw new NoOrganisationFoundException(
+              "No Organisation with id = " + id + " found"
+            );
+        }
+    }
 }

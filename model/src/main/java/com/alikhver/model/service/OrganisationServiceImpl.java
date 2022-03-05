@@ -54,4 +54,9 @@ public class OrganisationServiceImpl implements OrganisationService {
     public void updateOrganisation(Organisation organisation) {
         repository.save(organisation);
     }
+
+    @Override
+    public void deleteOrganisation(Long id) {
+        repository.deleteById(id);
+    }
 }

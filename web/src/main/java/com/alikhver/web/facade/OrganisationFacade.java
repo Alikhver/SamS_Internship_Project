@@ -15,4 +15,6 @@ public interface OrganisationFacade {
     List<GetOrganisationResponse> getOrganisations();
 
     void updateOrganisation(Long id, UpdateOrganisationRequest request);
+
+    void deleteOrganisation(Long id);
 }
