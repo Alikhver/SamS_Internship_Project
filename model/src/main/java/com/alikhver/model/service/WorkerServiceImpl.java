@@ -16,8 +16,19 @@ public class WorkerServiceImpl implements WorkerService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Worker> getWorkerById(Long id) {
+    public Optional<Worker> getWorker(Long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsWorkerById(Long id) {
+        return repository.existsWorkerById(id);
+    }
+
+    @Override
+    public void deleteWorker(Long id) {
+        repository.deleteById(id);
     }
 
     @Override

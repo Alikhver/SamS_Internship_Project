@@ -5,6 +5,8 @@ import com.alikhver.model.entity.Worker;
 import java.util.Optional;
 
 public interface WorkerService {
-    Optional<Worker> getWorkerById(Long id);
+    Optional<Worker> getWorker(Long id);
     void saveWorker(Worker worker);
+    boolean existsWorkerById(Long id);
+    void deleteWorker(Long id);
 }

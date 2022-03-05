@@ -6,6 +6,7 @@ import com.alikhver.model.service.OrganisationService;
 import com.alikhver.model.service.WorkerService;
 import com.alikhver.web.converter.WorkerConverter;
 import com.alikhver.web.dto.worker.request.CreateWorkerRequest;
+import com.alikhver.web.dto.worker.request.UpdateWorkerRequest;
 import com.alikhver.web.dto.worker.response.CreateWorkerResponse;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import com.alikhver.web.exeption.organisation.NoOrganisationFoundException;
@@ -25,7 +26,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
 
     @Override
     public GetWorkerResponse getWorkerById(Long id) {
-        Optional<Worker> optionalWorker = workerService.getWorkerById(id);
+        Optional<Worker> optionalWorker = workerService.getWorker(id);
         if (optionalWorker.isPresent()) {
             Worker worker = optionalWorker.get();
             return workerConverter.mapToGetWorkerResponse(worker);
@@ -36,11 +37,36 @@ public class WorkerFacadeImpl implements WorkerFacade {
         }
     }
 
-//    @Override
-//    public List<GetWorkerResponse> getAllUsers() {
-//        List<Worker> workers = workerService.getAllUsers();
-//        return null;
-//    }
+    @Override
+    @Transactional
+    public void updateWorker(Long id, UpdateWorkerRequest request) {
+        Optional<Worker> optionalWorker = workerService.getWorker(id);
+        Worker worker;
+        if (optionalWorker.isPresent()) {
+            worker = optionalWorker.get();
+        } else {
+            throw new NoWorkerFoundException(
+                    "No Worker with id = " + id + " found"
+            );
+        }
+        Optional.ofNullable(request.getFirstName()).ifPresent(worker::setFirstName);
+        Optional.ofNullable(request.getLastName()).ifPresent(worker::setLastName);
+        Optional.ofNullable(request.getDescription()).ifPresent(worker::setDescription);
+
+        workerService.saveWorker(worker);
+    }
+
+    @Override
+    @Transactional
+    public void deleteWorker(Long id) {
+        if (workerService.existsWorkerById(id)) {
+            workerService.deleteWorker(id);
+        } else {
+            throw new NoWorkerFoundException(
+              "No Worker with id = " + id + " found"
+            );
+        }
+    }
 
     @Override
     @Transactional
