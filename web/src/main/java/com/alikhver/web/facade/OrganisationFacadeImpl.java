@@ -42,6 +42,12 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     }
 
     @Override
+    public List<GetOrganisationResponse> getOrganisations() {
+        List<Organisation> organisations = organisationService.getAllOrganisations();
+        return organisationConverter.mapToListOfGetOrganisationResponse(organisations);
+    }
+
+    @Override
     @Transactional
     public CreateOrganisationResponse createOrganisation(CreateOrganisationRequest request) {
         if (organisationService.organisationExistsByName(request.getName())) {
@@ -65,12 +71,6 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         organisation = organisationService.createOrganisation(organisation);
 
         return organisationConverter.mapToCreateOrganisationResponse(organisation);
-    }
-
-    @Override
-    public List<GetOrganisationResponse> getOrganisations() {
-        List<Organisation> organisations = organisationService.getAllOrganisations();
-        return organisationConverter.mapToListOfGetOrganisationResponse(organisations);
     }
 
     @Override
