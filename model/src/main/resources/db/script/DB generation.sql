@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `my_db`.`organisation`
     `date_created` TIMESTAMP   NULL DEFAULT NULL,
     `address`      VARCHAR(45) NULL DEFAULT NULL,
     `version`      BIGINT      NULL DEFAULT NULL,
-    `user_id`      BIGINT      NOT NULL,
+    `user_id`      BIGINT      NOT NULL UNIQUE ,
     PRIMARY KEY (`id`, `user_id`),
     INDEX `fk_organisation_user1_idx` (`user_id` ASC) VISIBLE,
     CONSTRAINT `fk_organisation_user1`
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `my_db`.`profile`
     `email`        VARCHAR(45) NULL DEFAULT NULL,
     `date_created` TIMESTAMP   NULL DEFAULT NULL,
     `version`      BIGINT      NULL DEFAULT NULL,
-    `user_id`      BIGINT      NOT NULL,
+    `user_id`      BIGINT      NOT NULL UNIQUE,
     PRIMARY KEY (`id`, `user_id`),
     INDEX `fk_profile_user1_idx` (`user_id` ASC) VISIBLE,
     CONSTRAINT `fk_profile_user1`
