@@ -1,7 +1,7 @@
 package com.alikhver.web.dto.organisation.response;
 
-import com.alikhver.model.entity.Utility;
-import com.alikhver.model.entity.Worker;
+import com.alikhver.web.dto.utility.response.GetUtilityResponse;
+import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,6 +15,6 @@ public class GetOrganisationResponse {
     private final String address;
     private final String description;
     private final boolean isActive;
-    private final List<Worker> workers;
-    private final List<Utility> utilities;
+    private final List<GetWorkerResponse> workers;
+    private final List<GetUtilityResponse> utilities;
 }

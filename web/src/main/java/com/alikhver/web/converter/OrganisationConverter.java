@@ -6,21 +6,30 @@ import com.alikhver.model.entity.UserRole;
 import com.alikhver.web.dto.organisation.request.CreateOrganisationRequest;
 import com.alikhver.web.dto.organisation.response.CreateOrganisationResponse;
 import com.alikhver.web.dto.organisation.response.GetOrganisationResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class OrganisationConverter {
+    private final WorkerConverter workerConverter;
+    private final UtilityConverter utilityConverter;
+
     public GetOrganisationResponse mapToGetOrganisationResponse(Organisation organisation) {
         return GetOrganisationResponse.builder()
                 .id(organisation.getId())
                 .name(organisation.getName())
                 .description(organisation.getDescription())
                 .address(organisation.getAddress())
-                .utilities(organisation.getUtilities())
-                .workers(organisation.getWorkers())
+                .utilities(organisation.getUtilities().stream()
+                        .map(utilityConverter::mapToGetUtilityResponse)
+                        .collect(Collectors.toList()))
+                .workers(organisation.getWorkers().stream()
+                        .map(workerConverter::mapToGetWorkerResponse).
+                        collect(Collectors.toList()))
                 .isActive(organisation.isActive())
                 .build();
     }
