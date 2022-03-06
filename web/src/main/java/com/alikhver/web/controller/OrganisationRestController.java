@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -63,14 +64,14 @@ public class OrganisationRestController {
         organisationFacade.updateOrganisation(id, request);
     }
 
-    @GetMapping("/{id}/suspend")
+    @PatchMapping("/{id}/suspend")
     @ApiOperation("Suspend working process of Organisation")
     public ResponseEntity<Void> suspendOrganisation(@PathVariable Long id) {
         organisationFacade.suspendOrganisation(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("{id}/launch")
+    @PatchMapping("{id}/launch")
     @ApiOperation("Launch working process of Organisation")
     public ResponseEntity<Void> launchOrganisation(@PathVariable Long id) {
         organisationFacade.launchOrganisation(id);
