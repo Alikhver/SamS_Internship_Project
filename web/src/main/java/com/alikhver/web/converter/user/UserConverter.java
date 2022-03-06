@@ -1,47 +1,35 @@
 package com.alikhver.web.converter.user;
 
 import com.alikhver.model.entity.User;
-import com.alikhver.model.entity.UserRole;
 import com.alikhver.web.dto.user.request.CreateUserRequest;
 import com.alikhver.web.dto.user.response.CreateUserResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class UserConverter {
+    private final UserToGetUserResponseConverter userToGetUserResponseConverter;
+    private final UsersToListOfGetUserResponseConverter usersToListOfGetUserResponseConverter;
+    private final CreateUserRequestToUserConverter createUserRequestToUserConverter;
+    private final UserToCreateUserResponseConverter userToCreateUserResponseConverter;
 
     public GetUserResponse mapToGetUserResponse(User user) {
-        return GetUserResponse.builder()
-                .id(user.getId())
-                .login(user.getLogin())
-                .password(user.getPassword())
-                .role(user.getRole().name())
-                .build();
+        return userToGetUserResponseConverter.convert(user);
     }
 
     public List<GetUserResponse> mapToListOfGetUserResponse(List<User> users) {
-        return users.stream()
-                .map(this::mapToGetUserResponse)
-                .collect(Collectors.toList());
+        return usersToListOfGetUserResponseConverter.convert(users);
     }
 
     public User mapToUser(CreateUserRequest request) {
-        return User.builder()
-                .login(request.getLogin())
-                .password(request.getPassword())
-                .role(UserRole.USER)
-                .build();
+        return createUserRequestToUserConverter.convert(request);
     }
 
     public CreateUserResponse mapToCreateUserResponse(User user) {
-        return CreateUserResponse.builder()
-                .id(user.getId())
-                .login(user.getLogin())
-                .password(user.getPassword())
-                .role(user.getRole().toString())
-                .build();
+        return userToCreateUserResponseConverter.convert(user);
     }
 }
