@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 public class CreateOrganisationRequest {
-    @NotBlank
+    @NotBlank(message = "Name attribute is not correct")
     private String name;
     @NotBlank
     private String description;

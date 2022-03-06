@@ -1,4 +1,4 @@
-package com.alikhver.web.converter;
+package com.alikhver.web.converter.utility;
 
 import com.alikhver.model.entity.Utility;
 import com.alikhver.web.dto.utility.response.GetUtilityResponse;

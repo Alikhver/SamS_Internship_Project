@@ -4,7 +4,7 @@ import com.alikhver.model.entity.Profile;
 import com.alikhver.model.entity.User;
 import com.alikhver.model.service.ProfileService;
 import com.alikhver.model.service.UserService;
-import com.alikhver.web.converter.ProfileConverter;
+import com.alikhver.web.converter.profile.ProfileConverter;
 import com.alikhver.web.dto.profile.request.CreateProfileRequest;
 import com.alikhver.web.dto.profile.request.UpdateProfileRequest;
 import com.alikhver.web.dto.profile.response.CreateProfileResponse;

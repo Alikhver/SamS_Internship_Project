@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -53,7 +54,7 @@ public class OrganisationRestController {
 
     @PostMapping("/")
     @ApiOperation("Create Organisation")
-    public ResponseEntity<CreateOrganisationResponse> createOrganisation(@RequestBody @Validated CreateOrganisationRequest request) {
+    public ResponseEntity<CreateOrganisationResponse> createOrganisation(@RequestBody @Valid CreateOrganisationRequest request) {
         CreateOrganisationResponse response = organisationFacade.createOrganisation(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
