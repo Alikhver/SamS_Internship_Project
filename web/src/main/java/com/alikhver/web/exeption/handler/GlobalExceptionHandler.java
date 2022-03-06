@@ -7,6 +7,7 @@ import com.alikhver.web.exeption.organisation.OrganisationIsAlreadySuspendedExce
 import com.alikhver.web.exeption.profile.NoProfileFoundException;
 import com.alikhver.web.exeption.user.NoUserFoundException;
 import com.alikhver.web.exeption.user.UserAlreadyExistsException;
+import com.alikhver.web.exeption.utility.NoUtilityFoundException;
 import com.alikhver.web.exeption.utility.UtilityAlreadyExistsException;
 import com.alikhver.web.exeption.worker.NoWorkerFoundException;
 import org.springframework.http.HttpStatus;
@@ -89,6 +90,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handle(UtilityAlreadyExistsException e, HttpServletRequest request) {
         ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(NoUtilityFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorResponse> handle(NoUtilityFoundException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.NOT_FOUND, request);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
 
