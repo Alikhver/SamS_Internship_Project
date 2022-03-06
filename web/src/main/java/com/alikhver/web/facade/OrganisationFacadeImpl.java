@@ -80,7 +80,13 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     }
 
     @Override
+    @Transactional
     public List<GetWorkerResponse> getWorkers(Long id) {
+        if (!organisationService.organisationExistsById(id)) {
+            throw new NoOrganisationFoundException(
+              "No Organisation with id = " + id + "found"
+            );
+        }
         List<Worker> workers = workerService.getAllWorkersOfOrganisation(id);
         return workerConverter.mapToListOfGetWorkerResponse(workers);
     }
