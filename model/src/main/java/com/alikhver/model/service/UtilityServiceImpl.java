@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,11 +26,18 @@ public class UtilityServiceImpl implements UtilityService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean utilityExists(Utility utility) {
         return repository.existsByNameAndDescriptionAndPrice(
                 utility.getName(),
                 utility.getDescription(),
                 utility.getPrice()
         );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Utility> getUtility(Long id) {
+        return repository.findById(id);
     }
 }

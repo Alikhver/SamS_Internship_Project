@@ -7,7 +7,9 @@ import com.alikhver.model.service.UtilityService;
 import com.alikhver.web.converter.utility.UtilityConverter;
 import com.alikhver.web.dto.utility.request.CreateUtilityRequest;
 import com.alikhver.web.dto.utility.response.CreateUtilityResponse;
+import com.alikhver.web.dto.utility.response.GetUtilityResponse;
 import com.alikhver.web.exeption.organisation.NoOrganisationFoundException;
+import com.alikhver.web.exeption.utility.NoUtilityFoundException;
 import com.alikhver.web.exeption.utility.UtilityAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,18 @@ public class UtilityFacadeImpl implements UtilityFacade {
     private final UtilityService utilityService;
     private final OrganisationService organisationService;
     private final UtilityConverter utilityConverter;
+
+    @Override
+    public GetUtilityResponse getUtility(Long id) {
+        Optional<Utility> optionalUtility = utilityService.getUtility(id);
+        if (optionalUtility.isEmpty()) {
+            throw new NoUtilityFoundException(
+              "No Utility with id = " + id + " found"
+            );
+        }
+        Utility utility = optionalUtility.get();
+        return utilityConverter.mapToGetUtilityResponse(utility);
+    }
 
     @Override
     @Transactional

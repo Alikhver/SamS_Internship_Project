@@ -12,11 +12,10 @@ import org.springframework.stereotype.Component;
 public class UtilityConverter {
     private final CreateUtilityRequestToUtilityConverter createUtilityRequestToUtilityConverter;
     private final UtilityToCreateUtilityResponseConverter utilityToCreateUtilityResponseConverter;
+    private final UtilityToGetUtilityResponseConverter utilityToGetUtilityResponseConverter;
 
     public GetUtilityResponse mapToGetUtilityResponse(Utility utility) {
-        return GetUtilityResponse.builder()
-
-                .build();
+        return utilityToGetUtilityResponseConverter.convert(utility);
     }
 
     public Utility mapToUtility(CreateUtilityRequest request) {
