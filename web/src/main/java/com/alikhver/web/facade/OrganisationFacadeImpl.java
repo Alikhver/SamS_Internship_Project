@@ -2,13 +2,17 @@ package com.alikhver.web.facade;
 
 import com.alikhver.model.entity.Organisation;
 import com.alikhver.model.entity.User;
+import com.alikhver.model.entity.Worker;
 import com.alikhver.model.service.OrganisationService;
 import com.alikhver.model.service.UserService;
+import com.alikhver.model.service.WorkerService;
 import com.alikhver.web.converter.OrganisationConverter;
+import com.alikhver.web.converter.WorkerConverter;
 import com.alikhver.web.dto.organisation.request.CreateOrganisationRequest;
 import com.alikhver.web.dto.organisation.request.UpdateOrganisationRequest;
 import com.alikhver.web.dto.organisation.response.CreateOrganisationResponse;
 import com.alikhver.web.dto.organisation.response.GetOrganisationResponse;
+import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import com.alikhver.web.exeption.organisation.NoOrganisationFoundException;
 import com.alikhver.web.exeption.organisation.OrganisationAlreadyExistsException;
 import com.alikhver.web.exeption.organisation.OrganisationIsAlreadyLaunchedException;
@@ -26,7 +30,9 @@ import java.util.Optional;
 public class OrganisationFacadeImpl implements OrganisationFacade {
     private final OrganisationService organisationService;
     private final UserService userService;
+    private final WorkerService workerService;
     private final OrganisationConverter organisationConverter;
+    private final WorkerConverter workerConverter;
 
     @Override
     public GetOrganisationResponse getOrganisation(Long id) throws NoOrganisationFoundException {
@@ -39,12 +45,6 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
                     "No Organisation with id = " + id + " found"
             );
         }
-    }
-
-    @Override
-    public List<GetOrganisationResponse> getOrganisations() {
-        List<Organisation> organisations = organisationService.getAllOrganisations();
-        return organisationConverter.mapToListOfGetOrganisationResponse(organisations);
     }
 
     @Override
@@ -71,6 +71,24 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         organisation = organisationService.createOrganisation(organisation);
 
         return organisationConverter.mapToCreateOrganisationResponse(organisation);
+    }
+
+    @Override
+    public List<GetOrganisationResponse> getOrganisations() {
+        List<Organisation> organisations = organisationService.getAllOrganisations();
+        return organisationConverter.mapToListOfGetOrganisationResponse(organisations);
+    }
+
+    @Override
+    @Transactional
+    public List<GetWorkerResponse> getWorkers(Long id) {
+        if (!organisationService.organisationExistsById(id)) {
+            throw new NoOrganisationFoundException(
+              "No Organisation with id = " + id + "found"
+            );
+        }
+        List<Worker> workers = workerService.getAllWorkersOfOrganisation(id);
+        return workerConverter.mapToListOfGetWorkerResponse(workers);
     }
 
     @Override

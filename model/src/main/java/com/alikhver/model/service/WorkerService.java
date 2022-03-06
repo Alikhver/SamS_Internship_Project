@@ -2,6 +2,7 @@ package com.alikhver.model.service;
 
 import com.alikhver.model.entity.Worker;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface WorkerService {
@@ -9,4 +10,5 @@ public interface WorkerService {
     void saveWorker(Worker worker);
     boolean existsWorkerById(Long id);
     void deleteWorker(Long id);
+    List<Worker> getAllWorkersOfOrganisation(Long id);
 }

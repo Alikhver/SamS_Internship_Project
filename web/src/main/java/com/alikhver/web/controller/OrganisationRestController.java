@@ -4,6 +4,7 @@ import com.alikhver.web.dto.organisation.request.CreateOrganisationRequest;
 import com.alikhver.web.dto.organisation.request.UpdateOrganisationRequest;
 import com.alikhver.web.dto.organisation.response.CreateOrganisationResponse;
 import com.alikhver.web.dto.organisation.response.GetOrganisationResponse;
+import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import com.alikhver.web.exeption.organisation.NoOrganisationFoundException;
 import com.alikhver.web.facade.OrganisationFacade;
 import io.swagger.annotations.ApiOperation;
@@ -40,6 +41,13 @@ public class OrganisationRestController {
     @ApiOperation("Get All Organisation")
     public ResponseEntity<List<GetOrganisationResponse>> getOrganisations() {
         List<GetOrganisationResponse> response = organisationFacade.getOrganisations();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/workers")
+    @ApiOperation("Get All Workers of Organisation")
+    public ResponseEntity<List<GetWorkerResponse>> getWorkers(@PathVariable Long id) {
+        List<GetWorkerResponse> response = organisationFacade.getWorkers(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

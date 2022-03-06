@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class OrganisationConverter {
-    private final UtilityConverter utilityConverter;
     private final WorkerConverter workerConverter;
+    private final UtilityConverter utilityConverter;
 
     public GetOrganisationResponse mapToGetOrganisationResponse(Organisation organisation) {
         return GetOrganisationResponse.builder()
@@ -28,8 +28,8 @@ public class OrganisationConverter {
                         .map(utilityConverter::mapToGetUtilityResponse)
                         .collect(Collectors.toList()))
                 .workers(organisation.getWorkers().stream()
-                        .map(workerConverter::mapToGetWorkerResponse)
-                        .collect(Collectors.toList()))
+                        .map(workerConverter::mapToGetWorkerResponse).
+                        collect(Collectors.toList()))
                 .isActive(organisation.isActive())
                 .build();
     }
