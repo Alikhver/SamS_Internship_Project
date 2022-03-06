@@ -4,45 +4,32 @@ import com.alikhver.model.entity.Worker;
 import com.alikhver.web.dto.worker.request.CreateWorkerRequest;
 import com.alikhver.web.dto.worker.response.CreateWorkerResponse;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class WorkerConverter {
-    public Worker mapToWorker(CreateWorkerRequest request) {
-        return Worker.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .description(request.getDescription())
+    private final CreateWorkerRequestToWorkerConverter createWorkerRequestToWorkerConverter;
+    private final WorkerToCreateWorkerResponseConverter workerToCreateWorkerResponseConverter;
+    private final WorkerToGetWorkerResponseConverter workerToGetWorkerResponseConverter;
+    private final WorkersToListOfGetWorkerResponseConverter workersToListOfGetWorkerResponseConverter;
 
-                .build();
+    public Worker mapToWorker(CreateWorkerRequest request) {
+        return createWorkerRequestToWorkerConverter.convert(request);
     }
 
     public CreateWorkerResponse mapToCreateWorkerResponse(Worker worker) {
-        return CreateWorkerResponse.builder()
-                .id(worker.getId())
-                .firstName(worker.getFirstName())
-                .lastName(worker.getLastName())
-                .description(worker.getDescription())
-                .organisationId(worker.getOrganisation().getId())
-                .build();
+        return workerToCreateWorkerResponseConverter.convert(worker);
     }
 
     public GetWorkerResponse mapToGetWorkerResponse(Worker worker) {
-        return GetWorkerResponse.builder()
-                .id(worker.getId())
-                .firstName(worker.getFirstName())
-                .lastName(worker.getLastName())
-                .description(worker.getDescription())
-                .organisationId(worker.getOrganisation().getId())
-                .build();
+        return workerToGetWorkerResponseConverter.convert(worker);
     }
 
     public List<GetWorkerResponse> mapToListOfGetWorkerResponse(List<Worker> workers) {
-        return workers.stream()
-                .map(this::mapToGetWorkerResponse)
-                .collect(Collectors.toList());
+        return workersToListOfGetWorkerResponseConverter.convert(workers);
     }
 }
