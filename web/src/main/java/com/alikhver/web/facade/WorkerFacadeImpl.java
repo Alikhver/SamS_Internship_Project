@@ -4,7 +4,7 @@ import com.alikhver.model.entity.Organisation;
 import com.alikhver.model.entity.Worker;
 import com.alikhver.model.service.OrganisationService;
 import com.alikhver.model.service.WorkerService;
-import com.alikhver.web.converter.WorkerConverter;
+import com.alikhver.web.converter.worker.WorkerConverter;
 import com.alikhver.web.dto.worker.request.CreateWorkerRequest;
 import com.alikhver.web.dto.worker.request.UpdateWorkerRequest;
 import com.alikhver.web.dto.worker.response.CreateWorkerResponse;

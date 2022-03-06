@@ -6,8 +6,8 @@ import com.alikhver.model.entity.Worker;
 import com.alikhver.model.service.OrganisationService;
 import com.alikhver.model.service.UserService;
 import com.alikhver.model.service.WorkerService;
-import com.alikhver.web.converter.OrganisationConverter;
-import com.alikhver.web.converter.WorkerConverter;
+import com.alikhver.web.converter.organisation.OrganisationConverter;
+import com.alikhver.web.converter.worker.WorkerConverter;
 import com.alikhver.web.dto.organisation.request.CreateOrganisationRequest;
 import com.alikhver.web.dto.organisation.request.UpdateOrganisationRequest;
 import com.alikhver.web.dto.organisation.response.CreateOrganisationResponse;
@@ -19,12 +19,14 @@ import com.alikhver.web.exeption.organisation.OrganisationIsAlreadyLaunchedExcep
 import com.alikhver.web.exeption.organisation.OrganisationIsAlreadySuspendedException;
 import com.alikhver.web.exeption.user.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrganisationFacadeImpl implements OrganisationFacade {
@@ -41,6 +43,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             Organisation organisation = optionalOrganisation.get();
             return organisationConverter.mapToGetOrganisationResponse(organisation);
         } {
+//            log.error();
             throw new NoOrganisationFoundException(
                     "No Organisation with id = " + id + " found"
             );

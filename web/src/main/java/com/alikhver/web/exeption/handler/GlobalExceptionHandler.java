@@ -83,6 +83,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
+//    @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ResponseEntity<ErrorResponse> handle(org.springframework.web.bind.MethodArgumentNotValidException e, HttpServletRequest request) {
+//        ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//    }
+
+
     private ErrorResponse buildErrorResponse(
             Exception e,
             HttpStatus httpStatus, HttpServletRequest request) {

@@ -1,4 +1,4 @@
-package com.alikhver.web.converter;
+package com.alikhver.web.converter.user;
 
 import com.alikhver.model.entity.User;
 import com.alikhver.model.entity.UserRole;

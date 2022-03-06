@@ -1,4 +1,4 @@
-package com.alikhver.web.converter;
+package com.alikhver.web.converter.worker;
 
 import com.alikhver.model.entity.Worker;
 import com.alikhver.web.dto.worker.request.CreateWorkerRequest;

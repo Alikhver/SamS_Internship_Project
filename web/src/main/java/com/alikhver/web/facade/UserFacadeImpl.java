@@ -2,7 +2,7 @@ package com.alikhver.web.facade;
 
 import com.alikhver.model.entity.User;
 import com.alikhver.model.service.UserService;
-import com.alikhver.web.converter.UserConverter;
+import com.alikhver.web.converter.user.UserConverter;
 import com.alikhver.web.dto.user.request.CreateUserRequest;
 import com.alikhver.web.dto.user.request.UpdateUserRequest;
 import com.alikhver.web.dto.user.response.CreateUserResponse;

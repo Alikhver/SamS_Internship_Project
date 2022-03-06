@@ -1,4 +1,4 @@
-package com.alikhver.web.converter;
+package com.alikhver.web.converter.profile;
 
 import com.alikhver.model.entity.Profile;
 import com.alikhver.web.dto.profile.request.CreateProfileRequest;
