@@ -6,6 +6,9 @@ import com.alikhver.web.dto.worker.response.CreateWorkerResponse;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class WorkerConverter {
     public Worker mapToWorker(CreateWorkerRequest request) {
@@ -35,5 +38,11 @@ public class WorkerConverter {
                 .description(worker.getDescription())
                 .organisationId(worker.getOrganisation().getId())
                 .build();
+    }
+
+    public List<GetWorkerResponse> mapToListOfGetWorkerResponse(List<Worker> workers) {
+        return workers.stream()
+                .map(this::mapToGetWorkerResponse)
+                .collect(Collectors.toList());
     }
 }

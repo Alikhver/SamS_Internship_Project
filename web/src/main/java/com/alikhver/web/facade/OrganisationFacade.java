@@ -4,6 +4,7 @@ import com.alikhver.web.dto.organisation.request.CreateOrganisationRequest;
 import com.alikhver.web.dto.organisation.request.UpdateOrganisationRequest;
 import com.alikhver.web.dto.organisation.response.CreateOrganisationResponse;
 import com.alikhver.web.dto.organisation.response.GetOrganisationResponse;
+import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface OrganisationFacade {
     void suspendOrganisation(Long id);
 
     void launchOrganisation(Long id);
+
+    List<GetWorkerResponse> getWorkers(Long id);
 }

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,6 +30,11 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     public void deleteWorker(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public List<Worker> getAllWorkersOfOrganisation(Long id) {
+        return repository.findAllByOrganisationId(id);
     }
 
     @Override
