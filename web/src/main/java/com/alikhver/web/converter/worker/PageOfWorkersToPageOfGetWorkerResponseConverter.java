@@ -4,20 +4,16 @@ import com.alikhver.model.entity.Worker;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class WorkersToListOfGetWorkerResponseConverter implements Converter<List<Worker>, List<GetWorkerResponse>> {
+public class PageOfWorkersToPageOfGetWorkerResponseConverter implements Converter<Page<Worker>, Page<GetWorkerResponse>> {
     private final WorkerToGetWorkerResponseConverter workerToGetWorkerResponseConverter;
 
     @Override
-    public List<GetWorkerResponse> convert(List<Worker> workers) {
-        return workers.stream()
-                .map(workerToGetWorkerResponseConverter::convert)
-                .collect(Collectors.toList());
+    public Page<GetWorkerResponse> convert(Page<Worker> workers) {
+        return workers.map(workerToGetWorkerResponseConverter::convert);
     }
 }

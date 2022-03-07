@@ -5,9 +5,8 @@ import com.alikhver.web.dto.profile.request.CreateProfileRequest;
 import com.alikhver.web.dto.profile.response.CreateProfileResponse;
 import com.alikhver.web.dto.profile.response.GetProfileResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -15,7 +14,7 @@ public class ProfileConverter {
     private final CreateProfileRequestToProfileConverter createProfileRequestToProfileConverter;
     private final ProfileToCreateProfileResponseConverter profileToCreateProfileResponseConverter;
     private final ProfileToGetProfileResponseConverter profileToGetProfileResponseConverter;
-    private final ProfilesToListOfGetProfileResponseConverter profilesToListOfGetProfileResponseConverter;
+    private final PageOfProfilesToPageOfGetProfileResponseConverter pageOfProfilesToPageOfGetProfileResponseConverter;
 
     public Profile mapToCreateProfileRequest(CreateProfileRequest request) {
         return createProfileRequestToProfileConverter.convert(request);
@@ -29,7 +28,7 @@ public class ProfileConverter {
         return profileToGetProfileResponseConverter.convert(profile);
     }
 
-    public List<GetProfileResponse> mapToListOfGetProfileResponse(List<Profile> profiles) {
-        return profilesToListOfGetProfileResponseConverter.convert(profiles);
+    public Page<GetProfileResponse> mapToListOfGetProfileResponse(Page<Profile> profiles) {
+        return pageOfProfilesToPageOfGetProfileResponseConverter.convert(profiles);
     }
 }

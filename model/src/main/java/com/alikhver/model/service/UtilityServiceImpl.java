@@ -3,6 +3,8 @@ package com.alikhver.model.service;
 import com.alikhver.model.entity.Utility;
 import com.alikhver.model.repository.UtilityRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,8 +53,8 @@ public class UtilityServiceImpl implements UtilityService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Utility> getAllUtilitiesOfOrganisation(Long id) {
-        return repository.findAllByOrganisationId(id);
+    public Page<Utility> getAllUtilitiesOfOrganisation(Long organisationId, Pageable pageable) {
+        return repository.findAllByOrganisationId(organisationId, pageable);
     }
 
     @Override

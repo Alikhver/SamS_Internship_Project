@@ -24,10 +24,12 @@ import com.alikhver.web.exeption.organisation.OrganisationIsAlreadySuspendedExce
 import com.alikhver.web.exeption.user.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -74,7 +76,6 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         userService.createUser(redactor);
 
         Organisation organisation = organisationConverter.mapToOrganisation(request);
-
         organisation.setRedactor(redactor);
 
         organisation = organisationService.createOrganisation(organisation);
@@ -83,32 +84,40 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     }
 
     @Override
-    public List<GetOrganisationResponse> getOrganisations() {
-        List<Organisation> organisations = organisationService.getAllOrganisations();
-        return organisationConverter.mapToListOfGetOrganisationResponse(organisations);
+    public Page<GetOrganisationResponse> getOrganisations(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Organisation> organisations = organisationService.getAllOrganisations(pageable);
+        return organisationConverter.mapToPageOfGetOrganisationResponse(organisations);
     }
 
     @Override
     @Transactional
-    public List<GetWorkerResponse> getWorkers(Long organisationId) {
+    public Page<GetWorkerResponse> getWorkers(Long organisationId, int page, int size) {
         if (!organisationService.organisationExistsById(organisationId)) {
             throw new NoOrganisationFoundException(
               "No Organisation with id = " + organisationId + "found"
             );
         }
-        List<Worker> workers = workerService.getAllWorkersOfOrganisation(organisationId);
-        return workerConverter.mapToListOfGetWorkerResponse(workers);
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Worker> workers = workerService.findAllWorkersOfOrganisation(organisationId, pageable);
+
+        return workerConverter.mapToPageOfGetWorkerResponse(workers);
     }
+
+
 
     @Override
     @Transactional
-    public List<GetUtilityResponse> getUtilitiesOfOrganisation(Long organisationId) {
+    public Page<GetUtilityResponse> getUtilities(Long organisationId, int page, int size) {
         if (!organisationService.organisationExistsById(organisationId)) {
             throw new NoOrganisationFoundException(
                     "No Organisation with id = " + organisationId + "found"
             );
         }
-        List<Utility> utilities = utilityService.getAllUtilitiesOfOrganisation(organisationId);
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Utility> utilities = utilityService.getAllUtilitiesOfOrganisation(organisationId, pageable);
         return utilityConverter.mapToListOfGetUtilityResponse(utilities);
     }
 

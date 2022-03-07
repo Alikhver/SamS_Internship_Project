@@ -4,13 +4,12 @@ import com.alikhver.web.dto.user.request.CreateUserRequest;
 import com.alikhver.web.dto.user.request.UpdateUserRequest;
 import com.alikhver.web.dto.user.response.CreateUserResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface UserFacade {
     GetUserResponse getUser(Long id);
 
-    List<GetUserResponse> getAllUsers();
+    Page<GetUserResponse> getAllUsers(int page, int size);
 
     CreateUserResponse createUser(CreateUserRequest request);
 

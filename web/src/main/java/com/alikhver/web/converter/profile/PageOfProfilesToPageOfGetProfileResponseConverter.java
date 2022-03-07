@@ -4,21 +4,18 @@ import com.alikhver.model.entity.Profile;
 import com.alikhver.web.dto.profile.response.GetProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class ProfilesToListOfGetProfileResponseConverter implements Converter<List<Profile>, List<GetProfileResponse>> {
+public class PageOfProfilesToPageOfGetProfileResponseConverter implements Converter<Page<Profile>, Page<GetProfileResponse>> {
     private final ProfileToGetProfileResponseConverter profileToGetProfileResponseConverter;
 
     @Override
-    public List<GetProfileResponse> convert(List<Profile> profiles) {
-        return profiles.stream()
-                .map(profileToGetProfileResponseConverter::convert)
-                .collect(Collectors.toList());
+    public Page<GetProfileResponse> convert(Page<Profile> profiles) {
+        return profiles
+                .map(profileToGetProfileResponseConverter::convert);
     }
 }
 
