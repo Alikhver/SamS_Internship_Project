@@ -12,6 +12,9 @@ import com.alikhver.web.dto.profile.response.GetProfileResponse;
 import com.alikhver.web.exeption.profile.NoProfileFoundException;
 import com.alikhver.web.exeption.user.NoUserFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,8 +69,9 @@ public class ProfileFacadeImpl implements ProfileFacade{
     }
 
     @Override
-    public List<GetProfileResponse> getProfiles() {
-        List<Profile> profiles = profileService.getProfiles();
+    public Page<GetProfileResponse> getProfiles(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Profile> profiles = profileService.getProfiles(pageable);
         return profileConverter.mapToListOfGetProfileResponse(profiles);
     }
 
