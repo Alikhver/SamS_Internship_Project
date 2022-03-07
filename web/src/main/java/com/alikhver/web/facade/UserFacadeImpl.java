@@ -10,10 +10,12 @@ import com.alikhver.web.dto.user.response.GetUserResponse;
 import com.alikhver.web.exeption.user.NoUserFoundException;
 import com.alikhver.web.exeption.user.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,8 +36,9 @@ public class UserFacadeImpl implements UserFacade {
         }
     }
 
-    public List<GetUserResponse> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public Page<GetUserResponse> getAllUsers(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> users = userService.getUsers(pageable);
         return userConverter.mapToListOfGetUserResponse(users);
     }
 
