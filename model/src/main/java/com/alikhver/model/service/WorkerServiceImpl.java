@@ -3,10 +3,11 @@ package com.alikhver.model.service;
 import com.alikhver.model.entity.Worker;
 import com.alikhver.model.repository.WorkerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,8 +34,9 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
-    public List<Worker> getAllWorkersOfOrganisation(Long id) {
-        return repository.findAllByOrganisationId(id);
+    @Transactional(readOnly = true)
+    public Page<Worker> findAllWorkersOfOrganisation(Long organisationId, Pageable pageable) {
+        return repository.findAllByOrganisationId(organisationId, pageable);
     }
 
     @Override

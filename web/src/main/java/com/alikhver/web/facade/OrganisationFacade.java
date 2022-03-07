@@ -6,6 +6,7 @@ import com.alikhver.web.dto.organisation.response.CreateOrganisationResponse;
 import com.alikhver.web.dto.organisation.response.GetOrganisationResponse;
 import com.alikhver.web.dto.utility.response.GetUtilityResponse;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public interface OrganisationFacade {
 
     void launchOrganisation(Long id);
 
-    List<GetWorkerResponse> getWorkers(Long id);
+    Page<GetWorkerResponse> getWorkers(Long id, int offset, int size);
 
     List<GetUtilityResponse> getUtilitiesOfOrganisation(Long id);
 }

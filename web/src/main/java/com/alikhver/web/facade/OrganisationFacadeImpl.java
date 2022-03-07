@@ -24,6 +24,9 @@ import com.alikhver.web.exeption.organisation.OrganisationIsAlreadySuspendedExce
 import com.alikhver.web.exeption.user.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,7 +77,6 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         userService.createUser(redactor);
 
         Organisation organisation = organisationConverter.mapToOrganisation(request);
-
         organisation.setRedactor(redactor);
 
         organisation = organisationService.createOrganisation(organisation);
@@ -90,15 +92,23 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
     @Override
     @Transactional
-    public List<GetWorkerResponse> getWorkers(Long organisationId) {
+    public Page<GetWorkerResponse> getWorkers(Long organisationId, int page, int size) {
+        //TODO validation for offset, size
+
         if (!organisationService.organisationExistsById(organisationId)) {
             throw new NoOrganisationFoundException(
               "No Organisation with id = " + organisationId + "found"
             );
         }
-        List<Worker> workers = workerService.getAllWorkersOfOrganisation(organisationId);
-        return workerConverter.mapToListOfGetWorkerResponse(workers);
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Worker> workers = workerService.findAllWorkersOfOrganisation(organisationId, pageable);
+
+//        return workerConverter.mapToListOfGetWorkerResponse(workers);
+        return workerConverter.mapToPageOfGetWorkerResponse(workers);
     }
+
+
 
     @Override
     @Transactional

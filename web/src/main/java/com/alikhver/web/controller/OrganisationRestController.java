@@ -9,6 +9,7 @@ import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import com.alikhver.web.facade.OrganisationFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,10 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -48,8 +51,10 @@ public class OrganisationRestController {
 
     @GetMapping("/{id}/workers")
     @ApiOperation("Get All Workers of Organisation")
-    public ResponseEntity<List<GetWorkerResponse>> getWorkers(@PathVariable @Positive Long id) {
-        List<GetWorkerResponse> response = organisationFacade.getWorkers(id);
+    public ResponseEntity<Page<GetWorkerResponse>> getWorkers(@PathVariable @Positive Long id,
+                                                              @RequestParam(defaultValue = "0") @PositiveOrZero int page,
+                                                              @RequestParam(defaultValue = "5") @Positive int size) {
+        Page<GetWorkerResponse> response = organisationFacade.getWorkers(id, page, size);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
