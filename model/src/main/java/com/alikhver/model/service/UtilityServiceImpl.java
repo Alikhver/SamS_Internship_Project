@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,10 +29,11 @@ public class UtilityServiceImpl implements UtilityService {
     @Override
     @Transactional(readOnly = true)
     public boolean utilityExists(Utility utility) {
-        return repository.existsByNameAndDescriptionAndPrice(
+        return repository.existsByNameAndDescriptionAndPriceAndOrganisationId(
                 utility.getName(),
                 utility.getDescription(),
-                utility.getPrice()
+                utility.getPrice(),
+                utility.getOrganisation().getId()
         );
     }
 
@@ -39,5 +41,11 @@ public class UtilityServiceImpl implements UtilityService {
     @Transactional(readOnly = true)
     public Optional<Utility> getUtility(Long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Utility> getAllUtilitiesOfOrganisation(Long id) {
+        return repository.findAllByOrganisationId(id);
     }
 }

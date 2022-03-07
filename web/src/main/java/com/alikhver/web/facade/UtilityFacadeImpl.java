@@ -39,7 +39,9 @@ public class UtilityFacadeImpl implements UtilityFacade {
     @Override
     @Transactional
     public CreateUtilityResponse createUtility(CreateUtilityRequest request) {
-        Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(request.getOrganisationId());
+        Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(
+                request.getOrganisationId()
+        );
         Organisation organisation;
         if (optionalOrganisation.isPresent()) {
             organisation = optionalOrganisation.get();
@@ -50,6 +52,7 @@ public class UtilityFacadeImpl implements UtilityFacade {
         }
 
         Utility utility = utilityConverter.mapToUtility(request);
+        utility.setOrganisation(organisation);
         //TODO fix utilityExists
         if (utilityService.utilityExists(utility)) {
             throw new UtilityAlreadyExistsException(
@@ -58,7 +61,6 @@ public class UtilityFacadeImpl implements UtilityFacade {
             );
         }
 
-        utility.setOrganisation(organisation);
         utilityService.save(utility);
         return utilityConverter.mapToCreateUtilityResponse(utility);
     }

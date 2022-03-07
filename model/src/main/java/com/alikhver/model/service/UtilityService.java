@@ -2,6 +2,7 @@ package com.alikhver.model.service;
 
 import com.alikhver.model.entity.Utility;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UtilityService {
@@ -10,4 +11,6 @@ public interface UtilityService {
     boolean utilityExists(Utility utility);
 
     Optional<Utility> getUtility(Long id);
+
+    List<Utility> getAllUtilitiesOfOrganisation(Long id);
 }
