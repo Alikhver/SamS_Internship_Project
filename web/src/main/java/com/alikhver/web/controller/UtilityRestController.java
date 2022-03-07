@@ -1,6 +1,7 @@
 package com.alikhver.web.controller;
 
 import com.alikhver.web.dto.utility.request.CreateUtilityRequest;
+import com.alikhver.web.dto.utility.request.UpdateUtilityRequest;
 import com.alikhver.web.dto.utility.response.CreateUtilityResponse;
 import com.alikhver.web.dto.utility.response.GetUtilityResponse;
 import com.alikhver.web.facade.UtilityFacade;
@@ -12,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,5 +39,12 @@ public class UtilityRestController {
     public ResponseEntity<CreateUtilityResponse> createUtility(@RequestBody @Validated CreateUtilityRequest request) {
         CreateUtilityResponse response = utilityFacade.createUtility(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    @ApiOperation("Update Utility")
+    public ResponseEntity<Void> updateUtility(@PathVariable @Positive Long id, @RequestBody @Validated UpdateUtilityRequest request) {
+        utilityFacade.updateUtility(id, request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
