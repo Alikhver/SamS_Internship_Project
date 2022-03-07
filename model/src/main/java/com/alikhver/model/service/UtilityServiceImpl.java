@@ -39,6 +39,12 @@ public class UtilityServiceImpl implements UtilityService {
 
     @Override
     @Transactional(readOnly = true)
+    public boolean utilityExists(Long id) {
+        return repository.existsById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Optional<Utility> getUtility(Long id) {
         return repository.findById(id);
     }
@@ -47,5 +53,10 @@ public class UtilityServiceImpl implements UtilityService {
     @Transactional(readOnly = true)
     public List<Utility> getAllUtilitiesOfOrganisation(Long id) {
         return repository.findAllByOrganisationId(id);
+    }
+
+    @Override
+    public void deleteUtility(Long id) {
+        repository.deleteById(id);
     }
 }

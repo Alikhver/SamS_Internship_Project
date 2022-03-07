@@ -11,4 +11,6 @@ public interface UtilityFacade {
     GetUtilityResponse getUtility(Long id);
 
     void updateUtility(Long id, UpdateUtilityRequest request);
+
+    void deleteUtility(Long id);
 }

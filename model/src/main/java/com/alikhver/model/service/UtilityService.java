@@ -10,7 +10,11 @@ public interface UtilityService {
 
     boolean utilityExists(Utility utility);
 
+    boolean utilityExists(Long id);
+
     Optional<Utility> getUtility(Long id);
 
     List<Utility> getAllUtilitiesOfOrganisation(Long id);
+
+    void deleteUtility(Long id);
 }

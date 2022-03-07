@@ -59,6 +59,18 @@ public class UtilityFacadeImpl implements UtilityFacade {
 
     @Override
     @Transactional
+    public void deleteUtility(Long id) {
+        if (!utilityService.utilityExists(id)) {
+            throw new NoUtilityFoundException(
+                    "No utility with id = " + id + " found"
+            );
+        } else {
+            utilityService.deleteUtility(id);
+        }
+    }
+
+    @Override
+    @Transactional
     public CreateUtilityResponse createUtility(CreateUtilityRequest request) {
         Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(
                 request.getOrganisationId()
