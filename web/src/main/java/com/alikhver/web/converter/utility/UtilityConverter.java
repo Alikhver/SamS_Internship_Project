@@ -5,9 +5,8 @@ import com.alikhver.web.dto.utility.request.CreateUtilityRequest;
 import com.alikhver.web.dto.utility.response.CreateUtilityResponse;
 import com.alikhver.web.dto.utility.response.GetUtilityResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -15,7 +14,7 @@ public class UtilityConverter {
     private final CreateUtilityRequestToUtilityConverter createUtilityRequestToUtilityConverter;
     private final UtilityToCreateUtilityResponseConverter utilityToCreateUtilityResponseConverter;
     private final UtilityToGetUtilityResponseConverter utilityToGetUtilityResponseConverter;
-    private final UtilitiesToListOfGetUtilityResponseConverter utilitiesToListOfGetUtilityResponseConverter;
+    private final PageOfUtilitiesToPageOfGetUtilityResponseConverter pageOfUtilitiesToPageOfGetUtilityResponseConverter;
 
     public GetUtilityResponse mapToGetUtilityResponse(Utility utility) {
         return utilityToGetUtilityResponseConverter.convert(utility);
@@ -29,7 +28,7 @@ public class UtilityConverter {
         return utilityToCreateUtilityResponseConverter.convert(utility);
     }
 
-    public List<GetUtilityResponse> mapToListOfGetUtilityResponse(List<Utility> utilities) {
-        return utilitiesToListOfGetUtilityResponseConverter.convert(utilities);
+    public Page<GetUtilityResponse> mapToListOfGetUtilityResponse(Page<Utility> utilities) {
+        return pageOfUtilitiesToPageOfGetUtilityResponseConverter.convert(utilities);
     }
 }

@@ -1,8 +1,9 @@
 package com.alikhver.model.service;
 
 import com.alikhver.model.entity.Utility;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface UtilityService {
@@ -14,7 +15,7 @@ public interface UtilityService {
 
     Optional<Utility> getUtility(Long id);
 
-    List<Utility> getAllUtilitiesOfOrganisation(Long id);
+    Page<Utility> getAllUtilitiesOfOrganisation(Long organisationId, Pageable pageable);
 
     void deleteUtility(Long id);
 }

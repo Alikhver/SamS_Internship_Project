@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,7 +42,7 @@ public class OrganisationRestController {
     }
 
     @GetMapping("/")
-    @ApiOperation("Get All Organisation")
+    @ApiOperation("Get Organisations")
     public ResponseEntity<Page<GetOrganisationResponse>> getOrganisations(@RequestParam(defaultValue = "0") @PositiveOrZero int page,
                                                                           @RequestParam(defaultValue = "5") @Positive int size) {
         Page<GetOrganisationResponse> response = organisationFacade.getOrganisations(page, size);
@@ -51,7 +50,7 @@ public class OrganisationRestController {
     }
 
     @GetMapping("/{id}/workers")
-    @ApiOperation("Get All Workers of Organisation")
+    @ApiOperation("Get Workers of Organisation")
     public ResponseEntity<Page<GetWorkerResponse>> getWorkers(@PathVariable @Positive Long id,
                                                               @RequestParam(defaultValue = "0") @PositiveOrZero int page,
                                                               @RequestParam(defaultValue = "5") @Positive int size) {
@@ -60,9 +59,11 @@ public class OrganisationRestController {
     }
 
     @GetMapping("/{id}/utilities")
-    @ApiOperation("Get All utilities of Organisation")
-    public ResponseEntity<List<GetUtilityResponse>> getAllUtilitiesOfOrganisation(@PathVariable @Positive Long id) {
-        List<GetUtilityResponse> response = organisationFacade.getUtilitiesOfOrganisation(id);
+    @ApiOperation("Get Utilities of Organisation")
+    public ResponseEntity<Page<GetUtilityResponse>> getUtilities(@PathVariable @Positive Long id,
+                                                                                  @RequestParam(defaultValue = "0") @PositiveOrZero int page,
+                                                                                  @RequestParam(defaultValue = "5") @Positive int size) {
+        Page<GetUtilityResponse> response = organisationFacade.getUtilities(id, page, size);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

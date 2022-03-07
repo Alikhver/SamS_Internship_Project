@@ -30,7 +30,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -103,7 +102,6 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         Pageable pageable = PageRequest.of(page, size);
         Page<Worker> workers = workerService.findAllWorkersOfOrganisation(organisationId, pageable);
 
-//        return workerConverter.mapToListOfGetWorkerResponse(workers);
         return workerConverter.mapToPageOfGetWorkerResponse(workers);
     }
 
@@ -111,13 +109,15 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
     @Override
     @Transactional
-    public List<GetUtilityResponse> getUtilitiesOfOrganisation(Long organisationId) {
+    public Page<GetUtilityResponse> getUtilities(Long organisationId, int page, int size) {
         if (!organisationService.organisationExistsById(organisationId)) {
             throw new NoOrganisationFoundException(
                     "No Organisation with id = " + organisationId + "found"
             );
         }
-        List<Utility> utilities = utilityService.getAllUtilitiesOfOrganisation(organisationId);
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Utility> utilities = utilityService.getAllUtilitiesOfOrganisation(organisationId, pageable);
         return utilityConverter.mapToListOfGetUtilityResponse(utilities);
     }
 
