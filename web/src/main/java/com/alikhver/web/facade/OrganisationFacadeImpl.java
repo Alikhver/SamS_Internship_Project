@@ -85,16 +85,15 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     }
 
     @Override
-    public List<GetOrganisationResponse> getOrganisations() {
-        List<Organisation> organisations = organisationService.getAllOrganisations();
-        return organisationConverter.mapToListOfGetOrganisationResponse(organisations);
+    public Page<GetOrganisationResponse> getOrganisations(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Organisation> organisations = organisationService.getAllOrganisations(pageable);
+        return organisationConverter.mapToPageOfGetOrganisationResponse(organisations);
     }
 
     @Override
     @Transactional
     public Page<GetWorkerResponse> getWorkers(Long organisationId, int page, int size) {
-        //TODO validation for offset, size
-
         if (!organisationService.organisationExistsById(organisationId)) {
             throw new NoOrganisationFoundException(
               "No Organisation with id = " + organisationId + "found"

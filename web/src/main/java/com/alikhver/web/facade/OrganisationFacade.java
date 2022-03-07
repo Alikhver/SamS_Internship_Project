@@ -15,7 +15,7 @@ public interface OrganisationFacade {
 
     CreateOrganisationResponse createOrganisation(CreateOrganisationRequest request);
 
-    List<GetOrganisationResponse> getOrganisations();
+    Page<GetOrganisationResponse> getOrganisations(int page, int size);
 
     void updateOrganisation(Long id, UpdateOrganisationRequest request);
 

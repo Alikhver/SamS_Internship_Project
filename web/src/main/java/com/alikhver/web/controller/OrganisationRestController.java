@@ -44,8 +44,9 @@ public class OrganisationRestController {
 
     @GetMapping("/")
     @ApiOperation("Get All Organisation")
-    public ResponseEntity<List<GetOrganisationResponse>> getOrganisations() {
-        List<GetOrganisationResponse> response = organisationFacade.getOrganisations();
+    public ResponseEntity<Page<GetOrganisationResponse>> getOrganisations(@RequestParam(defaultValue = "0") @PositiveOrZero int page,
+                                                                          @RequestParam(defaultValue = "5") @Positive int size) {
+        Page<GetOrganisationResponse> response = organisationFacade.getOrganisations(page, size);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

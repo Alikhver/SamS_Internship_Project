@@ -1,8 +1,9 @@
 package com.alikhver.model.service;
 
 import com.alikhver.model.entity.Organisation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface OrganisationService {
@@ -10,7 +11,7 @@ public interface OrganisationService {
 
     boolean organisationExistsById(Long id);
 
-    List<Organisation> getAllOrganisations();
+    Page<Organisation> getAllOrganisations(Pageable pageable);
 
     boolean organisationExistsByName(String name);
 
