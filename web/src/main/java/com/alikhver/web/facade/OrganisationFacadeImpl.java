@@ -2,16 +2,20 @@ package com.alikhver.web.facade;
 
 import com.alikhver.model.entity.Organisation;
 import com.alikhver.model.entity.User;
+import com.alikhver.model.entity.Utility;
 import com.alikhver.model.entity.Worker;
 import com.alikhver.model.service.OrganisationService;
 import com.alikhver.model.service.UserService;
+import com.alikhver.model.service.UtilityService;
 import com.alikhver.model.service.WorkerService;
 import com.alikhver.web.converter.organisation.OrganisationConverter;
+import com.alikhver.web.converter.utility.UtilityConverter;
 import com.alikhver.web.converter.worker.WorkerConverter;
 import com.alikhver.web.dto.organisation.request.CreateOrganisationRequest;
 import com.alikhver.web.dto.organisation.request.UpdateOrganisationRequest;
 import com.alikhver.web.dto.organisation.response.CreateOrganisationResponse;
 import com.alikhver.web.dto.organisation.response.GetOrganisationResponse;
+import com.alikhver.web.dto.utility.response.GetUtilityResponse;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import com.alikhver.web.exeption.organisation.NoOrganisationFoundException;
 import com.alikhver.web.exeption.organisation.OrganisationAlreadyExistsException;
@@ -33,8 +37,10 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     private final OrganisationService organisationService;
     private final UserService userService;
     private final WorkerService workerService;
+    private final UtilityService utilityService;
     private final OrganisationConverter organisationConverter;
     private final WorkerConverter workerConverter;
+    private final UtilityConverter utilityConverter;
 
     @Override
     public GetOrganisationResponse getOrganisation(Long id) throws NoOrganisationFoundException {
@@ -84,14 +90,26 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
     @Override
     @Transactional
-    public List<GetWorkerResponse> getWorkers(Long id) {
-        if (!organisationService.organisationExistsById(id)) {
+    public List<GetWorkerResponse> getWorkers(Long organisationId) {
+        if (!organisationService.organisationExistsById(organisationId)) {
             throw new NoOrganisationFoundException(
-              "No Organisation with id = " + id + "found"
+              "No Organisation with id = " + organisationId + "found"
             );
         }
-        List<Worker> workers = workerService.getAllWorkersOfOrganisation(id);
+        List<Worker> workers = workerService.getAllWorkersOfOrganisation(organisationId);
         return workerConverter.mapToListOfGetWorkerResponse(workers);
+    }
+
+    @Override
+    @Transactional
+    public List<GetUtilityResponse> getUtilitiesOfOrganisation(Long organisationId) {
+        if (!organisationService.organisationExistsById(organisationId)) {
+            throw new NoOrganisationFoundException(
+                    "No Organisation with id = " + organisationId + "found"
+            );
+        }
+        List<Utility> utilities = utilityService.getAllUtilitiesOfOrganisation(organisationId);
+        return utilityConverter.mapToListOfGetUtilityResponse(utilities);
     }
 
     @Override

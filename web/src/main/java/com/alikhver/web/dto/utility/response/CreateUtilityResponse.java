@@ -5,10 +5,9 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class GetUtilityResponse {
+public class CreateUtilityResponse {
     private long id;
     private String name;
     private String description;
     private double price;
-    private long organisationId;
 }
