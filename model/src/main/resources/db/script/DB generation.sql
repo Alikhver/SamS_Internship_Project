@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `my_db`.`utility`
 (
     `id`              BIGINT         NOT NULL AUTO_INCREMENT,
     `name`            VARCHAR(45)    NULL DEFAULT NULL,
-    `price`           DECIMAL(10, 0) NULL DEFAULT NULL,
+    `price`           DECIMAL(10, 2) NULL DEFAULT NULL,
     `description`     TEXT           NULL DEFAULT NULL,
     `organisation_id` BIGINT         NOT NULL,
     `version`         BIGINT         NULL DEFAULT NULL,
