@@ -38,15 +38,10 @@
         <appender-ref ref="Console" />
     </root>
 
-    <!-- LOG "com.alikhver*" at TRACE level -->
+    <!-- LOG "com.baeldung*" at TRACE level -->
     <logger name="com.alikhver" level="trace" additivity="false">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
-    </logger>
-
-    <logger name="logging.level.org.springframework.web" level="debug">
-        <appender-ref ref="RollingFile" />
-<!--        <appender-ref ref="Console" />-->
     </logger>
 
 </configuration>
