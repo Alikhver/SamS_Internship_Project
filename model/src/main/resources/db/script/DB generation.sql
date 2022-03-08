@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `my_db`.`user`
     `login`    VARCHAR(45)                        NULL DEFAULT NULL,
     `password` VARCHAR(45)                        NULL DEFAULT NULL,
     `role`     ENUM ('USER', 'REDACTOR', 'ADMIN') NULL DEFAULT NULL,
-    `version`  BIGINT                             NULL DEFAULT NULL,
+    `version`  BIGINT                             DEFAULT 0,
     PRIMARY KEY (`id`)
 );
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `my_db`.`organisation`
     `is_active`    TINYINT     NULL DEFAULT NULL,
     `date_created` TIMESTAMP   NULL DEFAULT NULL,
     `address`      VARCHAR(45) NULL DEFAULT NULL,
-    `version`      BIGINT      NULL DEFAULT NULL,
+    `version`      BIGINT      DEFAULT 0,
     `user_id`      BIGINT      NOT NULL UNIQUE ,
     PRIMARY KEY (`id`, `user_id`),
     INDEX `fk_organisation_user1_idx` (`user_id` ASC) VISIBLE,
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `my_db`.`profile`
     `phone_number` VARCHAR(45) NULL DEFAULT NULL,
     `email`        VARCHAR(45) NULL DEFAULT NULL,
     `date_created` TIMESTAMP   NULL DEFAULT NULL,
-    `version`      BIGINT      NULL DEFAULT NULL,
+    `version`      BIGINT      DEFAULT 0,
     `user_id`      BIGINT      NOT NULL UNIQUE,
     PRIMARY KEY (`id`, `user_id`),
     INDEX `fk_profile_user1_idx` (`user_id` ASC) VISIBLE,
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `my_db`.`utility`
     `price`           DECIMAL(10, 2) NULL DEFAULT NULL,
     `description`     TEXT           NULL DEFAULT NULL,
     `organisation_id` BIGINT         NOT NULL,
-    `version`         BIGINT         NULL DEFAULT NULL,
+    `version`         BIGINT         DEFAULT 0,
     PRIMARY KEY (`id`, `organisation_id`),
     INDEX `fk_service_organisation1_idx` (`organisation_id` ASC) VISIBLE,
     CONSTRAINT `fk_service_organisation1`
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `my_db`.`worker`
     `last_name`       VARCHAR(45) NULL DEFAULT NULL,
     `description`     VARCHAR(45) NULL DEFAULT NULL,
     `organisation_id` BIGINT      NOT NULL,
-    `version`         BIGINT      NULL DEFAULT NULL,
+    `version`         BIGINT      DEFAULT 0,
     PRIMARY KEY (`id`, `organisation_id`),
     INDEX `fk_worker_organisation1_idx` (`organisation_id` ASC) VISIBLE,
     CONSTRAINT `fk_worker_organisation1`
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `my_db`.`schedule_record`
     `time`       TIME                                                 NULL DEFAULT NULL,
     `status`     ENUM ('BOOKED', 'AVAILABLE', 'DONE', 'CANCELED') NULL DEFAULT NULL,
     `profile_id` BIGINT                                               NOT NULL,
-    `version`    BIGINT                                               NULL DEFAULT NULL,
+    `version`    BIGINT                                               DEFAULT 0,
     `worker_id`  BIGINT                                               NOT NULL,
     `utility_id` BIGINT                                               NOT NULL,
     PRIMARY KEY (`id`, `profile_id`, `worker_id`, `utility_id`),
