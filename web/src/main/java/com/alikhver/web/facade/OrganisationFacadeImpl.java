@@ -51,7 +51,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             Organisation organisation = optionalOrganisation.get();
             return organisationConverter.mapToGetOrganisationResponse(organisation);
         } {
-//            log.error();
+            log.error("NoOrganisationFoundException is thrown");
             throw new NoOrganisationFoundException(
                     "No Organisation with id = " + id + " found"
             );
