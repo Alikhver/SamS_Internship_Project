@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class UpdateUserRequest {
-    //TODO validate
     private String login;
     private String password;
 }

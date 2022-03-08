@@ -24,6 +24,7 @@ import javax.validation.constraints.Positive;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/utilities")
+@Validated
 public class UtilityRestController {
     private final UtilityFacade utilityFacade;
 

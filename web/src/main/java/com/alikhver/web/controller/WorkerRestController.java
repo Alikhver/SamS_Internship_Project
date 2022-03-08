@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/workers")
+@Validated
 public class WorkerRestController {
     private final WorkerFacade workerFacade;
 

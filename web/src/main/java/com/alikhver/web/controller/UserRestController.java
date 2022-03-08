@@ -5,7 +5,6 @@ import com.alikhver.web.dto.user.request.UpdateUserRequest;
 import com.alikhver.web.dto.user.response.CreateUserResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
 import com.alikhver.web.exeption.user.NoUserFoundException;
-import com.alikhver.web.exeption.user.UserAlreadyExistsException;
 import com.alikhver.web.facade.UserFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -25,17 +24,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
+@Validated
 public class UserRestController {
     private final UserFacade userFacade;
 
     @GetMapping("/{id}")
-    @ApiOperation("Get User by ID")
-    public ResponseEntity<GetUserResponse> getUser(@PathVariable Long id) throws NoUserFoundException {
+    @ApiOperation("Get User by Id")
+    public ResponseEntity<GetUserResponse> getUser(@PathVariable @Positive Long id) throws NoUserFoundException {
         GetUserResponse response = userFacade.getUser(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -51,20 +50,21 @@ public class UserRestController {
 
     @PostMapping("/")
     @ApiOperation("Create User")
-    public ResponseEntity<CreateUserResponse> createUser(@RequestBody @Validated CreateUserRequest request) throws UserAlreadyExistsException {
+    public ResponseEntity<CreateUserResponse> createUser(@RequestBody @Validated CreateUserRequest request) {
         CreateUserResponse response = userFacade.createUser(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @ApiOperation("Update User")
-    public void updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest request) {
+    public void updateUser(@PathVariable @Positive Long id,
+                           @RequestBody @Validated UpdateUserRequest request) {
         userFacade.updateUser(id, request);
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation("Delete User by ID")
-    public ResponseEntity<Long> deleteUser(@PathVariable Long id) throws NoUserFoundException {
+    @ApiOperation("Delete User by Id")
+    public ResponseEntity<Long> deleteUser(@PathVariable @Positive Long id) {
         userFacade.deleteUser(id);
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
