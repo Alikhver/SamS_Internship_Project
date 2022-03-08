@@ -1,5 +1,6 @@
 package com.alikhver.model.entity;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 
 @Getter
@@ -39,4 +41,9 @@ public class User {
     @Column(name = "role")
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
+
+    @Version
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private long version;
 }

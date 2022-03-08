@@ -1,5 +1,6 @@
 package com.alikhver.model.entity;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import java.util.Date;
 import java.util.List;
 
@@ -64,4 +66,9 @@ public class Organisation {
             fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Utility> utilities;
+
+    @Version
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private long version;
 }

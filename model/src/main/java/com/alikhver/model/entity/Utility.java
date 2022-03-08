@@ -1,5 +1,6 @@
 package com.alikhver.model.entity;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +18,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import java.util.List;
 
 
@@ -53,4 +55,9 @@ public class Utility {
             inverseJoinColumns = @JoinColumn(name = "utility_id")
     )
     private List<Worker> workers;
+
+    @Version
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private long version;
 }

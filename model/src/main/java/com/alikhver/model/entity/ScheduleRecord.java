@@ -1,5 +1,6 @@
 package com.alikhver.model.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import java.util.Date;
 
 
@@ -46,4 +48,9 @@ public class ScheduleRecord {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "utility_id")
     private Utility utility;
+
+    @Version
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private long version;
 }

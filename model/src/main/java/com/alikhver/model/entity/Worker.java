@@ -1,5 +1,6 @@
 package com.alikhver.model.entity;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import java.util.List;
 
 
@@ -48,12 +50,15 @@ public class Worker {
     private Organisation organisation;
 
     @OneToMany(mappedBy = "worker",
-            fetch = FetchType.LAZY,
-            cascade = {})
+            fetch = FetchType.LAZY)
     private List<ScheduleRecord> records;
 
     @ManyToMany(mappedBy = "workers",
-            fetch = FetchType.LAZY,
-            cascade = {})
+            fetch = FetchType.LAZY)
     private List<Utility> utilities;
+
+    @Version
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private long version;
 }
