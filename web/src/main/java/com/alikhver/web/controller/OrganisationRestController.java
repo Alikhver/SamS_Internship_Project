@@ -24,19 +24,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/organisations")
+@Validated
 public class OrganisationRestController {
     private final OrganisationFacade organisationFacade;
 
     @GetMapping("/{id}")
     @ApiOperation("Get Organisation")
-    public ResponseEntity<GetOrganisationResponse> getOrganisation(@PathVariable Long id) {
+    public ResponseEntity<GetOrganisationResponse> getOrganisation(@PathVariable @Positive Long id) {
         GetOrganisationResponse response = organisationFacade.getOrganisation(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -61,15 +61,15 @@ public class OrganisationRestController {
     @GetMapping("/{id}/utilities")
     @ApiOperation("Get Utilities of Organisation")
     public ResponseEntity<Page<GetUtilityResponse>> getUtilities(@PathVariable @Positive Long id,
-                                                                                  @RequestParam(defaultValue = "0") @PositiveOrZero int page,
-                                                                                  @RequestParam(defaultValue = "5") @Positive int size) {
+                                                                 @RequestParam(defaultValue = "0") @PositiveOrZero int page,
+                                                                 @RequestParam(defaultValue = "5") @Positive int size) {
         Page<GetUtilityResponse> response = organisationFacade.getUtilities(id, page, size);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/")
     @ApiOperation("Create Organisation")
-    public ResponseEntity<CreateOrganisationResponse> createOrganisation(@RequestBody @Valid CreateOrganisationRequest request) {
+    public ResponseEntity<CreateOrganisationResponse> createOrganisation(@RequestBody @Validated CreateOrganisationRequest request) {
         CreateOrganisationResponse response = organisationFacade.createOrganisation(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

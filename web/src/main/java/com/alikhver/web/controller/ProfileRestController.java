@@ -29,12 +29,13 @@ import javax.validation.constraints.PositiveOrZero;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/profiles")
+@Validated
 public class ProfileRestController {
     private final ProfileFacade profileFacade;
 
     @GetMapping("/{id}")
     @ApiOperation("Get Profile")
-    public ResponseEntity<GetProfileResponse> getProfile(@PathVariable Long id) throws NoProfileFoundException {
+    public ResponseEntity<GetProfileResponse> getProfile(@PathVariable @Positive Long id) throws NoProfileFoundException {
         return new ResponseEntity<>(profileFacade.getProfile(id), HttpStatus.OK);
     }
 
@@ -54,7 +55,7 @@ public class ProfileRestController {
 
     @PutMapping("/{id}")
     @ApiOperation("Update Profile")
-    public void updateProfile(@PathVariable Long id, @RequestBody @Validated UpdateProfileRequest request) {
+    public void updateProfile(@PathVariable @Positive Long id, @RequestBody @Validated UpdateProfileRequest request) {
         profileFacade.updateProfile(id, request);
     }
 

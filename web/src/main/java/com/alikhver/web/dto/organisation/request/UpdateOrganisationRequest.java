@@ -2,14 +2,13 @@ package com.alikhver.web.dto.organisation.request;
 
 import lombok.Getter;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Getter
 public class UpdateOrganisationRequest {
-    @NotBlank
+    @Size(min = 2, max = 27)
     private String name;
-    @NotBlank
+    @Size(min = 8)
     private String description;
-    @NotBlank
     private String address;
 }
