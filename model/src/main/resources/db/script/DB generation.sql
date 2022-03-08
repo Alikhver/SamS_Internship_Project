@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `my_db`.`schedule_record`
 (
     `id`         BIGINT                                               NOT NULL AUTO_INCREMENT,
     `time`       TIME                                                 NULL DEFAULT NULL,
-    `status`     ENUM ('BOOKED', 'AVAILABLE', 'FINISHED', 'CANCELED') NULL DEFAULT NULL,
+    `status`     ENUM ('BOOKED', 'AVAILABLE', 'DONE', 'CANCELED') NULL DEFAULT NULL,
     `profile_id` BIGINT                                               NOT NULL,
     `version`    BIGINT                                               NULL DEFAULT NULL,
     `worker_id`  BIGINT                                               NOT NULL,
