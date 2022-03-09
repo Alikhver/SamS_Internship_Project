@@ -1,7 +1,7 @@
 package com.alikhver.model.service;
 
 import com.alikhver.model.repository.ScheduleRecordRepository;
-import com.alikhver.model.service.service_validation_helper.ServiceValidationHelper;
+import com.alikhver.model.service.util.ServiceValidationHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

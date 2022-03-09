@@ -2,7 +2,7 @@ package com.alikhver.model.service;
 
 import com.alikhver.model.entity.Organisation;
 import com.alikhver.model.repository.OrganisationRepository;
-import com.alikhver.model.service.service_validation_helper.ServiceValidationHelper;
+import com.alikhver.model.service.util.ServiceValidationHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -58,4 +58,6 @@ public class OrganisationServiceImpl implements OrganisationService {
         validationHelper.validateForCorrectId(organisationId, "OrganisationId");
         repository.deleteById(organisationId);
     }
+
+    //TODO domain validation
 }

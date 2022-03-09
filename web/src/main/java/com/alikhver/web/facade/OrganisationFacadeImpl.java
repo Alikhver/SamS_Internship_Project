@@ -46,10 +46,15 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
     @Override
     public GetOrganisationResponse getOrganisation(Long id) throws NoOrganisationFoundException {
+        log.info("getOrganisation -> start");
         Optional<Organisation> optionalOrganisation = organisationService.get(id);
         if (optionalOrganisation.isPresent()) {
             Organisation organisation = optionalOrganisation.get();
-            return organisationConverter.mapToGetOrganisationResponse(organisation);
+            var result = organisationConverter.mapToGetOrganisationResponse(organisation);
+
+            log.info("getOrganisation -> done");
+
+            return result;
         } {
             log.error("NoOrganisationFoundException is thrown");
             throw new NoOrganisationFoundException(

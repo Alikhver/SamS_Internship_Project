@@ -5,6 +5,7 @@ import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.Date;
 import java.util.List;
 
 @Builder
@@ -15,6 +16,7 @@ public class GetOrganisationResponse {
     private final String address;
     private final String description;
     private final boolean isActive;
+    private final Date dateCreated;
     private final List<GetWorkerResponse> workers;
     private final List<GetUtilityResponse> utilities;
 }

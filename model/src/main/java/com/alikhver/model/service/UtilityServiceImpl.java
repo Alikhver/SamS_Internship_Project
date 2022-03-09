@@ -2,7 +2,7 @@ package com.alikhver.model.service;
 
 import com.alikhver.model.entity.Utility;
 import com.alikhver.model.repository.UtilityRepository;
-import com.alikhver.model.service.service_validation_helper.ServiceValidationHelper;
+import com.alikhver.model.service.util.ServiceValidationHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -2,15 +2,13 @@ package com.alikhver.model.service;
 
 import com.alikhver.model.entity.Profile;
 import com.alikhver.model.repository.ProfileRepository;
-import com.alikhver.model.service.service_validation_helper.ServiceValidationHelper;
+import com.alikhver.model.service.util.ServiceValidationHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service

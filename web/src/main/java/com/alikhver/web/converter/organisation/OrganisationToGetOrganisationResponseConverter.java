@@ -30,6 +30,7 @@ public class OrganisationToGetOrganisationResponseConverter implements Converter
                         .map(workerConverter::mapToGetWorkerResponse).
                         collect(Collectors.toList()))
                 .isActive(organisation.isActive())
+                .dateCreated(organisation.getDateCreated())
                 .build();
     }
 }

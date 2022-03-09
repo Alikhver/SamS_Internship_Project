@@ -1,4 +1,4 @@
-package com.alikhver.model.service.service_validation_helper;
+package com.alikhver.model.service.util;
 
 import com.alikhver.model.entity.Organisation;
 import com.alikhver.model.entity.Profile;
@@ -6,6 +6,7 @@ import com.alikhver.model.entity.ScheduleRecord;
 import com.alikhver.model.entity.User;
 import com.alikhver.model.entity.Utility;
 import com.alikhver.model.entity.Worker;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -13,17 +14,25 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Component
+@Slf4j
 public class ServiceValidationHelper {
     public void validateForCorrectId(Long id, String varName) {
-        Optional.ofNullable(id).filter(v -> v > 0).orElseThrow(() -> new IllegalArgumentException(
-                varName + " must not be empty. It must be positive number"
-        ));
+        Optional.ofNullable(id)
+                .filter(v -> v > 0)
+                .orElseThrow(() -> {
+                    var errorMessage = varName + " must not be empty. It must be positive number";
+                    log.warn(errorMessage);
+                    throw new IllegalArgumentException(errorMessage);
+                });
+        //TODO refactor
     }
 
     public void validateForCorrectString(String str, String varName) {
-        Optional.ofNullable(str).filter(v -> !v.isBlank()).orElseThrow(() -> new IllegalArgumentException(
-                varName + " must not be empty."
-        ));
+        Optional.ofNullable(str)
+                .filter(v -> !v.isBlank())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        varName + " must not be empty."
+                ));
     }
 
     public void validateOrganisation(Organisation organisation) {
