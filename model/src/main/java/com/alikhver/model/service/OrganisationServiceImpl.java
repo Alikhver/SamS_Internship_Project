@@ -2,6 +2,7 @@ package com.alikhver.model.service;
 
 import com.alikhver.model.entity.Organisation;
 import com.alikhver.model.repository.OrganisationRepository;
+import com.alikhver.model.service.service_validation_helper.ServiceValidationHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -9,8 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -19,29 +18,20 @@ import java.util.Optional;
 @Slf4j
 public class OrganisationServiceImpl implements OrganisationService {
     private final OrganisationRepository repository;
+    private final ServiceValidationHelper validationHelper;
 
     @Override
     @Transactional(readOnly = true)
     public Optional<Organisation> get(Long organisationId) {
-        if (organisationId > 0) {
-            return repository.findById(organisationId);
-        } else {
-            throw new IllegalArgumentException(
-                    "Illegal argument: organisationId <= 0"
-            );
-        }
+        validationHelper.validateForCorrectId(organisationId, "OrganisationId");
+        return repository.findById(organisationId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean existsById(Long organisationId) {
-        if (organisationId > 0) {
-            return repository.existsById(organisationId);
-        } else {
-            throw new IllegalArgumentException(
-                "Illegal argument: organisationId <= 0"
-            );
-        }
+        validationHelper.validateForCorrectId(organisationId, "OrganisationId");
+        return repository.existsById(organisationId);
     }
 
     @Override
@@ -53,28 +43,19 @@ public class OrganisationServiceImpl implements OrganisationService {
     @Override
     @Transactional(readOnly = true)
     public boolean existsByName(String name) {
-        Objects.requireNonNull(name);
+        validationHelper.validateForCorrectString(name, "Organisation Name");
         return repository.existsOrganisationByName(name);
     }
 
     @Override
     public Organisation save(Organisation organisation) {
-        Objects.requireNonNull(organisation.getName());
-        Objects.requireNonNull(organisation.getDescription());
-        Objects.requireNonNull(organisation.getRedactor());
-        if (organisation.getDateCreated() == null) organisation.setDateCreated(new Date());
-
+        validationHelper.validateOrganisation(organisation);
         return repository.save(organisation);
     }
 
     @Override
     public void delete(Long organisationId) {
-        if (organisationId > 0) {
-            repository.deleteById(organisationId);
-        } else {
-            throw new IllegalArgumentException(
-                    "Illegal argument: organisationId <= 0"
-            );
-        }
+        validationHelper.validateForCorrectId(organisationId, "OrganisationId");
+        repository.deleteById(organisationId);
     }
 }
