@@ -20,28 +20,48 @@ public class WorkerServiceImpl implements WorkerService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Worker> get(Long workerId) {
-        assert (workerId > 0);
-        return repository.findById(workerId);
+        if (workerId > 0) {
+            return repository.findById(workerId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal Argument: workerId <= 0"
+            );
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean exists(Long workerId) {
-        assert (workerId > 0);
-        return repository.existsWorkerById(workerId);
+        if (workerId > 0) {
+            return repository.existsWorkerById(workerId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal Argument: workerId <= 0"
+            );
+        }
     }
 
     @Override
     public void delete(Long workerId) {
-        assert (workerId > 0);
-        repository.deleteById(workerId);
+        if (workerId > 0) {
+            repository.deleteById(workerId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal Argument: workerId <= 0"
+            );
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<Worker> findAllWorkersOfOrganisation(Long organisationId, Pageable pageable) {
-        assert (organisationId > 0);
-        return repository.findAllByOrganisationId(organisationId, pageable);
+        if (organisationId > 0) {
+            return repository.findAllByOrganisationId(organisationId, pageable);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal Argument: organisationId <= 0"
+            );
+        }
     }
 
     @Override
