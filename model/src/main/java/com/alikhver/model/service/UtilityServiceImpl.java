@@ -46,26 +46,47 @@ public class UtilityServiceImpl implements UtilityService {
     @Override
     @Transactional(readOnly = true)
     public boolean exists(Long utilityId) {
-        assert (utilityId > 0);
-        return repository.existsById(utilityId);
+        if (utilityId > 0) {
+            return repository.existsById(utilityId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal Argument: utilityId <= 0"
+            );
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<Utility> get(Long utilityId) {
-        assert (utilityId > 0);
-        return repository.findById(utilityId);
+        if (utilityId > 0) {
+            return repository.findById(utilityId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal Argument: utilityId <= 0"
+            );
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<Utility> getAllUtilitiesOfOrganisation(Long organisationId, Pageable pageable) {
-        assert (organisationId > 0);
-        return repository.findAllByOrganisationId(organisationId, pageable);
+        if (organisationId > 0) {
+            return repository.findAllByOrganisationId(organisationId, pageable);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal Argument: organisationId <= 0"
+            );
+        }
     }
 
     @Override
     public void delete(Long utilityId) {
-        repository.deleteById(utilityId);
+        if (utilityId > 0) {
+            repository.deleteById(utilityId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal Argument: utilityId <= 0"
+            );
+        }
     }
 }
