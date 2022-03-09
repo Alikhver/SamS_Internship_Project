@@ -20,30 +20,31 @@ public class OrganisationServiceImpl implements OrganisationService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Organisation> getOrganisation(long id) {
-        return repository.findById(id);
+    public Optional<Organisation> get(Long organisationId) {
+        assert (organisationId > 0);
+        return repository.findById(organisationId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean organisationExistsById(Long id) {
-        return repository.existsById(id);
+    public boolean existsById(Long organisationId) {
+        return repository.existsById(organisationId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Organisation> getAllOrganisations(Pageable pageable) {
+    public Page<Organisation> getAll(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean organisationExistsByName(String name) {
+    public boolean existsByName(String name) {
         return repository.existsOrganisationByName(name);
     }
 
     @Override
-    public Organisation createOrganisation(Organisation organisation) {
+    public Organisation save(Organisation organisation) {
         Objects.requireNonNull(organisation.getName());
         Objects.requireNonNull(organisation.getDescription());
         Objects.requireNonNull(organisation.getRedactor());
@@ -52,12 +53,7 @@ public class OrganisationServiceImpl implements OrganisationService {
     }
 
     @Override
-    public void updateOrganisation(Organisation organisation) {
-        repository.save(organisation);
-    }
-
-    @Override
-    public void deleteOrganisation(Long id) {
-        repository.deleteById(id);
+    public void delete(Long organisationId) {
+        repository.deleteById(organisationId);
     }
 }

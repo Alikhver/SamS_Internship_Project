@@ -72,7 +72,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
     @Transactional
     public CreateWorkerResponse createWorker(CreateWorkerRequest request) {
         Optional<Organisation> optionalOrganisation = organisationService
-                .getOrganisation(request.getOrganisationId());
+                .get(request.getOrganisationId());
         Organisation organisation;
         if (optionalOrganisation.isPresent()) {
             organisation = optionalOrganisation.get();

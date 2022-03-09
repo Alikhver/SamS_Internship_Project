@@ -72,7 +72,7 @@ public class UtilityFacadeImpl implements UtilityFacade {
     @Override
     @Transactional
     public CreateUtilityResponse createUtility(CreateUtilityRequest request) {
-        Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(
+        Optional<Organisation> optionalOrganisation = organisationService.get(
                 request.getOrganisationId()
         );
         Organisation organisation;
