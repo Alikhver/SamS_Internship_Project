@@ -49,14 +49,14 @@ public class ProfileFacadeImpl implements ProfileFacade{
         Profile profile = profileConverter.mapToCreateProfileRequest(request);
         profile.setUser(user);
 
-        profileService.createProfile(profile);
+        profileService.save(profile);
 
         return profileConverter.mapToCreateProfileResponse(profile);
     }
 
     @Override
     public GetProfileResponse getProfile(Long id) throws NoProfileFoundException {
-        Optional<Profile> optionalProfile = profileService.getProfile(id);
+        Optional<Profile> optionalProfile = profileService.get(id);
         if (optionalProfile.isPresent()) {
             Profile profile = optionalProfile.get();
             return profileConverter.mapToGetProfileResponse(profile);
@@ -70,14 +70,14 @@ public class ProfileFacadeImpl implements ProfileFacade{
     @Override
     public Page<GetProfileResponse> getProfiles(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Profile> profiles = profileService.getProfiles(pageable);
+        Page<Profile> profiles = profileService.getAll(pageable);
         return profileConverter.mapToListOfGetProfileResponse(profiles);
     }
 
     @Override
     @Transactional
     public void updateProfile(Long id, UpdateProfileRequest request) {
-        Optional<Profile> optionalProfile = profileService.getProfile(id);
+        Optional<Profile> optionalProfile = profileService.get(id);
         Profile profile;
         if (optionalProfile.isPresent()) {
             profile = optionalProfile.get();
@@ -92,6 +92,6 @@ public class ProfileFacadeImpl implements ProfileFacade{
         Optional.ofNullable(request.getPhoneNumber()).ifPresent(profile::setPhoneNumber);
         Optional.ofNullable(request.getEmail()).ifPresent(profile::setEmail);
 
-        profileService.updateProfile(profile);
+        profileService.save(profile);
     }
 }

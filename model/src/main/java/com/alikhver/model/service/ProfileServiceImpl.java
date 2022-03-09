@@ -8,39 +8,44 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class ProfileServiceImpl implements ProfileService {
-    private final ProfileRepository profileRepository;
+    private final ProfileRepository repository;
 
     @Override
-    public void createProfile(Profile profile) {
-        profileRepository.save(profile);
+    public void save(Profile profile) {
+        Objects.requireNonNull(profile.getFirstName());
+        Objects.requireNonNull(profile.getLastName());
+        Objects.requireNonNull(profile.getEmail());
+        Objects.requireNonNull(profile.getPhoneNumber());
+        Objects.requireNonNull(profile.getUser());
+        if (profile.getDateCreated() == null) profile.setDateCreated(new Date());
+        repository.save(profile);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean profileExistsById(Long id) {
-        return profileRepository.existsById(id);
+    public boolean existsById(Long profileId) {
+        assert (profileId > 0);
+        return repository.existsById(profileId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Profile> getProfile(Long id) {
-        return profileRepository.findById(id);
+    public Optional<Profile> get(Long profileId) {
+        assert (profileId > 0);
+        return repository.findById(profileId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Profile> getProfiles(Pageable pageable) {
-        return profileRepository.findAll(pageable);
-    }
-
-    @Override
-    public void updateProfile(Profile profile) {
-        profileRepository.save(profile);
+    public Page<Profile> getAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 }
