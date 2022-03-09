@@ -48,7 +48,8 @@ public class OrganisationServiceImpl implements OrganisationService {
         Objects.requireNonNull(organisation.getName());
         Objects.requireNonNull(organisation.getDescription());
         Objects.requireNonNull(organisation.getRedactor());
-        organisation.setDateCreated(new Date());
+        if (organisation.getDateCreated() == null) organisation.setDateCreated(new Date());
+
         return repository.save(organisation);
     }
 
