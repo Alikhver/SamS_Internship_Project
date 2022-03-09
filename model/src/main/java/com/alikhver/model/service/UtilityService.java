@@ -9,13 +9,13 @@ import java.util.Optional;
 public interface UtilityService {
     void save(Utility utility);
 
-    boolean utilityExists(Utility utility);
+    boolean exists(Utility utility);
 
-    boolean utilityExists(Long id);
+    boolean exists(Long utilityId);
 
-    Optional<Utility> getUtility(Long id);
+    Optional<Utility> get(Long utilityId);
 
     Page<Utility> getAllUtilitiesOfOrganisation(Long organisationId, Pageable pageable);
 
-    void deleteUtility(Long id);
+    void delete(Long utilityId);
 }

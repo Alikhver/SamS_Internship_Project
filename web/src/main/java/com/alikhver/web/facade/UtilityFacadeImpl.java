@@ -27,7 +27,7 @@ public class UtilityFacadeImpl implements UtilityFacade {
 
     @Override
     public GetUtilityResponse getUtility(Long id) {
-        Optional<Utility> optionalUtility = utilityService.getUtility(id);
+        Optional<Utility> optionalUtility = utilityService.get(id);
         if (optionalUtility.isEmpty()) {
             throw new NoUtilityFoundException(
                     "No Utility with id = " + id + " found"
@@ -40,7 +40,7 @@ public class UtilityFacadeImpl implements UtilityFacade {
     @Override
     @Transactional
     public void updateUtility(Long id, UpdateUtilityRequest request) {
-        Optional<Utility> optionalUtility = utilityService.getUtility(id);
+        Optional<Utility> optionalUtility = utilityService.get(id);
         Utility utility;
         if (optionalUtility.isEmpty()) {
             throw new NoUtilityFoundException(
@@ -60,12 +60,12 @@ public class UtilityFacadeImpl implements UtilityFacade {
     @Override
     @Transactional
     public void deleteUtility(Long id) {
-        if (!utilityService.utilityExists(id)) {
+        if (!utilityService.exists(id)) {
             throw new NoUtilityFoundException(
                     "No utility with id = " + id + " found"
             );
         } else {
-            utilityService.deleteUtility(id);
+            utilityService.delete(id);
         }
     }
 
@@ -86,7 +86,7 @@ public class UtilityFacadeImpl implements UtilityFacade {
 
         Utility utility = utilityConverter.mapToUtility(request);
         utility.setOrganisation(organisation);
-        if (utilityService.utilityExists(utility)) {
+        if (utilityService.exists(utility)) {
             throw new UtilityAlreadyExistsException(
                     "Utility with name = '" + utility.getName() + "', price = '" + utility.getPrice() +
                             "', description = '" + utility.getDescription() + "' already exists"
