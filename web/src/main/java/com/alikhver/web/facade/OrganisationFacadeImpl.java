@@ -46,7 +46,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
     @Override
     public GetOrganisationResponse getOrganisation(Long id) throws NoOrganisationFoundException {
-        Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(id);
+        Optional<Organisation> optionalOrganisation = organisationService.get(id);
         if (optionalOrganisation.isPresent()) {
             Organisation organisation = optionalOrganisation.get();
             return organisationConverter.mapToGetOrganisationResponse(organisation);
@@ -61,24 +61,23 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     @Override
     @Transactional
     public CreateOrganisationResponse createOrganisation(CreateOrganisationRequest request) {
-        if (organisationService.organisationExistsByName(request.getName())) {
+        if (organisationService.existsByName(request.getName())) {
             throw new OrganisationAlreadyExistsException(
               "Organisation with name = " + request.getName() + " already exists"
             );
         }
 
-        if (userService.userExistsByLogin(request.getRedactorLogin())) {
+        if (userService.existsByLogin(request.getRedactorLogin())) {
             throw new UserAlreadyExistsException(
                     "User with login = " + request.getRedactorLogin() + " already exists"
             );
         }
         User redactor = organisationConverter.mapToRedactor(request);
-        userService.createUser(redactor);
 
         Organisation organisation = organisationConverter.mapToOrganisation(request);
         organisation.setRedactor(redactor);
 
-        organisation = organisationService.createOrganisation(organisation);
+        organisation = organisationService.save(organisation);
 
         return organisationConverter.mapToCreateOrganisationResponse(organisation);
     }
@@ -86,14 +85,14 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     @Override
     public Page<GetOrganisationResponse> getOrganisations(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Organisation> organisations = organisationService.getAllOrganisations(pageable);
+        Page<Organisation> organisations = organisationService.getAll(pageable);
         return organisationConverter.mapToPageOfGetOrganisationResponse(organisations);
     }
 
     @Override
     @Transactional
     public Page<GetWorkerResponse> getWorkers(Long organisationId, int page, int size) {
-        if (!organisationService.organisationExistsById(organisationId)) {
+        if (!organisationService.existsById(organisationId)) {
             throw new NoOrganisationFoundException(
               "No Organisation with id = " + organisationId + "found"
             );
@@ -110,7 +109,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     @Override
     @Transactional
     public Page<GetUtilityResponse> getUtilities(Long organisationId, int page, int size) {
-        if (!organisationService.organisationExistsById(organisationId)) {
+        if (!organisationService.existsById(organisationId)) {
             throw new NoOrganisationFoundException(
                     "No Organisation with id = " + organisationId + "found"
             );
@@ -123,7 +122,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
     @Override
     public void updateOrganisation(Long id, UpdateOrganisationRequest request) {
-        Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(id);
+        Optional<Organisation> optionalOrganisation = organisationService.get(id);
         Organisation organisation;
         if (optionalOrganisation.isPresent()) {
             organisation = optionalOrganisation.get();
@@ -135,13 +134,13 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         Optional.ofNullable(request.getName()).ifPresent(organisation::setName);
         Optional.ofNullable(request.getDescription()).ifPresent(organisation::setDescription);
         Optional.ofNullable(request.getAddress()).ifPresent(organisation::setAddress);
-        organisationService.updateOrganisation(organisation);
+        organisationService.save(organisation);
     }
 
     @Override
     public void deleteOrganisation(Long id) {
-        if (organisationService.organisationExistsById(id)) {
-            organisationService.deleteOrganisation(id);
+        if (organisationService.existsById(id)) {
+            organisationService.delete(id);
         } else {
             throw new NoOrganisationFoundException(
               "No Organisation with id = " + id + " found"
@@ -152,7 +151,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     @Override
     @Transactional
     public void suspendOrganisation(Long id) {
-        Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(id);
+        Optional<Organisation> optionalOrganisation = organisationService.get(id);
         Organisation organisation;
         if (optionalOrganisation.isEmpty()) {
             throw new NoOrganisationFoundException(
@@ -164,7 +163,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
         if (organisation.isActive()) {
             organisation.setActive(false);
-            organisationService.updateOrganisation(organisation);
+            organisationService.save(organisation);
         } else {
             throw new OrganisationIsAlreadySuspendedException(
                     "Organisation with id = " + id + " is already suspended"
@@ -175,7 +174,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     @Override
     @Transactional
     public void launchOrganisation(Long id) {
-        Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(id);
+        Optional<Organisation> optionalOrganisation = organisationService.get(id);
         Organisation organisation;
         if (optionalOrganisation.isEmpty()) {
             throw new NoOrganisationFoundException(
@@ -187,7 +186,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
         if (!organisation.isActive()) {
             organisation.setActive(true);
-            organisationService.updateOrganisation(organisation);
+            organisationService.save(organisation);
         } else {
             throw new OrganisationIsAlreadyLaunchedException(
                     "Organisation with id = " + id + " is already running"

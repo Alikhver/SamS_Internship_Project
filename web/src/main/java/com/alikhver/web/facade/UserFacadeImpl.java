@@ -25,7 +25,7 @@ public class UserFacadeImpl implements UserFacade {
     private final UserConverter userConverter;
 
     public GetUserResponse getUser(Long id) throws NoUserFoundException {
-        Optional<User> optionalUser = userService.getUser(id);
+        Optional<User> optionalUser = userService.get(id);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             return userConverter.mapToGetUserResponse(user);
@@ -46,13 +46,13 @@ public class UserFacadeImpl implements UserFacade {
     public CreateUserResponse createUser(CreateUserRequest request) throws UserAlreadyExistsException {
         // TODO validate
 
-        if (userService.userExistsByLogin(request.getLogin())) {
+        if (userService.existsByLogin(request.getLogin())) {
             throw new UserAlreadyExistsException(
                     "User with login = " + request.getLogin() + " already exists"
             );
         } else {
             User user = userConverter.mapToUser(request);
-            user = userService.createUser(user);
+            user = userService.save(user);
             return userConverter.mapToCreateUserResponse(user);
         }
     }
@@ -64,13 +64,13 @@ public class UserFacadeImpl implements UserFacade {
                     "No User with id = " + id + " found"
             );
         } else {
-            userService.deleteUser(id);
+            userService.delete(id);
         }
     }
 
     @Transactional
     public void updateUser(Long id, UpdateUserRequest request) {
-        Optional<User> optionalUser = userService.getUser(id);
+        Optional<User> optionalUser = userService.get(id);
         User user;
         if (optionalUser.isPresent()) {
             user = optionalUser.get();
@@ -81,6 +81,6 @@ public class UserFacadeImpl implements UserFacade {
         }
         Optional.ofNullable(request.getLogin()).ifPresent(user::setLogin);
         Optional.ofNullable(request.getPassword()).ifPresent(user::setPassword);
-        userService.updateUser(user);
+        userService.save(user);
     }
 }

@@ -18,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -37,7 +36,7 @@ public class ProfileFacadeImpl implements ProfileFacade{
         Objects.requireNonNull(request.getLastName());
         Objects.requireNonNull(request.getEmail());
 
-        Optional<User> optionalUser = userService.getUser(request.getUserId());
+        Optional<User> optionalUser = userService.get(request.getUserId());
         User user;
         if (optionalUser.isPresent()) {
             user = optionalUser.get();
@@ -50,14 +49,14 @@ public class ProfileFacadeImpl implements ProfileFacade{
         Profile profile = profileConverter.mapToCreateProfileRequest(request);
         profile.setUser(user);
 
-        profileService.createProfile(profile);
+        profileService.save(profile);
 
         return profileConverter.mapToCreateProfileResponse(profile);
     }
 
     @Override
     public GetProfileResponse getProfile(Long id) throws NoProfileFoundException {
-        Optional<Profile> optionalProfile = profileService.getProfile(id);
+        Optional<Profile> optionalProfile = profileService.get(id);
         if (optionalProfile.isPresent()) {
             Profile profile = optionalProfile.get();
             return profileConverter.mapToGetProfileResponse(profile);
@@ -71,14 +70,14 @@ public class ProfileFacadeImpl implements ProfileFacade{
     @Override
     public Page<GetProfileResponse> getProfiles(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Profile> profiles = profileService.getProfiles(pageable);
+        Page<Profile> profiles = profileService.getAll(pageable);
         return profileConverter.mapToListOfGetProfileResponse(profiles);
     }
 
     @Override
     @Transactional
     public void updateProfile(Long id, UpdateProfileRequest request) {
-        Optional<Profile> optionalProfile = profileService.getProfile(id);
+        Optional<Profile> optionalProfile = profileService.get(id);
         Profile profile;
         if (optionalProfile.isPresent()) {
             profile = optionalProfile.get();
@@ -93,6 +92,6 @@ public class ProfileFacadeImpl implements ProfileFacade{
         Optional.ofNullable(request.getPhoneNumber()).ifPresent(profile::setPhoneNumber);
         Optional.ofNullable(request.getEmail()).ifPresent(profile::setEmail);
 
-        profileService.updateProfile(profile);
+        profileService.save(profile);
     }
 }

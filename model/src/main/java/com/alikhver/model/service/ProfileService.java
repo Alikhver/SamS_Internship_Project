@@ -8,13 +8,11 @@ import java.util.Optional;
 
 public interface ProfileService {
 
-    void createProfile(Profile profile);
+    void save(Profile profile);
 
-    boolean profileExistsById(Long id);
+    boolean existsById(Long id);
 
-    Optional<Profile> getProfile(Long id);
+    Optional<Profile> get(Long id);
 
-    Page<Profile> getProfiles(Pageable pageable);
-
-    void updateProfile(Profile profile);
+    Page<Profile> getAll(Pageable pageable);
 }

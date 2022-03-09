@@ -7,17 +7,15 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface UserService {
-    Optional<User> getUser(Long id);
+    Optional<User> get(Long userId);
 
     Page<User> getUsers(Pageable pageable);
 
-    boolean userExistsById(Long id);
+    boolean userExistsById(Long userId);
 
-    boolean userExistsByLogin(String id);
+    boolean existsByLogin(String login);
 
-    User createUser(User user);
+    User save(User user);
 
-    void deleteUser(Long id);
-
-    void updateUser(User user);
+    void delete(Long userId);
 }

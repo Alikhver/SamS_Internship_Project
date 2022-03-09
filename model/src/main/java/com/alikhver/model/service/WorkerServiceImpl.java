@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -18,29 +19,58 @@ public class WorkerServiceImpl implements WorkerService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Worker> getWorker(Long id) {
-        return repository.findById(id);
+    public Optional<Worker> get(Long workerId) {
+        if (workerId > 0) {
+            return repository.findById(workerId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal Argument: workerId <= 0"
+            );
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean existsWorkerById(Long id) {
-        return repository.existsWorkerById(id);
+    public boolean exists(Long workerId) {
+        if (workerId > 0) {
+            return repository.existsWorkerById(workerId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal Argument: workerId <= 0"
+            );
+        }
     }
 
     @Override
-    public void deleteWorker(Long id) {
-        repository.deleteById(id);
+    public void delete(Long workerId) {
+        if (workerId > 0) {
+            repository.deleteById(workerId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal Argument: workerId <= 0"
+            );
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<Worker> findAllWorkersOfOrganisation(Long organisationId, Pageable pageable) {
-        return repository.findAllByOrganisationId(organisationId, pageable);
+        if (organisationId > 0) {
+            return repository.findAllByOrganisationId(organisationId, pageable);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal Argument: organisationId <= 0"
+            );
+        }
     }
 
     @Override
-    public void saveWorker(Worker worker) {
+    public void save(Worker worker) {
+        Objects.requireNonNull(worker.getFirstName());
+        Objects.requireNonNull(worker.getLastName());
+        Objects.requireNonNull(worker.getDescription());
+        Objects.requireNonNull(worker.getOrganisation());
+
         repository.save(worker);
     }
 }
