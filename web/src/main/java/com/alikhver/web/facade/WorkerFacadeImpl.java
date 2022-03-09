@@ -26,7 +26,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
 
     @Override
     public GetWorkerResponse getWorkerById(Long id) {
-        Optional<Worker> optionalWorker = workerService.getWorker(id);
+        Optional<Worker> optionalWorker = workerService.get(id);
         if (optionalWorker.isPresent()) {
             Worker worker = optionalWorker.get();
             return workerConverter.mapToGetWorkerResponse(worker);
@@ -40,7 +40,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
     @Override
     @Transactional
     public void updateWorker(Long id, UpdateWorkerRequest request) {
-        Optional<Worker> optionalWorker = workerService.getWorker(id);
+        Optional<Worker> optionalWorker = workerService.get(id);
         Worker worker;
         if (optionalWorker.isPresent()) {
             worker = optionalWorker.get();
@@ -53,14 +53,14 @@ public class WorkerFacadeImpl implements WorkerFacade {
         Optional.ofNullable(request.getLastName()).ifPresent(worker::setLastName);
         Optional.ofNullable(request.getDescription()).ifPresent(worker::setDescription);
 
-        workerService.saveWorker(worker);
+        workerService.save(worker);
     }
 
     @Override
     @Transactional
     public void deleteWorker(Long id) {
-        if (workerService.existsWorkerById(id)) {
-            workerService.deleteWorker(id);
+        if (workerService.exists(id)) {
+            workerService.delete(id);
         } else {
             throw new NoWorkerFoundException(
               "No Worker with id = " + id + " found"
@@ -83,7 +83,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
         }
         Worker worker = workerConverter.mapToWorker(request);
         worker.setOrganisation(organisation);
-        workerService.saveWorker(worker);
+        workerService.save(worker);
         return workerConverter.mapToCreateWorkerResponse(worker);
     }
 }
