@@ -32,15 +32,25 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     @Transactional(readOnly = true)
     public boolean existsById(Long profileId) {
-        assert (profileId > 0);
-        return repository.existsById(profileId);
+        if (profileId > 0) {
+            return repository.existsById(profileId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal argument: profileId <= 0"
+            );
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<Profile> get(Long profileId) {
-        assert (profileId > 0);
-        return repository.findById(profileId);
+        if (profileId > 0) {
+            return repository.findById(profileId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal argument: organisationId <= 0"
+            );
+        }
     }
 
     @Override
