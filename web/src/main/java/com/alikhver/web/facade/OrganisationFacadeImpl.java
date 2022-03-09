@@ -67,13 +67,12 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             );
         }
 
-        if (userService.userExistsByLogin(request.getRedactorLogin())) {
+        if (userService.existsByLogin(request.getRedactorLogin())) {
             throw new UserAlreadyExistsException(
                     "User with login = " + request.getRedactorLogin() + " already exists"
             );
         }
         User redactor = organisationConverter.mapToRedactor(request);
-        userService.createUser(redactor);
 
         Organisation organisation = organisationConverter.mapToOrganisation(request);
         organisation.setRedactor(redactor);

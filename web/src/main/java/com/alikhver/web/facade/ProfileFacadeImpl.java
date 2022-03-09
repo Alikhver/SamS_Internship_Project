@@ -18,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -37,7 +36,7 @@ public class ProfileFacadeImpl implements ProfileFacade{
         Objects.requireNonNull(request.getLastName());
         Objects.requireNonNull(request.getEmail());
 
-        Optional<User> optionalUser = userService.getUser(request.getUserId());
+        Optional<User> optionalUser = userService.get(request.getUserId());
         User user;
         if (optionalUser.isPresent()) {
             user = optionalUser.get();

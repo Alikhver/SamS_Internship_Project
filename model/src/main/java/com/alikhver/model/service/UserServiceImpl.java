@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -21,8 +20,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<User> getUser(Long id) {
-        return userRepository.findById(id);
+    public Optional<User> get(Long userId) {
+        assert (userId > 0);
+        return userRepository.findById(userId);
     }
 
     @Override
@@ -33,13 +33,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean userExistsByLogin(String login) {
+    public boolean existsByLogin(String login) {
         return userRepository.existsUserByLogin(login);
     }
 
-    // TODO refactor create user
     @Override
-    public User createUser(User user) {
+    public User save(User user) {
         Objects.requireNonNull(user.getLogin());
         Objects.requireNonNull(user.getPassword());
         Objects.requireNonNull(user.getRole());
@@ -48,19 +47,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) {
-        userRepository.save(user);
-    }
-
-    @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public void delete(Long userId) {
+        assert (userId > 0);
+        userRepository.deleteById(userId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean userExistsById(Long id) {
-        return userRepository.existsById(id);
+    public boolean userExistsById(Long userId) {
+        assert (userId > 0);
+        return userRepository.existsById(userId);
     }
-
 }
