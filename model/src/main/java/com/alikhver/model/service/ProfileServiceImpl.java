@@ -2,6 +2,7 @@ package com.alikhver.model.service;
 
 import com.alikhver.model.entity.Profile;
 import com.alikhver.model.repository.ProfileRepository;
+import com.alikhver.model.service.service_validation_helper.ServiceValidationHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,21 +18,18 @@ import java.util.Optional;
 @Transactional
 public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository repository;
+    private final ServiceValidationHelper validationHelper;
 
     @Override
     public void save(Profile profile) {
-        Objects.requireNonNull(profile.getFirstName());
-        Objects.requireNonNull(profile.getLastName());
-        Objects.requireNonNull(profile.getEmail());
-        Objects.requireNonNull(profile.getPhoneNumber());
-        Objects.requireNonNull(profile.getUser());
-        if (profile.getDateCreated() == null) profile.setDateCreated(new Date());
+        validationHelper.validateProfile(profile);
         repository.save(profile);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean existsById(Long profileId) {
+
         if (profileId > 0) {
             return repository.existsById(profileId);
         } else {

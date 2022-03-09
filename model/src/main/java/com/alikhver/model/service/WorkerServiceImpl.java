@@ -2,13 +2,13 @@ package com.alikhver.model.service;
 
 import com.alikhver.model.entity.Worker;
 import com.alikhver.model.repository.WorkerRepository;
+import com.alikhver.model.service.service_validation_helper.ServiceValidationHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -16,61 +16,38 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class WorkerServiceImpl implements WorkerService {
     private final WorkerRepository repository;
+    private final ServiceValidationHelper validationHelper;
 
     @Override
     @Transactional(readOnly = true)
     public Optional<Worker> get(Long workerId) {
-        if (workerId > 0) {
-            return repository.findById(workerId);
-        } else {
-            throw new IllegalArgumentException(
-                    "Illegal Argument: workerId <= 0"
-            );
-        }
+        validationHelper.validateForCorrectId(workerId, "WorkerId");
+        return repository.findById(workerId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean exists(Long workerId) {
-        if (workerId > 0) {
-            return repository.existsWorkerById(workerId);
-        } else {
-            throw new IllegalArgumentException(
-                    "Illegal Argument: workerId <= 0"
-            );
-        }
+        validationHelper.validateForCorrectId(workerId, "WorkerId");
+        return repository.existsWorkerById(workerId);
     }
 
     @Override
     public void delete(Long workerId) {
-        if (workerId > 0) {
-            repository.deleteById(workerId);
-        } else {
-            throw new IllegalArgumentException(
-                    "Illegal Argument: workerId <= 0"
-            );
-        }
+        validationHelper.validateForCorrectId(workerId, "WorkerId");
+        repository.deleteById(workerId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<Worker> findAllWorkersOfOrganisation(Long organisationId, Pageable pageable) {
-        if (organisationId > 0) {
-            return repository.findAllByOrganisationId(organisationId, pageable);
-        } else {
-            throw new IllegalArgumentException(
-                    "Illegal Argument: organisationId <= 0"
-            );
-        }
+        validationHelper.validateForCorrectId(organisationId, "OrganisationId");
+        return repository.findAllByOrganisationId(organisationId, pageable);
     }
 
     @Override
     public void save(Worker worker) {
-        Objects.requireNonNull(worker.getFirstName());
-        Objects.requireNonNull(worker.getLastName());
-        Objects.requireNonNull(worker.getDescription());
-        Objects.requireNonNull(worker.getOrganisation());
-
+        validationHelper.validateWorker(worker);
         repository.save(worker);
     }
 }
