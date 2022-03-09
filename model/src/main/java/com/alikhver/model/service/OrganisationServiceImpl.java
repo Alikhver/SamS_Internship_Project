@@ -3,6 +3,7 @@ package com.alikhver.model.service;
 import com.alikhver.model.entity.Organisation;
 import com.alikhver.model.repository.OrganisationRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,20 +16,32 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class OrganisationServiceImpl implements OrganisationService {
     private final OrganisationRepository repository;
 
     @Override
     @Transactional(readOnly = true)
     public Optional<Organisation> get(Long organisationId) {
-        assert (organisationId > 0);
-        return repository.findById(organisationId);
+        if (organisationId > 0) {
+            return repository.findById(organisationId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal argument: organisationId <= 0"
+            );
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean existsById(Long organisationId) {
-        return repository.existsById(organisationId);
+        if (organisationId > 0) {
+            return repository.existsById(organisationId);
+        } else {
+            throw new IllegalArgumentException(
+                "Illegal argument: organisationId <= 0"
+            );
+        }
     }
 
     @Override
@@ -40,6 +53,7 @@ public class OrganisationServiceImpl implements OrganisationService {
     @Override
     @Transactional(readOnly = true)
     public boolean existsByName(String name) {
+        Objects.requireNonNull(name);
         return repository.existsOrganisationByName(name);
     }
 
@@ -55,6 +69,12 @@ public class OrganisationServiceImpl implements OrganisationService {
 
     @Override
     public void delete(Long organisationId) {
-        repository.deleteById(organisationId);
+        if (organisationId > 0) {
+            repository.deleteById(organisationId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal argument: organisationId <= 0"
+            );
+        }
     }
 }
