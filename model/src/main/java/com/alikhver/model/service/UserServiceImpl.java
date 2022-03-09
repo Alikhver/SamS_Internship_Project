@@ -21,8 +21,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public Optional<User> get(Long userId) {
-        assert (userId > 0);
-        return userRepository.findById(userId);
+        if (userId > 0) {
+            return userRepository.findById(userId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal Argument: user id <= 0"
+            );
+        }
     }
 
     @Override
@@ -34,6 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public boolean existsByLogin(String login) {
+        Objects.requireNonNull(login);
         return userRepository.existsUserByLogin(login);
     }
 
@@ -48,14 +54,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long userId) {
-        assert (userId > 0);
-        userRepository.deleteById(userId);
+        if (userId > 0) {
+            userRepository.deleteById(userId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal Argument: userId <= 0"
+            );
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean userExistsById(Long userId) {
-        assert (userId > 0);
-        return userRepository.existsById(userId);
+        if (userId > 0) {
+            return userRepository.existsById(userId);
+        } else {
+            throw new IllegalArgumentException(
+                    "Illegal Argument: userId <= 0"
+            );
+        }
     }
 }
