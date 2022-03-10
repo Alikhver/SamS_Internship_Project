@@ -26,85 +26,85 @@ public class OrganisationServiceImpl implements OrganisationService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Organisation> getOrganisation(Long organisationId) {
-        log.info("organisationService::get -> start");
+        log.info("getOrganisation -> start");
 
         validationHelper.validateForCorrectId(organisationId, "OrganisationId");
 
-        log.info("organisationService::get -> done");
+        log.info("getOrganisation -> done");
         return repository.findById(organisationId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean existsById(Long organisationId) {
-        log.info("organisationService::existsById -> start");
+        log.info("existsById -> start");
 
         validationHelper.validateForCorrectId(organisationId, "OrganisationId");
 
-        log.info("organisationService::existsById -> done");
+        log.info("existsById -> done");
         return repository.existsById(organisationId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<Organisation> getAll(Pageable pageable) {
-        log.info("organisationService::getAll -> start");
+        log.info("getAll -> start");
 
         var organisations= repository.findAll(pageable);
 
-        log.info("organisationService::getAll -> done");
+        log.info("getAll -> done");
         return organisations;
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean existsOrganisationByName(String name) {
-        log.info("organisationService::existsOrganisationByName -> start");
+        log.info("existsOrganisationByName -> start");
 
         validationHelper.validateForCorrectString(name, "Organisation Name");
 
-        log.info("organisationService::existsOrganisationByName -> done");
+        log.info("existsOrganisationByName -> done");
         return repository.existsOrganisationByName(name);
     }
 
     @Override
     public Organisation saveOrganisation(Organisation organisation) {
-        log.info("organisationService::saveOrganisation -> start");
+        log.info("saveOrganisation -> start");
 
         validateOrganisation(organisation);
 
-        log.info("organisationService::saveOrganisation -> done");
+        log.info("saveOrganisation -> done");
         return repository.save(organisation);
     }
 
     @Override
     public void deleteOrganisation(Long organisationId) {
-        log.info("organisationService::deleteOrganisation -> start");
+        log.info("deleteOrganisation -> start");
 
         validationHelper.validateForCorrectId(organisationId, "OrganisationId");
         repository.deleteById(organisationId);
 
-        log.info("organisationService::deleteOrganisation -> done");
+        log.info("deleteOrganisation -> done");
     }
 
     private void validateOrganisation(Organisation organisation) {
-        log.info("organisationService::validateOrganisation -> start");
+        log.info("validateOrganisation -> start");
 
         validationHelper.validateForCorrectString(organisation.getName(), "Organisation Name");
         validationHelper.validateForCorrectString(organisation.getDescription(), "Organisation Description");
         validateUser(organisation.getRedactor());
         if (organisation.getDateCreated() == null) organisation.setDateCreated(new Date());
 
-        log.info("organisationService::validateOrganisation -> done");
+        log.info("validateOrganisation -> done");
     }
 
     private void validateUser(User user) {
-        log.info("organisationService::validateUser -> start");
+        log.info("validateUser -> start");
 
         validationHelper.validateForCorrectString(user.getLogin(), "User Login");
         validationHelper.validateForCorrectString(user.getPassword(), "User Password");
         Objects.requireNonNull(user.getRole());
 
-        log.info("organisationService::validateUser -> done");
+        log.info("validateUser -> done");
     }
 }

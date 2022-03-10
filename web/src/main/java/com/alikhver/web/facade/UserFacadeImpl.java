@@ -30,7 +30,7 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public GetUserResponse getUser(Long id) {
-        log.info("userFacade::getUser -> start");
+        log.info("getUser -> start");
 
         validationHelper.validateForCorrectId(id, "UserId");
 
@@ -40,7 +40,7 @@ public class UserFacadeImpl implements UserFacade {
 
             var response = userConverter.mapToGetUserResponse(user);
 
-            log.info("userFacade::getUser -> done");
+            log.info("getUser -> done");
             return response;
         } else {
             log.warn("NoUserFoundException is thrown");
@@ -52,7 +52,7 @@ public class UserFacadeImpl implements UserFacade {
 
     @Override
     public Page<GetUserResponse> getAllUsers(int page, int size) {
-        log.info("userFacade::getAllUsers -> start");
+        log.info("getAllUsers -> start");
 
         validatePageAndSize(page, size);
 
@@ -61,14 +61,14 @@ public class UserFacadeImpl implements UserFacade {
 
         var response = userConverter.mapToListOfGetUserResponse(users);
 
-        log.info("userFacade::getAllUsers -> done");
+        log.info("getAllUsers -> done");
         return response;
     }
 
     @Transactional
     @Override
     public CreateUserResponse createUser(CreateUserRequest request) {
-        log.info("userFacade::createUser -> start");
+        log.info("createUser -> start");
 
         if (userService.existsUserByLogin(request.getLogin())) {
             log.warn("UserAlreadyExistsException is thrown");
@@ -81,7 +81,7 @@ public class UserFacadeImpl implements UserFacade {
 
             var response = userConverter.mapToCreateUserResponse(user);
 
-            log.info("userFacade::createUser -> done");
+            log.info("createUser -> done");
             return response;
         }
     }
@@ -106,7 +106,7 @@ public class UserFacadeImpl implements UserFacade {
     @Transactional
     @Override
     public void updateUser(Long id, UpdateUserRequest request) {
-        log.info("userFacade::updateUser -> start");
+        log.info("updateUser -> start");
 
         Optional<User> optionalUser = userService.getUser(id);
         User user;
@@ -121,12 +121,12 @@ public class UserFacadeImpl implements UserFacade {
         Optional.ofNullable(request.getLogin()).ifPresent(user::setLogin);
         Optional.ofNullable(request.getPassword()).ifPresent(user::setPassword);
 
-        log.info("userFacade::updateUser -> done");
+        log.info("updateUser -> done");
         userService.saveUser(user);
     }
 
     private void validatePageAndSize(int page, int size) {
-        log.info("userFacade::validatePageAndSize -> start");
+        log.info("validatePageAndSize -> start");
 
         if (page < 0) {
             log.warn("IllegalArgumentException is thrown");
@@ -142,6 +142,6 @@ public class UserFacadeImpl implements UserFacade {
             );
         }
 
-        log.info("userFacade::validateForPageAndSize -> done");
+        log.info("validateForPageAndSize -> done");
     }
 }

@@ -25,51 +25,51 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public void save(Profile profile) {
-        log.info("profileService::saveProfile -> start");
+        log.info("saveProfile -> start");
 
         validateProfile(profile);
 
         repository.save(profile);
-        log.info("profileService::saveProfile -> done");
+        log.info("saveProfile -> done");
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean existsProfileById(Long profileId) {
-        log.info("profileService::existsProfileById -> start");
+        log.info("existsProfileById -> start");
 
         validationHelper.validateForCorrectId(profileId, "ProfileId");
         var exists = repository.existsById(profileId);
 
-        log.info("profileService::existsProfileById -> done");
+        log.info("existsProfileById -> done");
         return exists;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<Profile> getProfile(Long profileId) {
-        log.info("profileService::getProfile -> start");
+        log.info("getProfile -> start");
 
         validationHelper.validateForCorrectId(profileId, "ProfileId");
         var profile = repository.findById(profileId);
 
-        log.info("profileService::getProfile -> done");
+        log.info("getProfile -> done");
         return profile;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<Profile> getAllProfiles(Pageable pageable) {
-        log.info("profileService::getAllProfiles -> start");
+        log.info("getAllProfiles -> start");
 
         var profiles = repository.findAll(pageable);
 
-        log.info("profileService::getAllProfiles -> done");
+        log.info("getAllProfiles -> done");
         return profiles;
     }
 
     private void validateProfile(Profile profile) {
-        log.info("profileService::validateProfile -> start");
+        log.info("validateProfile -> start");
 
         validationHelper.validateForCorrectString(profile.getFirstName(), "Profile First Name");
         validationHelper.validateForCorrectString(profile.getLastName(), "Profile Last Name");
@@ -78,16 +78,16 @@ public class ProfileServiceImpl implements ProfileService {
         validateUser(profile.getUser());
         if (profile.getDateCreated() == null) profile.setDateCreated(new Date());
 
-        log.info("profileService::validateProfile -> done");
+        log.info("validateProfile -> done");
     }
 
     private void validateUser(User user) {
-        log.info("profileService::validateUser -> start");
+        log.info("validateUser -> start");
 
         validationHelper.validateForCorrectString(user.getLogin(), "User Login");
         validationHelper.validateForCorrectString(user.getPassword(), "User Password");
         Objects.requireNonNull(user.getRole());
 
-        log.info("profileService::validateUser -> done");
+        log.info("validateUser -> done");
     }
 }

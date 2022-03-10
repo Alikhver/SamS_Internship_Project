@@ -31,7 +31,7 @@ public class UtilityFacadeImpl implements UtilityFacade {
 
     @Override
     public GetUtilityResponse getUtility(Long id) {
-        log.info("utilityFacade::getUtility -> start");
+        log.info("getUtility -> start");
 
         validationHelper.validateForCorrectId(id, "UtilityId");
 
@@ -46,14 +46,14 @@ public class UtilityFacadeImpl implements UtilityFacade {
 
         var response = utilityConverter.mapToGetUtilityResponse(utility);
 
-        log.info("utilityFacade::getUtility -> done");
+        log.info("getUtility -> done");
         return response;
     }
 
     @Override
     @Transactional
     public void updateUtility(Long id, UpdateUtilityRequest request) {
-        log.info("utilityFacade::updateUtility -> start");
+        log.info("updateUtility -> start");
 
         validationHelper.validateForCorrectId(id, "UtilityId");
 
@@ -73,13 +73,13 @@ public class UtilityFacadeImpl implements UtilityFacade {
         Optional.ofNullable(request.getPrice()).ifPresent(utility::setPrice);
 
         utilityService.saveUtility(utility);
-        log.info("utilityFacade::updateUtility -> done");
+        log.info("updateUtility -> done");
     }
 
     @Override
     @Transactional
     public void deleteUtility(Long id) {
-        log.info("utilityFacade::deleteUtility -> start");
+        log.info("deleteUtility -> start");
 
         validationHelper.validateForCorrectId(id, "UtilityId");
 
@@ -91,14 +91,14 @@ public class UtilityFacadeImpl implements UtilityFacade {
         } else {
             utilityService.deleteUtility(id);
 
-            log.info("utilityFacade::deleteUtility -> done");
+            log.info("deleteUtility -> done");
         }
     }
 
     @Override
     @Transactional
     public CreateUtilityResponse createUtility(CreateUtilityRequest request) {
-        log.info("utilityFacade::createUtility -> start");
+        log.info("createUtility -> start");
 
         Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(
                 request.getOrganisationId()
@@ -126,7 +126,7 @@ public class UtilityFacadeImpl implements UtilityFacade {
 
         var response = utilityConverter.mapToCreateUtilityResponse(utility);
 
-        log.info("utilityFacade::createUtility -> done");
+        log.info("createUtility -> done");
         return response;
     }
 }

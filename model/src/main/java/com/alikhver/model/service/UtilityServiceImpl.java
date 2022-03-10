@@ -26,22 +26,22 @@ public class UtilityServiceImpl implements UtilityService {
 
     @Override
     public void saveUtility(Utility utility) {
-        log.info("utilityService::saveUtility -> start");
+        log.info("saveUtility -> start");
 
         validateUtility(utility);
 
-        log.info("utilityService::saveUtility -> done");
+        log.info("saveUtility -> done");
         repository.save(utility);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean existsUtility(Utility utility) {
-        log.info("utilityService::existsUtility -> start");
+        log.info("existsUtility -> start");
 
         validateUtility(utility);
 
-        log.info("utilityService::existsUtility -> done");
+        log.info("existsUtility -> done");
         return repository.existsByNameAndDescriptionAndPriceAndOrganisationId(
                 utility.getName(),
                 utility.getDescription(),
@@ -53,24 +53,24 @@ public class UtilityServiceImpl implements UtilityService {
     @Override
     @Transactional(readOnly = true)
     public boolean existsUtility(Long utilityId) {
-        log.info("utilityService::existsUtility -> start");
+        log.info("existsUtility -> start");
 
         validationHelper.validateForCorrectId(utilityId, "UtilityId");
         boolean exists = repository.existsById(utilityId);
 
-        log.info("utilityService::existsUtility -> done");
+        log.info("existsUtility -> done");
         return exists;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<Utility> getUtility(Long utilityId) {
-        log.info("utilityService::getUtility -> start");
+        log.info("getUtility -> start");
 
         validationHelper.validateForCorrectId(utilityId, "UtilityId");
         var utility = repository.findById(utilityId);
 
-        log.info("utilityService::getUtility -> done");
+        log.info("getUtility -> done");
         return utility;
 
     }
@@ -78,53 +78,53 @@ public class UtilityServiceImpl implements UtilityService {
     @Override
     @Transactional(readOnly = true)
     public Page<Utility> getAllUtilitiesOfOrganisation(Long organisationId, Pageable pageable) {
-        log.info("utilityService::getAllUtilitiesOfOrganisation -> start");
+        log.info("getAllUtilitiesOfOrganisation -> start");
 
         validationHelper.validateForCorrectId(organisationId, "OrganisationId");
         var organisations = repository.findAllByOrganisationId(organisationId, pageable);
 
-        log.info("utilityService::getAllUtilitiesOfOrganisation -> done");
+        log.info("getAllUtilitiesOfOrganisation -> done");
         return organisations;
     }
 
     @Override
     public void deleteUtility(Long utilityId) {
-        log.info("utilityService::deleteUtility -> start");
+        log.info("deleteUtility -> start");
 
         validationHelper.validateForCorrectId(utilityId, "UtilityId");
 
-        log.info("utilityService::deleteUtility -> done");
+        log.info("deleteUtility -> done");
         repository.deleteById(utilityId);
     }
 
     private void validateUtility(Utility utility) {
-        log.info("utilityService::validateUtility -> start");
+        log.info("validateUtility -> start");
 
         validationHelper.validateForCorrectString(utility.getName(), "Utility Name");
         validationHelper.validateForCorrectPrice(utility.getPrice(), "Utility Price");
         validationHelper.validateForCorrectString(utility.getDescription(), "Utility Description");
         validateOrganisation(utility.getOrganisation());
 
-        log.info("utilityService::validateUtility -> done");
+        log.info("validateUtility -> done");
     }
 
     private void validateOrganisation(Organisation organisation) {
-        log.info("utilityService::validateOrganisation -> start");
+        log.info("validateOrganisation -> start");
         validationHelper.validateForCorrectString(organisation.getName(), "Organisation Name");
         validationHelper.validateForCorrectString(organisation.getDescription(), "Organisation Description");
         validateUser(organisation.getRedactor());
         if (organisation.getDateCreated() == null) organisation.setDateCreated(new Date());
 
-        log.info("utilityService::validateOrganisation -> done");
+        log.info("validateOrganisation -> done");
     }
 
     private void validateUser(User user) {
-        log.info("utilityService::validateUser -> start");
+        log.info("validateUser -> start");
 
         validationHelper.validateForCorrectString(user.getLogin(), "User Login");
         validationHelper.validateForCorrectString(user.getPassword(), "User Password");
         Objects.requireNonNull(user.getRole());
 
-        log.info("utilityService::validateUser -> done");
+        log.info("validateUser -> done");
     }
 }

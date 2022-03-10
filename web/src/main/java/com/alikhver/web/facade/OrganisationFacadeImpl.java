@@ -48,7 +48,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
     @Override
     public GetOrganisationResponse getOrganisation(Long id) throws NoOrganisationFoundException {
-        log.info("organisationFacade::getOrganisation -> start");
+        log.info("getOrganisation -> start");
 
         validationHelper.validateForCorrectId(id, "OrganisationId");
 
@@ -57,7 +57,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             Organisation organisation = optionalOrganisation.get();
             var result = organisationConverter.mapToGetOrganisationResponse(organisation);
 
-            log.info("organisationFacade::getOrganisation -> done");
+            log.info("getOrganisation -> done");
             return result;
         } {
             log.warn("NoOrganisationFoundException is thrown");
@@ -70,7 +70,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     @Override
     @Transactional
     public CreateOrganisationResponse createOrganisation(CreateOrganisationRequest request) {
-        log.info("organisationFacade::createOrganisation -> start");
+        log.info("createOrganisation -> start");
 
         if (organisationService.existsOrganisationByName(request.getName())) {
             log.warn("OrganisationAlreadyExistsException is thrown");
@@ -94,13 +94,13 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
         var response = organisationConverter.mapToCreateOrganisationResponse(organisation);
 
-        log.info("organisationFacade::createOrganisation -> done");
+        log.info("createOrganisation -> done");
         return response;
     }
 
     @Override
     public Page<GetOrganisationResponse> getOrganisations(int page, int size) {
-        log.info("organisationFacade::getOrganisations -> start");
+        log.info("getOrganisations -> start");
 
         validatePageAndSize(page, size);
 
@@ -109,14 +109,14 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
         var response = organisationConverter.mapToPageOfGetOrganisationResponse(organisations);
 
-        log.info("organisationFacade::getOrganisations -> done");
+        log.info("getOrganisations -> done");
         return response;
     }
 
     @Override
     @Transactional
     public Page<GetWorkerResponse> getWorkers(Long organisationId, int page, int size) {
-        log.info("organisationFacade::getWorkers -> start");
+        log.info("getWorkers -> start");
 
         validatePageAndSize(page, size);
 
@@ -132,7 +132,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
         var response = workerConverter.mapToPageOfGetWorkerResponse(workers);
 
-        log.info("organisationFacade::getWorkers -> done");
+        log.info("getWorkers -> done");
         return response;
     }
 
@@ -141,7 +141,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     @Override
     @Transactional
     public Page<GetUtilityResponse> getUtilities(Long organisationId, int page, int size) {
-        log.info("organisationFacade::getUtilities -> start");
+        log.info("getUtilities -> start");
 
         validatePageAndSize(page, size);
 
@@ -157,13 +157,13 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
         var response = utilityConverter.mapToListOfGetUtilityResponse(utilities);
 
-        log.info("organisationFacade::getUtilities -> done");
+        log.info("getUtilities -> done");
         return response;
     }
 
     @Override
     public void updateOrganisation(Long id, UpdateOrganisationRequest request) {
-        log.info("organisationFacade::updateOrganisation -> start");
+        log.info("updateOrganisation -> start");
 
         Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(id);
         Organisation organisation;
@@ -180,12 +180,12 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         Optional.ofNullable(request.getAddress()).ifPresent(organisation::setAddress);
         organisationService.saveOrganisation(organisation);
 
-        log.info("organisationFacade::updateOrganisation -> done");
+        log.info("updateOrganisation -> done");
     }
 
     @Override
     public void deleteOrganisation(Long id) {
-        log.info("organisationFacade::deleteOrganisation -> start");
+        log.info("deleteOrganisation -> start");
 
         validationHelper.validateForCorrectId(id, "OrganisationId");
 
@@ -198,13 +198,13 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             );
         }
 
-        log.info("organisationFacade::deleteOrganisation -> done");
+        log.info("deleteOrganisation -> done");
     }
 
     @Override
     @Transactional
     public void suspendOrganisation(Long id) {
-        log.info("organisationFacade::suspendOrganisation -> start");
+        log.info("suspendOrganisation -> start");
 
         validationHelper.validateForCorrectId(id, "OrganisationId");
 
@@ -229,13 +229,13 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             );
         }
 
-        log.info("organisationFacade::suspendOrganisation -> done");
+        log.info("suspendOrganisation -> done");
     }
 
     @Override
     @Transactional
     public void launchOrganisation(Long id) {
-        log.info("organisationFacade::launchOrganisation -> start");
+        log.info("launchOrganisation -> start");
 
         validationHelper.validateForCorrectId(id, "OrganisationId");
 
@@ -260,11 +260,11 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             );
         }
 
-        log.info("organisationFacade::launchOrganisation -> done");
+        log.info("launchOrganisation -> done");
     }
 
     private void validatePageAndSize(int page, int size) {
-        log.info("organisationFacade::validatePageAndSize -> start");
+        log.info("validatePageAndSize -> start");
 
         if (page < 0) {
             log.warn("IllegalArgumentException is thrown");
@@ -279,6 +279,6 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
                     "Size must be positive"
             );
         }
-        log.info("organisationFacade::validatePageAndOrganisation -> done");
+        log.info("validatePageAndOrganisation -> done");
     }
 }

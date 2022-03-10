@@ -32,7 +32,7 @@ public class ProfileFacadeImpl implements ProfileFacade{
     @Override
     @Transactional
     public CreateProfileResponse createProfile(CreateProfileRequest request) {
-        log.info("profileFacade::createProfile -> start");
+        log.info("createProfile -> start");
 
         Optional<User> optionalUser = userService.getUser(request.getUserId());
         User user;
@@ -52,13 +52,13 @@ public class ProfileFacadeImpl implements ProfileFacade{
 
         var response = profileConverter.mapToCreateProfileResponse(profile);
 
-        log.info("profileFacade::createProfile -> done");
+        log.info("createProfile -> done");
         return response;
     }
 
     @Override
     public GetProfileResponse getProfile(Long id) throws NoProfileFoundException {
-        log.info("profileFacade::getProfile -> start");
+        log.info("getProfile -> start");
 
         Optional<Profile> optionalProfile = profileService.getProfile(id);
         if (optionalProfile.isPresent()) {
@@ -66,7 +66,7 @@ public class ProfileFacadeImpl implements ProfileFacade{
 
             var response = profileConverter.mapToGetProfileResponse(profile);
 
-            log.info("profileFacade::getProfile -> done");
+            log.info("getProfile -> done");
             return response;
         } else {
             log.warn("NoProfileFoundException is thrown");
@@ -78,21 +78,21 @@ public class ProfileFacadeImpl implements ProfileFacade{
 
     @Override
     public Page<GetProfileResponse> getProfiles(int page, int size) {
-        log.info("profileFacade::getProfiles -> start");
+        log.info("getProfiles -> start");
 
         Pageable pageable = PageRequest.of(page, size);
         Page<Profile> profiles = profileService.getAllProfiles(pageable);
 
         var response = profileConverter.mapToListOfGetProfileResponse(profiles);
 
-        log.info("profileFacade::getProfiles -> done");
+        log.info("getProfiles -> done");
         return response;
     }
 
     @Override
     @Transactional
     public void updateProfile(Long id, UpdateProfileRequest request) {
-        log.info("profileFacade::updateProfile -> start");
+        log.info("updateProfile -> start");
 
         Optional<Profile> optionalProfile = profileService.getProfile(id);
         Profile profile;
@@ -111,6 +111,6 @@ public class ProfileFacadeImpl implements ProfileFacade{
         Optional.ofNullable(request.getEmail()).ifPresent(profile::setEmail);
 
         profileService.save(profile);
-        log.info("profileFacade::updateProfile -> done");
+        log.info("updateProfile -> done");
     }
 }

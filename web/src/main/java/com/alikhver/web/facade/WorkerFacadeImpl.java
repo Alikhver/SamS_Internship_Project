@@ -30,7 +30,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
 
     @Override
     public GetWorkerResponse getWorkerById(Long id) {
-        log.info("workerFacade::getWorkerById -> start");
+        log.info("getWorkerById -> start");
 
         Optional<Worker> optionalWorker = workerService.getWorker(id);
         if (optionalWorker.isPresent()) {
@@ -38,7 +38,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
 
             var response = workerConverter.mapToGetWorkerResponse(worker);
 
-            log.info("workerFacade::getWorkerById -> done");
+            log.info("getWorkerById -> done");
             return response;
         } else {
             log.warn("NoWorkerFoundException is thrown");
@@ -51,7 +51,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
     @Override
     @Transactional
     public void updateWorker(Long id, UpdateWorkerRequest request) {
-        log.info("workerFacade::updateWorker -> start");
+        log.info("updateWorker -> start");
 
         validationHelper.validateForCorrectId(id, "WorkerId");
 
@@ -70,19 +70,19 @@ public class WorkerFacadeImpl implements WorkerFacade {
         Optional.ofNullable(request.getDescription()).ifPresent(worker::setDescription);
 
         workerService.saveWorker(worker);
-        log.info("workerFacade::updateWorker -> done");
+        log.info("updateWorker -> done");
     }
 
     @Override
     @Transactional
     public void deleteWorker(Long id) {
-        log.info("workerFacade::deleteWorker -> start");
+        log.info("deleteWorker -> start");
 
         validationHelper.validateForCorrectId(id, "WorkerId");
 
         if (workerService.existsWorker(id)) {
             workerService.deleteWorker(id);
-            log.info("workerFacade::deleteWorker -> done");
+            log.info("deleteWorker -> done");
         } else {
             log.warn("NoWorkerFoundException");
             throw new NoWorkerFoundException(
@@ -94,7 +94,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
     @Override
     @Transactional
     public CreateWorkerResponse createWorker(CreateWorkerRequest request) {
-        log.info("workerFacade::createWorker -> start");
+        log.info("createWorker -> start");
 
         Optional<Organisation> optionalOrganisation = organisationService
                 .getOrganisation(request.getOrganisationId());
@@ -113,7 +113,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
 
         var response = workerConverter.mapToCreateWorkerResponse(worker);
 
-        log.info("workerFacade::createWorker -> done");
+        log.info("createWorker -> done");
         return response;
     }
 }

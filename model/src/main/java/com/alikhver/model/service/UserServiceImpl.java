@@ -24,74 +24,74 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public Optional<User> getUser(Long userId) {
-        log.info("userService::getUser -> start");
+        log.info("getUser -> start");
         validationHelper.validateForCorrectId(userId, "UserId");
 
-        log.info("userService::getUser -> done");
+        log.info("getUser -> done");
         return userRepository.findById(userId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<User> getUsers(Pageable pageable) {
-        log.info("userService::getUsers -> start");
+        log.info("getUsers -> start");
 
         var users = userRepository.findAll(pageable);
 
-        log.info("userService::getUsers -> done");
+        log.info("getUsers -> done");
         return users;
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean existsUserByLogin(String login) {
-        log.info("userService::existsUserByLogin -> done");
+        log.info("existsUserByLogin -> done");
 
         validationHelper.validateForCorrectString(login, "Login");
         boolean exists = userRepository.existsUserByLogin(login);
 
-        log.info("userService::existsUserByLogin -> done");
+        log.info("existsUserByLogin -> done");
         return exists;
     }
 
     @Override
     public User saveUser(User user) {
-        log.info("userService::saveUser -> start");
+        log.info("saveUser -> start");
 
         validateUser(user);
 
-        log.info("userService::saveUser -> done");
+        log.info("saveUser -> done");
         return userRepository.save(user);
     }
 
     @Override
     public void deleteUser(Long userId) {
-        log.info("userService::deleteUser -> start");
+        log.info("deleteUser -> start");
 
         validationHelper.validateForCorrectId(userId, "UserId");
 
-        log.info("userService::deleteUser -> done");
+        log.info("deleteUser -> done");
         userRepository.deleteById(userId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean existsUserById(Long userId) {
-        log.info("userService::existsUserById -> start");
+        log.info("existsUserById -> start");
 
         validationHelper.validateForCorrectId(userId, "UserId");
 
-        log.info("userService::existsUserById -> done");
+        log.info("existsUserById -> done");
         return userRepository.existsById(userId);
     }
 
     private void validateUser(User user) {
-        log.info("userService::validateUser -> start");
+        log.info("validateUser -> start");
 
         validationHelper.validateForCorrectString(user.getLogin(), "User Login");
         validationHelper.validateForCorrectString(user.getPassword(), "User Password");
         Objects.requireNonNull(user.getRole());
 
-        log.info("userService::validateUser -> done");
+        log.info("validateUser -> done");
     }
 }
