@@ -1,53 +1,101 @@
 package com.alikhver.model.service;
 
+import com.alikhver.model.entity.Organisation;
 import com.alikhver.model.entity.Worker;
 import com.alikhver.model.repository.WorkerRepository;
-import com.alikhver.model.service.util.ServiceValidationHelper;
+import com.alikhver.model.util.ValidationHelper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class WorkerServiceImpl implements WorkerService {
     private final WorkerRepository repository;
-    private final ServiceValidationHelper validationHelper;
+    private final ValidationHelper validationHelper;
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Worker> get(Long workerId) {
+    public Optional<Worker> getWorker(Long workerId) {
+        log.info("getWorker -> start");
+
         validationHelper.validateForCorrectId(workerId, "WorkerId");
-        return repository.findById(workerId);
+        var worker = repository.findById(workerId);
+
+        log.info("getWorker -> done");
+        return worker;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public boolean exists(Long workerId) {
+    public boolean existsWorker(Long workerId) {
+        log.info("existsWorker -> start");
+
         validationHelper.validateForCorrectId(workerId, "WorkerId");
-        return repository.existsWorkerById(workerId);
+        var exists = repository.existsWorkerById(workerId);
+
+        log.info("existsWorker -> done");
+        return exists;
     }
 
     @Override
-    public void delete(Long workerId) {
+    public void deleteWorker(Long workerId) {
+        log.info("deleteWorker -> start");
+
         validationHelper.validateForCorrectId(workerId, "WorkerId");
+
+        log.info("deleteWorker -> done");
         repository.deleteById(workerId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<Worker> findAllWorkersOfOrganisation(Long organisationId, Pageable pageable) {
+        log.info("findAllWorkersOfOrganisation -> start");
+
         validationHelper.validateForCorrectId(organisationId, "OrganisationId");
-        return repository.findAllByOrganisationId(organisationId, pageable);
+        var workers = repository.findAllByOrganisationId(organisationId, pageable);
+
+        log.info("findAllWorkersOfOrganisation -> done");
+        return workers;
     }
 
     @Override
-    public void save(Worker worker) {
-        validationHelper.validateWorker(worker);
+    public void saveWorker(Worker worker) {
+        log.info("saveWorker -> start");
+
+        validateWorker(worker);
+
+        log.info("saveWorker -> done");
         repository.save(worker);
+    }
+
+    private void validateWorker(Worker worker) {
+        log.info("validateWorker -> start");
+
+        validationHelper.validateForCorrectString(worker.getFirstName(), "Worker First Name");
+        validationHelper.validateForCorrectString(worker.getDescription(), "Worker Last Name");
+        validationHelper.validateForCorrectString(worker.getDescription(), "Worker Description");
+
+        log.info("validateWorker -> done");
+        validateOrganisation(worker.getOrganisation());
+    }
+
+    private void validateOrganisation(Organisation organisation) {
+        log.info("validateOrganisation -> start");
+
+        validationHelper.validateForCorrectString(organisation.getName(), "Organisation Name");
+        validationHelper.validateForCorrectString(organisation.getDescription(), "Organisation Description");
+        if (organisation.getDateCreated() == null) organisation.setDateCreated(new Date());
+
+        log.info("validateOrganisation -> done");
     }
 }

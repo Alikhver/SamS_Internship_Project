@@ -5,10 +5,12 @@ import com.alikhver.web.dto.profile.request.CreateProfileRequest;
 import com.alikhver.web.dto.profile.response.CreateProfileResponse;
 import com.alikhver.web.dto.profile.response.GetProfileResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class ProfileConverter {
     private final CreateProfileRequestToProfileConverter createProfileRequestToProfileConverter;
@@ -17,18 +19,38 @@ public class ProfileConverter {
     private final PageOfProfilesToPageOfGetProfileResponseConverter pageOfProfilesToPageOfGetProfileResponseConverter;
 
     public Profile mapToCreateProfileRequest(CreateProfileRequest request) {
-        return createProfileRequestToProfileConverter.convert(request);
+        log.info("mapToCreateProfileRequest -> start");
+
+        var response = createProfileRequestToProfileConverter.convert(request);
+
+        log.info("mapToCreateProfileRequest -> done");
+        return response;
     }
 
     public CreateProfileResponse mapToCreateProfileResponse(Profile profile) {
-        return profileToCreateProfileResponseConverter.convert(profile);
+        log.info("mapToCreateProfileResponse -> start");
+
+        var response = profileToCreateProfileResponseConverter.convert(profile);
+
+        log.info("mapToCreateProfileResponse -> done");
+        return response;
     }
 
     public GetProfileResponse mapToGetProfileResponse(Profile profile) {
-        return profileToGetProfileResponseConverter.convert(profile);
+        log.info("mapToGetProfileResponse -> start");
+
+        var response = profileToGetProfileResponseConverter.convert(profile);
+
+        log.info("mapToGetProfileResponse -> done");
+        return response;
     }
 
     public Page<GetProfileResponse> mapToListOfGetProfileResponse(Page<Profile> profiles) {
-        return pageOfProfilesToPageOfGetProfileResponseConverter.convert(profiles);
+        log.info("mapToListOfGetProfileResponse -> start");
+
+        var response = pageOfProfilesToPageOfGetProfileResponseConverter.convert(profiles);
+
+        log.info("mapToListOfGetProfileResponse -> done");
+        return response;
     }
 }

@@ -10,9 +10,9 @@ public interface ProfileService {
 
     void save(Profile profile);
 
-    boolean existsById(Long id);
+    boolean existsProfileById(Long id);
 
-    Optional<Profile> get(Long id);
+    Optional<Profile> getProfile(Long id);
 
-    Page<Profile> getAll(Pageable pageable);
+    Page<Profile> getAllProfiles(Pageable pageable);
 }

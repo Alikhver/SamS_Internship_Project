@@ -7,13 +7,13 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface WorkerService {
-    Optional<Worker> get(Long workerId);
+    Optional<Worker> getWorker(Long workerId);
 
-    void save(Worker worker);
+    void saveWorker(Worker worker);
 
-    boolean exists(Long workerId);
+    boolean existsWorker(Long workerId);
 
-    void delete(Long workerId);
+    void deleteWorker(Long workerId);
 
     Page<Worker> findAllWorkersOfOrganisation(Long organisationId, Pageable pageable);
 }

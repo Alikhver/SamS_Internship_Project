@@ -2,6 +2,7 @@ package com.alikhver.web.facade;
 
 import com.alikhver.model.entity.User;
 import com.alikhver.model.service.UserService;
+import com.alikhver.model.util.ValidationHelper;
 import com.alikhver.web.converter.user.UserConverter;
 import com.alikhver.web.dto.user.request.CreateUserRequest;
 import com.alikhver.web.dto.user.request.UpdateUserRequest;
@@ -10,6 +11,7 @@ import com.alikhver.web.dto.user.response.GetUserResponse;
 import com.alikhver.web.exeption.user.NoUserFoundException;
 import com.alikhver.web.exeption.user.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,68 +21,127 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserFacadeImpl implements UserFacade {
     private final UserService userService;
     private final UserConverter userConverter;
+    private final ValidationHelper validationHelper;
 
-    public GetUserResponse getUser(Long id) throws NoUserFoundException {
-        Optional<User> optionalUser = userService.get(id);
+    @Override
+    public GetUserResponse getUser(Long id) {
+        log.info("getUser -> start");
+
+        validationHelper.validateForCorrectId(id, "UserId");
+
+        Optional<User> optionalUser = userService.getUser(id);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            return userConverter.mapToGetUserResponse(user);
+
+            var response = userConverter.mapToGetUserResponse(user);
+
+            log.info("getUser -> done");
+            return response;
         } else {
+            log.warn("NoUserFoundException is thrown");
             throw new NoUserFoundException(
                     "User with id = " + id + " does not exist"
             );
         }
     }
 
+    @Override
     public Page<GetUserResponse> getAllUsers(int page, int size) {
+        log.info("getAllUsers -> start");
+
+        validatePageAndSize(page, size);
+
         Pageable pageable = PageRequest.of(page, size);
         Page<User> users = userService.getUsers(pageable);
-        return userConverter.mapToListOfGetUserResponse(users);
+
+        var response = userConverter.mapToListOfGetUserResponse(users);
+
+        log.info("getAllUsers -> done");
+        return response;
     }
 
     @Transactional
-    public CreateUserResponse createUser(CreateUserRequest request) throws UserAlreadyExistsException {
-        // TODO validate
+    @Override
+    public CreateUserResponse createUser(CreateUserRequest request) {
+        log.info("createUser -> start");
 
-        if (userService.existsByLogin(request.getLogin())) {
+        if (userService.existsUserByLogin(request.getLogin())) {
+            log.warn("UserAlreadyExistsException is thrown");
             throw new UserAlreadyExistsException(
                     "User with login = " + request.getLogin() + " already exists"
             );
         } else {
             User user = userConverter.mapToUser(request);
-            user = userService.save(user);
-            return userConverter.mapToCreateUserResponse(user);
+            user = userService.saveUser(user);
+
+            var response = userConverter.mapToCreateUserResponse(user);
+
+            log.info("createUser -> done");
+            return response;
         }
     }
 
     @Transactional
-    public void deleteUser(Long id) throws NoUserFoundException {
-        if (!userService.userExistsById(id)) {
+    @Override
+    public void deleteUser(Long id) {
+        log.info("profileFacade::deleteUser -> start");
+
+        if (!userService.existsUserById(id)) {
+            log.warn("NoUserFoundException is thrown");
             throw new NoUserFoundException(
                     "No User with id = " + id + " found"
             );
         } else {
-            userService.delete(id);
+            userService.deleteUser(id);
         }
+
+        log.info("profileFacade::deleteUser -> done");
     }
 
     @Transactional
+    @Override
     public void updateUser(Long id, UpdateUserRequest request) {
-        Optional<User> optionalUser = userService.get(id);
+        log.info("updateUser -> start");
+
+        Optional<User> optionalUser = userService.getUser(id);
         User user;
         if (optionalUser.isPresent()) {
             user = optionalUser.get();
         } else {
+            log.warn("NoUserFoundException is thrown");
             throw new NoUserFoundException(
                     "No user with id = " + id + " found"
             );
         }
         Optional.ofNullable(request.getLogin()).ifPresent(user::setLogin);
         Optional.ofNullable(request.getPassword()).ifPresent(user::setPassword);
-        userService.save(user);
+
+        log.info("updateUser -> done");
+        userService.saveUser(user);
+    }
+
+    private void validatePageAndSize(int page, int size) {
+        log.info("validatePageAndSize -> start");
+
+        if (page < 0) {
+            log.warn("IllegalArgumentException is thrown");
+            throw new IllegalArgumentException(
+                    "Page should be positive or zero"
+            );
+        }
+
+        if (size <= 0) {
+            log.warn("IllegalArgumentException is thrown");
+            throw new IllegalArgumentException(
+                    "Size must be positive"
+            );
+        }
+
+        log.info("validateForPageAndSize -> done");
     }
 }

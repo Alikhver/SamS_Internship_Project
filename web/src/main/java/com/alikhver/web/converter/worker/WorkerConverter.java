@@ -5,10 +5,12 @@ import com.alikhver.web.dto.worker.request.CreateWorkerRequest;
 import com.alikhver.web.dto.worker.response.CreateWorkerResponse;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class WorkerConverter {
     private final CreateWorkerRequestToWorkerConverter createWorkerRequestToWorkerConverter;
@@ -17,18 +19,38 @@ public class WorkerConverter {
     private final PageOfWorkersToPageOfGetWorkerResponseConverter pageOfWorkersToPageOfGetWorkerResponseConverter;
 
     public Worker mapToWorker(CreateWorkerRequest request) {
-        return createWorkerRequestToWorkerConverter.convert(request);
+        log.info("mapToWorker -> start");
+
+        var response = createWorkerRequestToWorkerConverter.convert(request);
+
+        log.info("mapToWorker -> done");
+        return response;
     }
 
     public CreateWorkerResponse mapToCreateWorkerResponse(Worker worker) {
-        return workerToCreateWorkerResponseConverter.convert(worker);
+        log.info("mapToCreateWorkerResponse -> start");
+
+        var response = workerToCreateWorkerResponseConverter.convert(worker);
+
+        log.info("mapToCreateWorkerResponse -> done");
+        return response;
     }
 
     public GetWorkerResponse mapToGetWorkerResponse(Worker worker) {
-        return workerToGetWorkerResponseConverter.convert(worker);
+        log.info("mapToGetWorkerResponse -> start");
+
+        var response = workerToGetWorkerResponseConverter.convert(worker);
+
+        log.info("mapToGetWorkerResponse -> done");
+        return response;
     }
 
     public Page<GetWorkerResponse> mapToPageOfGetWorkerResponse(Page<Worker> workers) {
-        return pageOfWorkersToPageOfGetWorkerResponseConverter.convert(workers);
+        log.info("mapToPageOfGetWorkerResponse -> start");
+
+        var response = pageOfWorkersToPageOfGetWorkerResponseConverter.convert(workers);
+
+        log.info("mapToPageOfGetWorkerResponse -> done");
+        return response;
     }
 }
