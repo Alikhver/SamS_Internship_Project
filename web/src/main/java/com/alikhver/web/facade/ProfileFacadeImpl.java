@@ -12,15 +12,16 @@ import com.alikhver.web.dto.profile.response.GetProfileResponse;
 import com.alikhver.web.exeption.profile.NoProfileFoundException;
 import com.alikhver.web.exeption.user.NoUserFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProfileFacadeImpl implements ProfileFacade{
@@ -30,17 +31,15 @@ public class ProfileFacadeImpl implements ProfileFacade{
 
     @Override
     @Transactional
-    public CreateProfileResponse createProfile(CreateProfileRequest request) throws NoUserFoundException {
-        Objects.requireNonNull(request.getUserId());
-        Objects.requireNonNull(request.getFirstName());
-        Objects.requireNonNull(request.getLastName());
-        Objects.requireNonNull(request.getEmail());
+    public CreateProfileResponse createProfile(CreateProfileRequest request) {
+        log.info("profileFacade::createProfile -> start");
 
-        Optional<User> optionalUser = userService.get(request.getUserId());
+        Optional<User> optionalUser = userService.getUser(request.getUserId());
         User user;
         if (optionalUser.isPresent()) {
             user = optionalUser.get();
         } else {
+            log.warn("NoUserFoundException is thrown");
             throw new NoUserFoundException(
               "No user with id = " + request.getUserId() + " found"
             );
@@ -51,16 +50,26 @@ public class ProfileFacadeImpl implements ProfileFacade{
 
         profileService.save(profile);
 
-        return profileConverter.mapToCreateProfileResponse(profile);
+        var response = profileConverter.mapToCreateProfileResponse(profile);
+
+        log.info("profileFacade::createProfile -> done");
+        return response;
     }
 
     @Override
     public GetProfileResponse getProfile(Long id) throws NoProfileFoundException {
-        Optional<Profile> optionalProfile = profileService.get(id);
+        log.info("profileFacade::getProfile -> start");
+
+        Optional<Profile> optionalProfile = profileService.getProfile(id);
         if (optionalProfile.isPresent()) {
             Profile profile = optionalProfile.get();
-            return profileConverter.mapToGetProfileResponse(profile);
+
+            var response = profileConverter.mapToGetProfileResponse(profile);
+
+            log.info("profileFacade::getProfile -> done");
+            return response;
         } else {
+            log.warn("NoProfileFoundException is thrown");
             throw new NoProfileFoundException(
                     "No Profile with id = " + id + " found"
             );
@@ -69,19 +78,28 @@ public class ProfileFacadeImpl implements ProfileFacade{
 
     @Override
     public Page<GetProfileResponse> getProfiles(int page, int size) {
+        log.info("profileFacade::getProfiles -> start");
+
         Pageable pageable = PageRequest.of(page, size);
-        Page<Profile> profiles = profileService.getAll(pageable);
-        return profileConverter.mapToListOfGetProfileResponse(profiles);
+        Page<Profile> profiles = profileService.getAllProfiles(pageable);
+
+        var response = profileConverter.mapToListOfGetProfileResponse(profiles);
+
+        log.info("profileFacade::getProfiles -> done");
+        return response;
     }
 
     @Override
     @Transactional
     public void updateProfile(Long id, UpdateProfileRequest request) {
-        Optional<Profile> optionalProfile = profileService.get(id);
+        log.info("profileFacade::updateProfile -> start");
+
+        Optional<Profile> optionalProfile = profileService.getProfile(id);
         Profile profile;
         if (optionalProfile.isPresent()) {
             profile = optionalProfile.get();
         } else {
+            log.warn("NoProfileFoundException is thrown");
             throw new NoProfileFoundException(
               "No profile with id = " + id + "found"
             );
@@ -93,5 +111,6 @@ public class ProfileFacadeImpl implements ProfileFacade{
         Optional.ofNullable(request.getEmail()).ifPresent(profile::setEmail);
 
         profileService.save(profile);
+        log.info("profileFacade::updateProfile -> done");
     }
 }
