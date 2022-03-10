@@ -5,10 +5,12 @@ import com.alikhver.web.dto.user.request.CreateUserRequest;
 import com.alikhver.web.dto.user.response.CreateUserResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class UserConverter {
     private final UserToGetUserResponseConverter userToGetUserResponseConverter;
@@ -17,18 +19,38 @@ public class UserConverter {
     private final UserToCreateUserResponseConverter userToCreateUserResponseConverter;
 
     public GetUserResponse mapToGetUserResponse(User user) {
-        return userToGetUserResponseConverter.convert(user);
+        log.info("mapToGetUserResponse -> start");
+
+        var response = userToGetUserResponseConverter.convert(user);
+
+        log.info("mapToGetUserResponse -> done");
+        return response;
     }
 
     public Page<GetUserResponse> mapToListOfGetUserResponse(Page<User> users) {
-        return pageOfUsersToPageOfGetUserResponseConverter.convert(users);
+        log.info("mapToListOfGetUserResponse -> start");
+
+        var response = pageOfUsersToPageOfGetUserResponseConverter.convert(users);
+
+        log.info("mapToListOfGetUserResponse -> done");
+        return response;
     }
 
     public User mapToUser(CreateUserRequest request) {
-        return createUserRequestToUserConverter.convert(request);
+        log.info("mapToUser -> start");
+
+        var response = createUserRequestToUserConverter.convert(request);
+
+        log.info("mapToUser -> done");
+        return response;
     }
 
     public CreateUserResponse mapToCreateUserResponse(User user) {
-        return userToCreateUserResponseConverter.convert(user);
+        log.info("mapToCreateUserResponse -> start");
+
+        var response = userToCreateUserResponseConverter.convert(user);
+
+        log.info("mapToCreateUserResponse -> done");
+        return response;
     }
 }

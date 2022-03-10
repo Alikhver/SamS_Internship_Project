@@ -5,10 +5,12 @@ import com.alikhver.web.dto.utility.request.CreateUtilityRequest;
 import com.alikhver.web.dto.utility.response.CreateUtilityResponse;
 import com.alikhver.web.dto.utility.response.GetUtilityResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class UtilityConverter {
     private final CreateUtilityRequestToUtilityConverter createUtilityRequestToUtilityConverter;
@@ -17,18 +19,38 @@ public class UtilityConverter {
     private final PageOfUtilitiesToPageOfGetUtilityResponseConverter pageOfUtilitiesToPageOfGetUtilityResponseConverter;
 
     public GetUtilityResponse mapToGetUtilityResponse(Utility utility) {
-        return utilityToGetUtilityResponseConverter.convert(utility);
+        log.info("mapToGetUtilityResponse -> start");
+
+        var response = utilityToGetUtilityResponseConverter.convert(utility);
+
+        log.info("mapToGetUtilityResponse -> done");
+        return response;
     }
 
     public Utility mapToUtility(CreateUtilityRequest request) {
-        return createUtilityRequestToUtilityConverter.convert(request);
+        log.info("mapToUtility");
+
+        var response = createUtilityRequestToUtilityConverter.convert(request);
+
+                log.info("mapToUtility -> done");
+        return response;
     }
 
     public CreateUtilityResponse mapToCreateUtilityResponse(Utility utility) {
-        return utilityToCreateUtilityResponseConverter.convert(utility);
+        log.info("mapToCreateUtilityResponse -> start");
+
+        var response = utilityToCreateUtilityResponseConverter.convert(utility);
+
+        log.info("mapToCreateUtilityResponse -> done");
+        return response;
     }
 
     public Page<GetUtilityResponse> mapToListOfGetUtilityResponse(Page<Utility> utilities) {
-        return pageOfUtilitiesToPageOfGetUtilityResponseConverter.convert(utilities);
+        log.info("mapToListOfGetUtilityResponse -> start");
+
+        var response = pageOfUtilitiesToPageOfGetUtilityResponseConverter.convert(utilities);
+
+        log.info("mapToListOfGetUtilityResponse -> done");
+        return response;
     }
 }
