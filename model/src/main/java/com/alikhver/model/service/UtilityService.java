@@ -7,15 +7,15 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface UtilityService {
-    void save(Utility utility);
+    void saveUtility(Utility utility);
 
-    boolean exists(Utility utility);
+    boolean existsUtility(Utility utility);
 
-    boolean exists(Long utilityId);
+    boolean existsUtility(Long utilityId);
 
-    Optional<Utility> get(Long utilityId);
+    Optional<Utility> getUtility(Long utilityId);
 
     Page<Utility> getAllUtilitiesOfOrganisation(Long organisationId, Pageable pageable);
 
-    void delete(Long utilityId);
+    void deleteUtility(Long utilityId);
 }

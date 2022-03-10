@@ -7,15 +7,15 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface OrganisationService {
-    Optional<Organisation> get(Long organisationId);
+    Optional<Organisation> getOrganisation(Long organisationId);
 
     boolean existsById(Long organisationId);
 
     Page<Organisation> getAll(Pageable pageable);
 
-    boolean existsByName(String name);
+    boolean existsOrganisationByName(String name);
 
-    Organisation save(Organisation organisation);
+    Organisation saveOrganisation(Organisation organisation);
 
-    void delete(Long organisationId);
+    void deleteOrganisation(Long organisationId);
 }
