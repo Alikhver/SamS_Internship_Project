@@ -1,4 +1,4 @@
-package com.alikhver.web.exeption.handler;
+package com.alikhver.web.exception.handler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;

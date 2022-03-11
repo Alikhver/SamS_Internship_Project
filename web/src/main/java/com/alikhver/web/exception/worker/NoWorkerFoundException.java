@@ -1,11 +1,11 @@
-package com.alikhver.web.exeption.utility;
+package com.alikhver.web.exception.worker;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class NoUtilityFoundException extends RuntimeException{
-    public NoUtilityFoundException(String message) {
+public class NoWorkerFoundException extends RuntimeException{
+    public NoWorkerFoundException(String message) {
         super(message);
     }
 }

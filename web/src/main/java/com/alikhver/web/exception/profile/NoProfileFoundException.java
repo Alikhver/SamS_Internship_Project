@@ -1,4 +1,4 @@
-package com.alikhver.web.exeption.profile;
+package com.alikhver.web.exception.profile;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

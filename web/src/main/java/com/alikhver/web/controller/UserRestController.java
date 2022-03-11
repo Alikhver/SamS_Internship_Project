@@ -4,7 +4,7 @@ import com.alikhver.web.dto.user.request.CreateUserRequest;
 import com.alikhver.web.dto.user.request.UpdateUserRequest;
 import com.alikhver.web.dto.user.response.CreateUserResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
-import com.alikhver.web.exeption.user.NoUserFoundException;
+import com.alikhver.web.exception.user.NoUserFoundException;
 import com.alikhver.web.facade.UserFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
