@@ -39,7 +39,7 @@ public class ProfileRestController {
         return new ResponseEntity<>(profileFacade.getProfile(id), HttpStatus.OK);
     }
 
-    @GetMapping("/")
+    @GetMapping
     @ApiOperation("Get Profiles")
     public ResponseEntity<Page<GetProfileResponse>> getProfiles(@RequestParam(defaultValue = "0") @PositiveOrZero int page,
                                                                 @RequestParam(defaultValue = "5") @Positive int size) {
@@ -47,7 +47,7 @@ public class ProfileRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/")
+    @PostMapping
     @ApiOperation("Create Profile")
     public ResponseEntity<CreateProfileResponse> createProfile(@RequestBody @Validated CreateProfileRequest request) throws NoUserFoundException {
         return new ResponseEntity<>(profileFacade.createProfile(request), HttpStatus.CREATED);

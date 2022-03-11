@@ -33,7 +33,7 @@ public class WorkerRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/")
+    @PostMapping
     @ApiOperation("Create Worker")
     public ResponseEntity<CreateWorkerResponse> createWorker(@RequestBody @Validated CreateWorkerRequest request) {
         CreateWorkerResponse response = workerFacade.createWorker(request);

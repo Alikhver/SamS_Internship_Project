@@ -39,7 +39,7 @@ public class UserRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/")
+    @GetMapping
     @ApiOperation("Get Users")
     public ResponseEntity<Page<GetUserResponse>> getAllUsers(@RequestParam(defaultValue = "0") @PositiveOrZero int page,
                                                              @RequestParam(defaultValue = "5") @Positive int size) {
@@ -48,7 +48,7 @@ public class UserRestController {
 
     }
 
-    @PostMapping("/")
+    @PostMapping
     @ApiOperation("Create User")
     public ResponseEntity<CreateUserResponse> createUser(@RequestBody @Validated CreateUserRequest request) {
         CreateUserResponse response = userFacade.createUser(request);

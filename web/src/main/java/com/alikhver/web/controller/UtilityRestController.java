@@ -36,7 +36,7 @@ public class UtilityRestController {
     }
 
 
-    @PostMapping("/")
+    @PostMapping
     @ApiOperation("Create Utility")
     public ResponseEntity<CreateUtilityResponse> createUtility(@RequestBody @Validated CreateUtilityRequest request) {
         CreateUtilityResponse response = utilityFacade.createUtility(request);

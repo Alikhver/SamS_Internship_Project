@@ -41,7 +41,7 @@ public class OrganisationRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/")
+    @GetMapping
     @ApiOperation("Get Organisations")
     public ResponseEntity<Page<GetOrganisationResponse>> getOrganisations(@RequestParam(defaultValue = "0") @PositiveOrZero int page,
                                                                           @RequestParam(defaultValue = "5") @Positive int size) {
@@ -67,7 +67,7 @@ public class OrganisationRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/")
+    @PostMapping
     @ApiOperation("Create Organisation")
     public ResponseEntity<CreateOrganisationResponse> createOrganisation(@RequestBody @Validated CreateOrganisationRequest request) {
         CreateOrganisationResponse response = organisationFacade.createOrganisation(request);
