@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 @Getter
 public class CreateUtilityRequest {
     @NotBlank
-    @Size(max = 40)
+    @Size(max = 45)
     private String name;
     @Positive
     private Double price;

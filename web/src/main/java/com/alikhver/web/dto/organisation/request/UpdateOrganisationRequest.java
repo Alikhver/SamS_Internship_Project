@@ -6,9 +6,10 @@ import javax.validation.constraints.Size;
 
 @Getter
 public class UpdateOrganisationRequest {
-    @Size(min = 2, max = 27)
+    @Size(min = 2, max = 30)
     private String name;
-    @Size(min = 8)
+    @Size(min = 30, max = 120)
     private String description;
+    @Size(min = 5, max = 45)
     private String address;
 }
