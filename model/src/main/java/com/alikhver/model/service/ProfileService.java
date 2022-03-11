@@ -15,4 +15,6 @@ public interface ProfileService {
     Optional<Profile> getProfile(Long id);
 
     Page<Profile> getAllProfiles(Pageable pageable);
+
+    boolean isUserAlreadyBounded(Long userId);
 }

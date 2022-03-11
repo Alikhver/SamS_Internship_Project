@@ -68,6 +68,18 @@ public class ProfileServiceImpl implements ProfileService {
         return profiles;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isUserAlreadyBounded(Long userId) {
+        log.info("isUserAlreadyBounded -> start");
+
+        validationHelper.validateForCorrectId(userId, "UserId");
+        boolean isBounded = repository.existsProfileByUserId(userId);
+
+        log.info("isUserAlreadyBounded -> done");
+        return isBounded;
+    }
+
     private void validateProfile(Profile profile) {
         log.info("validateProfile -> start");
 

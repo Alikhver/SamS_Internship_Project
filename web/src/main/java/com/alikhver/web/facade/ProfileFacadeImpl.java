@@ -10,6 +10,7 @@ import com.alikhver.web.dto.profile.request.UpdateProfileRequest;
 import com.alikhver.web.dto.profile.response.CreateProfileResponse;
 import com.alikhver.web.dto.profile.response.GetProfileResponse;
 import com.alikhver.web.exeption.profile.NoProfileFoundException;
+import com.alikhver.web.exeption.profile.UserIsAlreadyBoundedProfileException;
 import com.alikhver.web.exeption.user.NoUserFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,13 @@ public class ProfileFacadeImpl implements ProfileFacade{
             log.warn("NoUserFoundException is thrown");
             throw new NoUserFoundException(
               "No user with id = " + request.getUserId() + " found"
+            );
+        }
+
+        if (profileService.isUserAlreadyBounded(user.getId())) {
+            log.warn("UserIsAlreadyBoundedProfileException is thrown");
+            throw new UserIsAlreadyBoundedProfileException(
+                "User with id = "+ user.getId() + " is already bounded"
             );
         }
 

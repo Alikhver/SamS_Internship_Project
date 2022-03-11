@@ -5,6 +5,7 @@ import com.alikhver.web.exeption.organisation.OrganisationAlreadyExistsException
 import com.alikhver.web.exeption.organisation.OrganisationIsAlreadyLaunchedException;
 import com.alikhver.web.exeption.organisation.OrganisationIsAlreadySuspendedException;
 import com.alikhver.web.exeption.profile.NoProfileFoundException;
+import com.alikhver.web.exeption.profile.UserIsAlreadyBoundedProfileException;
 import com.alikhver.web.exeption.user.NoUserFoundException;
 import com.alikhver.web.exeption.user.UserAlreadyExistsException;
 import com.alikhver.web.exeption.utility.NoUtilityFoundException;
@@ -104,6 +105,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handle(IllegalArgumentException e, HttpServletRequest request) {
         ErrorResponse response = buildErrorResponse(e, HttpStatus.BAD_REQUEST, request);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserIsAlreadyBoundedProfileException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handle(UserIsAlreadyBoundedProfileException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
     private ErrorResponse buildErrorResponse(
