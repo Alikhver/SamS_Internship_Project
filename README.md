@@ -3,7 +3,7 @@
 
 This is an educational project
 
-The idea of this project is to create a web site to provide functionality to registrate organisations
+The idea of this project is to create a web application to provide functionality to registrate organisations
 such as barbershops, beauty salon, etc. that can provide their services to users.
 
 Organisation has functionality to manage their workers, utilities, make schedule.
@@ -20,14 +20,14 @@ To launch this project you have to download a dev branch:
   git clone --single-branch --branch dev https://github.com/Alikhver/SamS_Internship_Project.git
 ```
 
-To create database you need a mysql user with credenitials:
+To create database you need a mysql user with credentials:
 
 ```user=bestuser```\
 ```password=bestuser```
 
 or
 
-change properties(db.userme, db.password, db.url) user, password and url on path ```model/src/main/resources/db/db.properties```
+change properties of user, password(db.username, db.password) on path ```model/src/main/resources/db/db.properties```
 if you want to use existing connection and user.
 
 
