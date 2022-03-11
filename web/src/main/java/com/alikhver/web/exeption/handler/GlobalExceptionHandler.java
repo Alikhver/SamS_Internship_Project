@@ -10,7 +10,9 @@ import com.alikhver.web.exeption.user.NoUserFoundException;
 import com.alikhver.web.exeption.user.UserAlreadyExistsException;
 import com.alikhver.web.exeption.utility.NoUtilityFoundException;
 import com.alikhver.web.exeption.utility.UtilityAlreadyExistsException;
+import com.alikhver.web.exeption.worker.AttemptToAssignUtilityOfOtherOrganisationException;
 import com.alikhver.web.exeption.worker.NoWorkerFoundException;
+import com.alikhver.web.exeption.worker.WorkerAlreadyHasProvidedUtilityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -110,6 +112,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserIsAlreadyBoundedProfileException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<ErrorResponse> handle(UserIsAlreadyBoundedProfileException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(AttemptToAssignUtilityOfOtherOrganisationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handle(AttemptToAssignUtilityOfOtherOrganisationException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(WorkerAlreadyHasProvidedUtilityException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handle(WorkerAlreadyHasProvidedUtilityException e, HttpServletRequest request) {
         ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }

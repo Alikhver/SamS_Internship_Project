@@ -10,4 +10,5 @@ public interface WorkerFacade {
     GetWorkerResponse getWorkerById(Long id);
     void updateWorker(Long id, UpdateWorkerRequest request);
     void deleteWorker(Long id);
+    void addUtility(Long id, Long utilityId);
 }
