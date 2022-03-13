@@ -95,6 +95,29 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>3.5.3</version>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+<!--                        <configuration>-->
+<!--                            <propertyFile>src/main/resources/db/liquibase.properties</propertyFile>-->
+<!--                        </configuration>-->
+                                                    <configuration>
+                                                        <changeLogFile>src/main/resources/db/changelog-sams-project.xml</changeLogFile>
+                                                        <driver>com.mysql.cj.jdbc.Driver</driver>
+                                                        <url>jdbc:mysql://localhost:3306/my_db?serverTimezone=UTC&amp;createDatabaseIfNotExist=true</url>
+                                                        <username>bestuser</username>
+                                                        <password>bestuser</password>
+                                                    </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

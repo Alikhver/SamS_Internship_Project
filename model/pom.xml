@@ -134,24 +134,24 @@
                     <groupId>org.liquibase</groupId>
                     <artifactId>liquibase-maven-plugin</artifactId>
                     <version>3.5.3</version>
-                    <executions>
-                        <execution>
-                            <phase>process-resources</phase>
-                            <goals>
-                                <goal>update</goal>
-                            </goals>
-                            <configuration>
-                                <propertyFile>src/main/resources/db/liquibase.properties</propertyFile>
-                            </configuration>
-<!--                            <configuration>-->
-<!--                                <changeLogFile>src/main/resources/db/changelog-sams-project.xml</changeLogFile>-->
-<!--                                <driver>com.mysql.cj.jdbc.Driver</driver>-->
-<!--                                <url>jdbc:mysql://localhost:3306/my_db?serverTimezone=UTC&amp;createDatabaseIfNotExist=true</url>-->
-<!--                                <username>bestuser</username>-->
-<!--                                <password>bestuser</password>-->
-<!--                            </configuration>-->
-                        </execution>
-                    </executions>
+                    <configuration>
+                        <propertyFile>src/main/resources/db/liquibase.properties</propertyFile>
+                    </configuration>
+<!--                    <executions>-->
+<!--                        <execution>-->
+<!--                            <phase>process-resources</phase>-->
+<!--                            <goals>-->
+<!--                                <goal>update</goal>-->
+<!--                            </goals>-->
+<!--&lt;!&ndash;                            <configuration>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <changeLogFile>src/main/resources/db/changelog-sams-project.xml</changeLogFile>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <driver>com.mysql.cj.jdbc.Driver</driver>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <url>jdbc:mysql://localhost:3306/my_db?serverTimezone=UTC&amp;createDatabaseIfNotExist=true</url>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <username>bestuser</username>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <password>bestuser</password>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </configuration>&ndash;&gt;-->
+<!--                        </execution>-->
+<!--                    </executions>-->
                 </plugin>
             </plugins>
         </pluginManagement>
