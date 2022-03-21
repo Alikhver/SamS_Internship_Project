@@ -9,7 +9,10 @@ import java.util.List;
 
 public interface WorkerRepository extends JpaRepository<Worker, Long> {
     boolean existsWorkerById(Long id);
+
     List<Worker> findAllByOrganisationId(Long id);
+
     Page<Worker> findAllByOrganisationId(Long id, Pageable pageable);
 
+    boolean existsWorkerByIdAndUtilitiesId(long id, long utilityId);
 }
