@@ -97,6 +97,17 @@ public class UtilityServiceImpl implements UtilityService {
         repository.deleteById(utilityId);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public boolean utilityAlreadyHasWorker(Long utilityId, Long workerId) {
+        log.info("utilityAlreadyHasWorker -> start");
+
+        boolean response = repository.existsByIdAndWorkersId(utilityId, workerId);
+
+        log.info("utilityAlreadyHasWorker -> done");
+        return response;
+    }
+
     private void validateUtility(Utility utility) {
         log.info("validateUtility -> start");
 

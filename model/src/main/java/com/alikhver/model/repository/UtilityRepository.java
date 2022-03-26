@@ -13,4 +13,5 @@ public interface UtilityRepository extends JpaRepository<Utility, Long> {
     boolean existsByNameAndDescriptionAndPriceAndOrganisationId(String name, String description, Double price, Long organisationId);
 
     boolean existsByIdAndWorkersId(Long id, Long workerId);
+
 }

@@ -69,6 +69,17 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public boolean workerAlreadyHasUtility(Long workerId, Long utilityId) {
+        log.info("workerAlreadyHasUtility -> start");
+
+        boolean response = repository.existsWorkerByIdAndUtilitiesId(workerId, utilityId);
+
+        log.info("workerAlreadyHasUtility -> done");
+        return response;
+    }
+
+    @Override
     public void saveWorker(Worker worker) {
         log.info("saveWorker -> start");
 

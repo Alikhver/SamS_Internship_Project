@@ -14,8 +14,10 @@ import com.alikhver.web.dto.worker.response.CreateWorkerResponse;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import com.alikhver.web.exception.organisation.NoOrganisationFoundException;
 import com.alikhver.web.exception.utility.NoUtilityFoundException;
+import com.alikhver.web.exception.utility.UtilityAlreadyHasProvidedWorkerException;
 import com.alikhver.web.exception.worker.AttemptToAssignUtilityOfOtherOrganisationException;
 import com.alikhver.web.exception.worker.NoWorkerFoundException;
+import com.alikhver.web.exception.worker.WorkerAlreadyHasProvidedUtilityException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -98,6 +100,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
     }
 
     @Override
+    @Transactional
     public void addUtility(Long id, Long utilityId) {
         log.info("addUtility -> start");
 
@@ -132,20 +135,24 @@ public class WorkerFacadeImpl implements WorkerFacade {
             throw new AttemptToAssignUtilityOfOtherOrganisationException(
                     "Utility belongs to other Organisation than Worker"
             );
-        }
-//        else if (utilityService.existsUtilityWithWorker()) {
-//            log.warn("WorkerAlreadyHasProvidedUtilityException is thrown");
-//            throw new WorkerAlreadyHasProvidedUtilityException(
-//                "Worker with id = " + id + " already has Utility with id = " + utilityId
-//            );}
-         else {
+        } else if (utilityService.utilityAlreadyHasWorker(utilityId, id)) {
+            log.warn("UtilityAlreadyHasProvidedWorkerException is thrown");
+            throw new UtilityAlreadyHasProvidedWorkerException(
+                    "Utility with id = " + utilityId + " already has worker with id = " + id
+            );
+        } else if (workerService.workerAlreadyHasUtility(id, utilityId)) {
+            log.warn("WorkerAlreadyHasProvidedUtilityException is thrown");
+            throw new WorkerAlreadyHasProvidedUtilityException(
+                    "Worker with id = " + id + " already has utility with id = " + utilityId
+            );
+        } else {
             worker.getUtilities().add(utility);
-//            utility.getWorkers().add(worker);
+            utility.getWorkers().add(worker);
         }
 
         //TODO implement save/update utility
-//        utilityService.saveUtility(utility);
         workerService.saveWorker(worker);
+        utilityService.saveUtility(utility);
 
         log.info("addUtility -> done");
     }

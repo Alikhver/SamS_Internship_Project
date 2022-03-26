@@ -49,10 +49,12 @@ public class Utility {
     @JoinColumn(name = "organisation_id")
     private Organisation organisation;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY
+//            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    )
     @JoinTable(name = "worker_utility",
-            joinColumns = @JoinColumn(name = "worker_id"),
-            inverseJoinColumns = @JoinColumn(name = "utility_id")
+            joinColumns = @JoinColumn(name = "utility_id"),
+            inverseJoinColumns = @JoinColumn(name = "worker_id")
     )
     private List<Worker> workers;
 

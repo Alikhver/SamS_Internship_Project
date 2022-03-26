@@ -54,7 +54,9 @@ public class Worker {
     private List<ScheduleRecord> records;
 
     @ManyToMany(mappedBy = "workers",
-            fetch = FetchType.LAZY)
+            fetch = FetchType.LAZY
+//            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+    )
     private List<Utility> utilities;
 
     @Version

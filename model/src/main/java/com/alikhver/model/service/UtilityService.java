@@ -18,4 +18,6 @@ public interface UtilityService {
     Page<Utility> getAllUtilitiesOfOrganisation(Long organisationId, Pageable pageable);
 
     void deleteUtility(Long utilityId);
+
+    boolean utilityAlreadyHasWorker(Long utilityId, Long workerId);
 }
