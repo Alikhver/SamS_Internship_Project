@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Positive;
@@ -44,11 +43,19 @@ public class WorkerRestController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/addUtility/{utilityId}")
     @ApiOperation("Add Utility to Worker")
     public ResponseEntity<Void> addUtilityToWorker(@PathVariable @Positive Long id,
-                                                   @RequestParam @Positive Long utilityId) {
+                                                   @PathVariable @Positive Long utilityId) {
         workerFacade.addUtility(id, utilityId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}/removeUtility/{utilityId}")
+    @ApiOperation("Delete Utility from Worker")
+    public ResponseEntity<Void> removeUtilityFromWorker(@PathVariable @Positive Long id,
+                                                        @PathVariable @Positive Long utilityId) {
+        workerFacade.deleteUtility(id, utilityId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -15,9 +15,12 @@ import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import com.alikhver.web.exception.organisation.NoOrganisationFoundException;
 import com.alikhver.web.exception.utility.NoUtilityFoundException;
 import com.alikhver.web.exception.utility.UtilityAlreadyHasProvidedWorkerException;
+import com.alikhver.web.exception.utility.UtilityDoesNotHaveProvidedWorkerException;
 import com.alikhver.web.exception.worker.AttemptToAssignUtilityOfOtherOrganisationException;
+import com.alikhver.web.exception.worker.AttemptToDeleteUtilityFromWorkerOfOtherOrganisationException;
 import com.alikhver.web.exception.worker.NoWorkerFoundException;
 import com.alikhver.web.exception.worker.WorkerAlreadyHasProvidedUtilityException;
+import com.alikhver.web.exception.worker.WorkerDoesNotHaveProvidedUtilityException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -157,6 +160,64 @@ public class WorkerFacadeImpl implements WorkerFacade {
         log.info("addUtility -> done");
     }
 
+    @Override
+    @Transactional
+    public void deleteUtility(Long workerId, Long utilityId) {
+        log.info("deleteUtility -> start");
+
+        validationHelper.validateForCorrectId(workerId, "WorkerId");
+        validationHelper.validateForCorrectId(utilityId, "UtilityId");
+
+        Optional<Worker> optionalWorker = workerService.getWorker(workerId);
+        Worker worker;
+        if (optionalWorker.isPresent()) {
+            worker = optionalWorker.get();
+        } else {
+            log.warn("NoWorkerFoundException is thrown");
+            throw new NoWorkerFoundException(
+                    "Worker with id = " + workerId + " was not found"
+            );
+        }
+
+        Optional<Utility> optionalUtility = utilityService.getUtility(utilityId);
+        Utility utility;
+
+        if (optionalUtility.isPresent()) {
+            utility = optionalUtility.get();
+        } else {
+            log.warn("NoUtilityFoundException is thrown");
+            throw new NoUtilityFoundException(
+                    "Utility with id = " + workerId + " was not found"
+            );
+        }
+
+        if (!Objects.equals(utility.getOrganisation().getId(), worker.getOrganisation().getId())) {
+            log.warn("AttemptToDeleteUtilityOfOtherOrganisationException is thrown");
+            throw new AttemptToDeleteUtilityFromWorkerOfOtherOrganisationException(
+                    "Utility belongs to other Organisation than Worker"
+            );
+        } else if (!utilityService.utilityAlreadyHasWorker(utilityId, workerId)) {
+            log.warn("UtilityDoesNotHaveProvidedWorkerException is thrown");
+            throw new UtilityDoesNotHaveProvidedWorkerException(
+                    "Utility with id = " + utilityId + " does not have worker with id = " + workerId
+            );
+        } else if (!workerService.workerAlreadyHasUtility(workerId, utilityId)) {
+            log.warn("WorkerDoesNotHaveProvidedUtilityException is thrown");
+            throw new WorkerDoesNotHaveProvidedUtilityException(
+                    "Worker with id = " + workerId + " does not have utility with id = " + utilityId
+            );
+
+        }
+
+        worker.getUtilities().removeIf(ut -> ut.getId().equals(utilityId));
+        utility.getWorkers().removeIf(w -> w.getId().equals(workerId));
+
+        workerService.saveWorker(worker);
+        utilityService.saveUtility(utility);
+
+        log.info("deleteUtility -> done");
+    }
+
     //TODO implement deleteUtilityFromWorker
 
     @Override
@@ -185,3 +246,4 @@ public class WorkerFacadeImpl implements WorkerFacade {
         return response;
     }
 }
+

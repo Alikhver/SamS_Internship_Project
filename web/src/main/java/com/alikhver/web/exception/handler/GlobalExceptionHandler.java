@@ -10,7 +10,9 @@ import com.alikhver.web.exception.user.NoUserFoundException;
 import com.alikhver.web.exception.user.UserAlreadyExistsException;
 import com.alikhver.web.exception.utility.NoUtilityFoundException;
 import com.alikhver.web.exception.utility.UtilityAlreadyExistsException;
+import com.alikhver.web.exception.utility.UtilityDoesNotHaveProvidedWorkerException;
 import com.alikhver.web.exception.worker.AttemptToAssignUtilityOfOtherOrganisationException;
+import com.alikhver.web.exception.worker.AttemptToDeleteUtilityFromWorkerOfOtherOrganisationException;
 import com.alikhver.web.exception.worker.NoWorkerFoundException;
 import com.alikhver.web.exception.worker.WorkerAlreadyHasProvidedUtilityException;
 import org.springframework.http.HttpStatus;
@@ -126,6 +128,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(WorkerAlreadyHasProvidedUtilityException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<ErrorResponse> handle(WorkerAlreadyHasProvidedUtilityException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UtilityDoesNotHaveProvidedWorkerException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handle(UtilityDoesNotHaveProvidedWorkerException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(AttemptToDeleteUtilityFromWorkerOfOtherOrganisationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handle(AttemptToDeleteUtilityFromWorkerOfOtherOrganisationException e, HttpServletRequest request) {
         ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
