@@ -2,7 +2,7 @@ package com.alikhver.web;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest()
 class WebApplicationTests {
 
 //    @Test
