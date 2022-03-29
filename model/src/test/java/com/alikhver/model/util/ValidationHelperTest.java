@@ -8,6 +8,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ModelConfigurationTest.class,
         loader = AnnotationConfigContextLoader.class)
@@ -17,16 +23,23 @@ public class ValidationHelperTest {
     private ValidationHelper validationHelper;
 
     @Test
-    public void whenCorrectId_validateForCorrectId_Test() {
+    public void validateForCorrectIdWhenCorrectIdTest() {
         //Given
         Long correctId = 1L;
 
+        ValidationHelper validationHelper = mock(ValidationHelper.class);
+
+
         //When
-        validationHelper.validateForCorrectId(correctId, "Id");
+        doNothing().when(validationHelper).validateForCorrectId(isA(Long.class), isA(String.class));
+        validationHelper.validateForCorrectId(correctId, "CorrectId");
+
+        //Then
+        verify(validationHelper, times(1)).validateForCorrectId(correctId, "CorrectId");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenIncorrectId_validateForCorrectId_Test() {
+    public void validateForCorrectIdWhenIncorrectIdTest() {
         //Given
         Long incorrectId = -1L;
 
@@ -35,7 +48,7 @@ public class ValidationHelperTest {
     }
 
     @Test
-    public void whenCorrectString_validateForCorrectString_Test() {
+    public void validateForCorrectStringWhenCorrectStringTest() {
         //Given
         String correctStr = "CorrectString";
 
@@ -44,7 +57,7 @@ public class ValidationHelperTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenEmptyString_validateForCorrectString_Test() {
+    public void validateForCorrectStringWhenEmptyStringTest() {
         //Given
         String incorrectString = "";
 
@@ -53,7 +66,7 @@ public class ValidationHelperTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenStringContainsOnlyWhitespaces_validateForCorrectString_Test() {
+    public void validateForCorrectStringWhenStringContainsOnlyWhitespacesTest() {
         //Given
         String incorrectStr = "   ";
 
@@ -62,7 +75,7 @@ public class ValidationHelperTest {
     }
 
     @Test
-    public void whenCorrectPrice_validateForCorrectPrice_Test() {
+    public void validateForCorrectPriceWhenCorrectPriceTest() {
         //Given
         Double correctPrice = 213D;
 
@@ -71,7 +84,7 @@ public class ValidationHelperTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenIncorrectCorrectPrice_validateForCorrectPrice_Test() {
+    public void validateForCorrectPriceWhenIncorrectCorrectPriceTest() {
         //Given
         Double incorrectPrice = -213D;
 
