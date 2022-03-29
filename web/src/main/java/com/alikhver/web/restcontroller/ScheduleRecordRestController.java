@@ -1,4 +1,4 @@
-package com.alikhver.web.controller;
+package com.alikhver.web.restcontroller;
 
 import com.alikhver.web.facade.ScheduleRecordFacade;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.alikhver.web.controller;
+package com.alikhver.web.restcontroller;
 
 import com.alikhver.web.dto.user.request.CreateUserRequest;
 import com.alikhver.web.dto.user.request.UpdateUserRequest;
