@@ -2,3 +2,19 @@
     font-size: 15px;
     color: rgb(179, 179, 179)
 }
+
+.option {
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px
+}
+
+.master_name {
+    margin-top: -15px;
+}
+
+
+/*@media (max-width: 1200px) {*/
+/*    .option {*/
+/*        width: 500px;*/
+/*    }*/
+/*}*/
