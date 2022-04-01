@@ -15,4 +15,6 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
     Page<Worker> findAllByOrganisationId(Long id, Pageable pageable);
 
     boolean existsWorkerByIdAndUtilitiesId(long id, long utilityId);
+
+    Page<Worker> findWorkerByUtilitiesId(Long utilityId, Pageable pageable);
 }

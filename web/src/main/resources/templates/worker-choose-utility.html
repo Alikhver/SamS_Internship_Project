@@ -31,7 +31,8 @@
 
 <th:block th:each="utility:${utilities}">
     <div class="utility d-flex container-fluid col-6 my-3">
-        <a th:href="@{/utility/{id}/workers(id=${utility.id})}">
+        <a href="#">
+<!--        <a th:href="@{/utility/{id}/workers(id=${utility.id})}">-->
             <div class="d-flex flex-column">
                 <p th:text="${utility.description}"></p>
                 <p th:text="${utility.price}"></p>

@@ -45,10 +45,9 @@ public class OrganisationController {
                                       @RequestParam(defaultValue = "0") @PositiveOrZero int page,
                                       @RequestParam(defaultValue = "5") @Positive int size,
                                       ModelAndView modelAndView) {
-        var utilities = organisationFacade.getUtilities(id, page, size);
+        var utilities= organisationFacade.getUtilities(id, page, size);
 
         modelAndView.addObject("utilities", utilities.getContent());
-        modelAndView.addObject("orgId", id);
         modelAndView.setViewName("utilities");
 
         return modelAndView;

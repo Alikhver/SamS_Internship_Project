@@ -7,7 +7,9 @@ import com.alikhver.model.service.OrganisationService;
 import com.alikhver.model.service.UtilityService;
 import com.alikhver.model.service.WorkerService;
 import com.alikhver.model.util.ValidationHelper;
+import com.alikhver.web.converter.utility.UtilityConverter;
 import com.alikhver.web.converter.worker.WorkerConverter;
+import com.alikhver.web.dto.utility.response.GetUtilityResponse;
 import com.alikhver.web.dto.worker.request.CreateWorkerRequest;
 import com.alikhver.web.dto.worker.request.UpdateWorkerRequest;
 import com.alikhver.web.dto.worker.response.CreateWorkerResponse;
@@ -23,6 +25,9 @@ import com.alikhver.web.exception.worker.WorkerAlreadyHasProvidedUtilityExceptio
 import com.alikhver.web.exception.worker.WorkerDoesNotHaveProvidedUtilityException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +43,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
     private final UtilityService utilityService;
     private final WorkerConverter workerConverter;
     private final ValidationHelper validationHelper;
+    private final UtilityConverter utilityConverter;
 
     @Override
     public GetWorkerResponse getWorkerById(Long id) {
@@ -218,7 +224,25 @@ public class WorkerFacadeImpl implements WorkerFacade {
         log.info("deleteUtility -> done");
     }
 
-    //TODO implement deleteUtilityFromWorker
+    @Override
+    @Transactional(readOnly = true)
+    public Page<GetUtilityResponse> getUtilitiesOfWorker(Long workerId, int page, int size) {
+        log.info("getUtilitiesOfWorker -> start");
+
+        validationHelper.validateForCorrectId(workerId, "WorkerId");
+        if (!workerService.existsWorker(workerId)) {
+            throw new NoWorkerFoundException(
+                    "Worker with id " + workerId + " was not found"
+            );
+        }
+        Pageable pageable = PageRequest.of(page, size);
+        var utilities = utilityService.getUtilitiesByWorkerId(workerId, pageable);
+
+        var response = utilityConverter.mapToPageOfGetUtilityResponse(utilities);
+
+        log.info("getUtilitiesOfWorker -> done");
+        return response;
+    }
 
     @Override
     @Transactional

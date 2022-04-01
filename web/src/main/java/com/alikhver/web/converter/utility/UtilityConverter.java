@@ -45,7 +45,7 @@ public class UtilityConverter {
         return response;
     }
 
-    public Page<GetUtilityResponse> mapToListOfGetUtilityResponse(Page<Utility> utilities) {
+    public Page<GetUtilityResponse> mapToPageOfGetUtilityResponse(Page<Utility> utilities) {
         log.info("mapToListOfGetUtilityResponse -> start");
 
         var response = pageOfUtilitiesToPageOfGetUtilityResponseConverter.convert(utilities);

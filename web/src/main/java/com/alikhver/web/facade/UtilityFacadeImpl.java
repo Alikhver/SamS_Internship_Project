@@ -4,17 +4,24 @@ import com.alikhver.model.entity.Organisation;
 import com.alikhver.model.entity.Utility;
 import com.alikhver.model.service.OrganisationService;
 import com.alikhver.model.service.UtilityService;
+import com.alikhver.model.service.WorkerService;
 import com.alikhver.model.util.ValidationHelper;
 import com.alikhver.web.converter.utility.UtilityConverter;
+import com.alikhver.web.converter.worker.WorkerConverter;
 import com.alikhver.web.dto.utility.request.CreateUtilityRequest;
 import com.alikhver.web.dto.utility.request.UpdateUtilityRequest;
 import com.alikhver.web.dto.utility.response.CreateUtilityResponse;
 import com.alikhver.web.dto.utility.response.GetUtilityResponse;
+import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import com.alikhver.web.exception.organisation.NoOrganisationFoundException;
 import com.alikhver.web.exception.utility.NoUtilityFoundException;
 import com.alikhver.web.exception.utility.UtilityAlreadyExistsException;
+import com.alikhver.web.exception.worker.NoWorkerFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +35,8 @@ public class UtilityFacadeImpl implements UtilityFacade {
     private final OrganisationService organisationService;
     private final UtilityConverter utilityConverter;
     private final ValidationHelper validationHelper;
+    private final WorkerService workerService;
+    private final WorkerConverter workerConverter;
 
     @Override
     public GetUtilityResponse getUtility(Long id) {
@@ -93,6 +102,25 @@ public class UtilityFacadeImpl implements UtilityFacade {
 
             log.info("deleteUtility -> done");
         }
+    }
+
+    @Override
+    public Page<GetWorkerResponse> getWorkersOfUtility(Long utilityId, int page, int size) {
+        log.info("getWorkersOfUtility -> start");
+
+        validationHelper.validateForCorrectId(utilityId, "WorkerId");
+        if (!utilityService.existsUtility(utilityId)) {
+            throw new NoWorkerFoundException(
+                    "Utility with id " + utilityId + " was not found"
+            );
+        }
+        Pageable pageable = PageRequest.of(page, size);
+        var workers = workerService.getWorkersByUtilityId(utilityId, pageable);
+
+        var response = workerConverter.mapToPageOfGetWorkerResponse(workers);
+
+        log.info("getWorkersOfUtility -> done");
+        return response;
     }
 
     @Override

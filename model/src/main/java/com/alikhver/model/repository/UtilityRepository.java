@@ -14,4 +14,6 @@ public interface UtilityRepository extends JpaRepository<Utility, Long> {
 
     boolean existsByIdAndWorkersId(Long id, Long workerId);
 
+    Page<Utility> findUtilitiesByWorkersId(Long workerId, Pageable pageable);
+
 }

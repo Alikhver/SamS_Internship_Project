@@ -108,6 +108,18 @@ public class UtilityServiceImpl implements UtilityService {
         return response;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Utility> getUtilitiesByWorkerId(Long workerId, Pageable pageable) {
+        log.info("getUtilitiesOfWorker -> start");
+
+        validationHelper.validateForCorrectId(workerId, "WorkerId");
+        var response = repository.findUtilitiesByWorkersId(workerId, pageable);
+
+        log.info("getUtilitiesOfWorker -> done");
+        return response;
+    }
+
     private void validateUtility(Utility utility) {
         log.info("validateUtility -> start");
 

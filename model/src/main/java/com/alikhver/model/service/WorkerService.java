@@ -18,4 +18,6 @@ public interface WorkerService {
     Page<Worker> findAllWorkersOfOrganisation(Long organisationId, Pageable pageable);
 
     boolean workerAlreadyHasUtility(Long workerId, Long utilityId);
+
+    Page<Worker> getWorkersByUtilityId(Long utilityId, Pageable pageable);
 }

@@ -155,7 +155,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         Pageable pageable = PageRequest.of(page, size);
         Page<Utility> utilities = utilityService.getAllUtilitiesOfOrganisation(organisationId, pageable);
 
-        var response = utilityConverter.mapToListOfGetUtilityResponse(utilities);
+        var response = utilityConverter.mapToPageOfGetUtilityResponse(utilities);
 
         log.info("getUtilities -> done");
         return response;
