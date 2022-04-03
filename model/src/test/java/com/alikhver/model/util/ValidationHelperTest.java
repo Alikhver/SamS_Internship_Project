@@ -28,29 +28,31 @@ public class ValidationHelperTest {
     public void validateForCorrectIdWhenCorrectIdTest() {
         //Given
         Long correctId = 1L;
+        String varName = "CorrectId";
 
         //When
-        validationHelper.validateForCorrectId(correctId, "CorrectId");
+        validationHelper.validateForCorrectId(correctId, varName);
 
         //Then
-        verify(validationHelper, times(1)).validateForCorrectId(correctId, "CorrectId");
+        verify(validationHelper, times(1)).validateForCorrectId(correctId, varName);
     }
 
     @Test
     public void validateForCorrectIdWhenIncorrectIdTest() {
         //Given
         Long incorrectId = -1L;
+        String varName = "IncorrectId";
 
         //When
         Exception e = assertThrows(IllegalArgumentException.class,
-                () -> validationHelper.validateForCorrectId(incorrectId, "IncorrectId")
+                () -> validationHelper.validateForCorrectId(incorrectId, varName)
         );
 
         //Then
         String expected = "IncorrectId must not be empty. It must be positive number";
         String actual = e.getMessage();
 
-        verify(validationHelper, times(1)).validateForCorrectId(incorrectId, "IncorrectId");
+        verify(validationHelper, times(1)).validateForCorrectId(incorrectId, varName);
 
         assertEquals(expected, actual);
     }

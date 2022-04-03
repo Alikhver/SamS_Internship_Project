@@ -29,9 +29,10 @@ public class OrganisationServiceImpl implements OrganisationService {
         log.info("getOrganisation -> start");
 
         validationHelper.validateForCorrectId(organisationId, "OrganisationId");
+        var response = repository.findById(organisationId);
 
         log.info("getOrganisation -> done");
-        return repository.findById(organisationId);
+        return response;
     }
 
     @Override
@@ -40,9 +41,10 @@ public class OrganisationServiceImpl implements OrganisationService {
         log.info("existsById -> start");
 
         validationHelper.validateForCorrectId(organisationId, "OrganisationId");
+        var response = repository.existsById(organisationId);
 
         log.info("existsById -> done");
-        return repository.existsById(organisationId);
+        return response;
     }
 
     @Override
@@ -62,9 +64,10 @@ public class OrganisationServiceImpl implements OrganisationService {
         log.info("existsOrganisationByName -> start");
 
         validationHelper.validateForCorrectString(name, "Organisation Name");
+        var response = repository.existsOrganisationByName(name);
 
         log.info("existsOrganisationByName -> done");
-        return repository.existsOrganisationByName(name);
+        return response;
     }
 
     @Override
@@ -72,9 +75,10 @@ public class OrganisationServiceImpl implements OrganisationService {
         log.info("saveOrganisation -> start");
 
         validateOrganisation(organisation);
+        var response = repository.save(organisation);
 
         log.info("saveOrganisation -> done");
-        return repository.save(organisation);
+        return response;
     }
 
     @Override
