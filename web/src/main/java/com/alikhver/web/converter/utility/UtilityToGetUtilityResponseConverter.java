@@ -9,12 +9,15 @@ import org.springframework.stereotype.Component;
 public class UtilityToGetUtilityResponseConverter implements Converter<Utility, GetUtilityResponse> {
     @Override
     public GetUtilityResponse convert(Utility utility) {
+        boolean hasWorkers = utility.getWorkers().size() != 0;
+
         return GetUtilityResponse.builder()
                 .id(utility.getId())
                 .name(utility.getName())
                 .description(utility.getDescription())
                 .price(utility.getPrice())
                 .organisationId(utility.getOrganisation().getId())
+                .hasWorkers(hasWorkers)
                 .build();
     }
 }

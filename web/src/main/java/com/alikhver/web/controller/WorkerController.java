@@ -13,12 +13,12 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
 @Controller
-@RequestMapping("/worker")
+@RequestMapping("/worker/{id}")
 @RequiredArgsConstructor
 public class WorkerController {
     private final WorkerFacade workerFacade;
 
-    @GetMapping("/{id}/utilities")
+    @GetMapping("/utilities")
     public ModelAndView viewUtilitiesOfWorker(@PathVariable(name = "id") @Positive Long workerId,
                                               @RequestParam(defaultValue = "0") @PositiveOrZero int page,
                                               @RequestParam(defaultValue = "5") @Positive int size,
@@ -28,6 +28,18 @@ public class WorkerController {
 
         modelAndView.addObject("utilities", utilities.getContent());
         modelAndView.setViewName("worker-choose-utility");
+
+        return modelAndView;
+    }
+
+    @GetMapping("/select-time")
+    public ModelAndView viewWorkerTime(@PathVariable(name = "id") @Positive Long workerId,
+                                       @RequestParam(defaultValue = "0") @PositiveOrZero int page,
+                                       @RequestParam(defaultValue = "5") @Positive int size,
+                                       ModelAndView modelAndView) {
+
+
+        modelAndView.setViewName("select-time");
 
         return modelAndView;
     }

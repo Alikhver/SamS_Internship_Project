@@ -11,4 +11,5 @@ public class GetUtilityResponse {
     private String description;
     private double price;
     private long organisationId;
+    private boolean hasWorkers;
 }

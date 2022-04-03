@@ -48,6 +48,7 @@ public class OrganisationController {
         var utilities= organisationFacade.getUtilities(id, page, size);
 
         modelAndView.addObject("utilities", utilities.getContent());
+        modelAndView.addObject("orgId", id);
         modelAndView.setViewName("utilities");
 
         return modelAndView;

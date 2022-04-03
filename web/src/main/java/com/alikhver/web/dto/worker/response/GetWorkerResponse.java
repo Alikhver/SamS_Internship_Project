@@ -11,4 +11,5 @@ public class GetWorkerResponse {
     private final String lastName;
     private final String description;
     private final long organisationId;
+    private final boolean hasUtilities;
 }

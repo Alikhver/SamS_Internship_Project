@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -31,9 +31,7 @@
 
 <th:block th:each="utility:${utilities}">
     <div class="utility d-flex container-fluid col-6 my-3">
-        <a th:href="@{/organisation/{id}(id=${orgId})}"
-           th:onclick="localStorage.setItem('utilityId', [[${utility.id}]]);"
-        >
+        <a th:href="@{/utility/{id}/workers(id=${utility.id})}">
             <div class="d-flex flex-column">
                 <p th:text="${utility.description}"></p>
                 <p th:text="${utility.price}"></p>
