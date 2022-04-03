@@ -3,14 +3,13 @@ package com.alikhver.model.util;
 import com.alikhver.model.configuration.ModelConfigurationTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -19,32 +18,41 @@ import static org.mockito.Mockito.verify;
         loader = AnnotationConfigContextLoader.class)
 public class ValidationHelperTest {
 
-    @Autowired
-    private ValidationHelper validationHelper;
+    private static final ValidationHelper validationHelper;
+
+    static {
+        validationHelper = spy(ValidationHelper.class);
+    }
 
     @Test
     public void validateForCorrectIdWhenCorrectIdTest() {
         //Given
         Long correctId = 1L;
 
-        ValidationHelper validationHelper = mock(ValidationHelper.class);
-
-
         //When
-        doNothing().when(validationHelper).validateForCorrectId(isA(Long.class), isA(String.class));
         validationHelper.validateForCorrectId(correctId, "CorrectId");
 
         //Then
         verify(validationHelper, times(1)).validateForCorrectId(correctId, "CorrectId");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void validateForCorrectIdWhenIncorrectIdTest() {
         //Given
         Long incorrectId = -1L;
 
         //When
-        validationHelper.validateForCorrectId(incorrectId, "IncorrectId");
+        Exception e = assertThrows(IllegalArgumentException.class,
+                () -> validationHelper.validateForCorrectId(incorrectId, "IncorrectId")
+        );
+
+        //Then
+        String expected = "IncorrectId must not be empty. It must be positive number";
+        String actual = e.getMessage();
+
+        verify(validationHelper, times(1)).validateForCorrectId(incorrectId, "IncorrectId");
+
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -53,25 +61,46 @@ public class ValidationHelperTest {
         String correctStr = "CorrectString";
 
         //When
-        validationHelper.validateForCorrectString(correctStr, "CorrectStr");
+        validationHelper.validateForCorrectString(correctStr, "CorrectString");
+
+        //Then
+        verify(validationHelper, times(1)).validateForCorrectString(correctStr, "CorrectString");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void validateForCorrectStringWhenEmptyStringTest() {
         //Given
         String incorrectString = "";
 
         //When
-        validationHelper.validateForCorrectString(incorrectString, "incorrectString");
+        Exception e = assertThrows(IllegalArgumentException.class,
+                () -> validationHelper.validateForCorrectString(incorrectString, "IncorrectString")
+        );
+
+        //Then
+        String expected = "IncorrectString must not be empty";
+        String actual = e.getMessage();
+
+        assertEquals(expected, actual);
+        verify(validationHelper, times(1)).validateForCorrectString(incorrectString, "IncorrectString");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void validateForCorrectStringWhenStringContainsOnlyWhitespacesTest() {
         //Given
         String incorrectStr = "   ";
 
         //When
-        validationHelper.validateForCorrectString(incorrectStr, "incorrectStr");
+        Exception e = assertThrows(IllegalArgumentException.class,
+                () -> validationHelper.validateForCorrectString(incorrectStr, "IncorrectStr")
+        );
+
+        //Then
+        String expected = "IncorrectStr must not be empty";
+        String actual = e.getMessage();
+
+        assertEquals(expected, actual);
+        verify(validationHelper, times(1)).validateForCorrectString(incorrectStr, "IncorrectStr");
     }
 
     @Test
@@ -81,14 +110,26 @@ public class ValidationHelperTest {
 
         //When
         validationHelper.validateForCorrectPrice(correctPrice, "CorrectPrice");
+
+        //Then
+        verify(validationHelper, times(1)).validateForCorrectPrice(correctPrice, "CorrectPrice");
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void validateForCorrectPriceWhenIncorrectCorrectPriceTest() {
+    @Test
+    public void validateForCorrectPriceWhenIncorrectPriceTest() {
         //Given
         Double incorrectPrice = -213D;
 
         //When
-        validationHelper.validateForCorrectPrice(incorrectPrice, "incorrectPrice");
+        Exception e = assertThrows(IllegalArgumentException.class,
+                () -> validationHelper.validateForCorrectPrice(incorrectPrice, "IncorrectPrice")
+        );
+
+        //Then
+        String expected = "IncorrectPrice must not be empty. It must be positive number";
+        String actual = e.getMessage();
+
+        assertEquals(expected, actual);
+        verify(validationHelper).validateForCorrectPrice(incorrectPrice, "IncorrectPrice");
     }
 }
