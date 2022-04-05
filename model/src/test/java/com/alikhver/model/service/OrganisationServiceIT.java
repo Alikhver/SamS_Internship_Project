@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ModelConfigurationTest.class,
         loader = AnnotationConfigContextLoader.class)
-public class OrganisationServiceTests {
+public class OrganisationServiceIT {
     @Autowired
     private OrganisationService organisationService;
 
@@ -213,7 +213,7 @@ public class OrganisationServiceTests {
 
         //Then
         Long orgId = expected.getId();
-        //TODO
+        //TODO how to refactor without isPresent() check warning
         Organisation actual = organisationService.getOrganisation(orgId).get();
 
         assertEquals(expected.getId(), actual.getId());
