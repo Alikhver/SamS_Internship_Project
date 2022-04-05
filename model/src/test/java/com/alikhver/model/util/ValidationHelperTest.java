@@ -3,26 +3,22 @@ package com.alikhver.model.util;
 import com.alikhver.model.configuration.ModelConfigurationTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(classes = ModelConfigurationTest.class,
         loader = AnnotationConfigContextLoader.class)
 public class ValidationHelperTest {
-
-    private static final ValidationHelper validationHelper;
-
-    static {
-        validationHelper = spy(ValidationHelper.class);
-    }
+    @Spy
+    private ValidationHelper validationHelper;
 
     @Test
     public void validateForCorrectIdWhenCorrectIdTest() {

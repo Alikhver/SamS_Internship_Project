@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -60,6 +61,12 @@ public class OrganisationServiceImpl implements OrganisationService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<Organisation> getAll() {
+        return repository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public boolean existsOrganisationByName(String name) {
         log.info("existsOrganisationByName -> start");
 
@@ -89,6 +96,15 @@ public class OrganisationServiceImpl implements OrganisationService {
         repository.deleteById(organisationId);
 
         log.info("deleteOrganisation -> done");
+    }
+
+    @Override
+    public void deleteAll() {
+        log.info("deleteAll -> start");
+
+        repository.deleteAll();
+
+        log.info("deleteAll -> done");
     }
 
     private void validateOrganisation(Organisation organisation) {
