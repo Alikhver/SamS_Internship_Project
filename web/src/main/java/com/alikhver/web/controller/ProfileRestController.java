@@ -59,4 +59,6 @@ public class ProfileRestController {
         profileFacade.updateProfile(id, request);
     }
 
+    //TODO implement delete profile
+
 }

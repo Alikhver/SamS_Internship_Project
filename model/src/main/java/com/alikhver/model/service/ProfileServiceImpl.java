@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -47,6 +48,17 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<Profile> getAllProfiles() {
+        log.info("getProfiles -> start");
+
+        var response = repository.findAll();
+
+        log.info("getProfiles -> done");
+        return response;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Optional<Profile> getProfile(Long profileId) {
         log.info("getProfile -> start");
 
@@ -78,6 +90,15 @@ public class ProfileServiceImpl implements ProfileService {
 
         log.info("isUserAlreadyBounded -> done");
         return isBounded;
+    }
+
+    @Override
+    public void deleteAll() {
+        log.info("deleteAll -> start");
+
+        repository.deleteAll();
+
+        log.info("deleteAll -> done");
     }
 
     private void validateProfile(Profile profile) {
