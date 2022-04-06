@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
@@ -288,6 +289,7 @@ public class WorkerServiceIT {
 
         utilityService.deleteUtility(utility.getId());
     }
+
     @Test
     @Transactional
     public void workerAlreadyHasUtilityWhenDoesntHaveUtilityTest() {
@@ -331,5 +333,42 @@ public class WorkerServiceIT {
 
     }
 
+    @Test
+    @Transactional
+    public void getWorkersByUtilityId() {//Given
+        Worker expected = workerService.findAllWorkersOfOrganisation(organisation.getId()).get(0);
 
+        Utility utility = Utility.builder()
+                .name("Utility")
+                .description("Description")
+                .organisation(organisation)
+                .price(1.65D)
+                .build();
+
+        List<Utility> utilities = new ArrayList<>();
+        utilities.add(utility);
+
+        List<Worker> workers = new ArrayList<>();
+        workers.add(expected);
+
+        utility.setWorkers(workers);
+        expected.setUtilities(utilities);
+
+        workerService.saveWorker(expected);
+        utilityService.saveUtility(utility);
+
+        Pageable pageable = PageRequest.of(0, 5);
+
+        //When
+        Page<Worker> pages = workerService.getWorkersByUtilityId(utility.getId(), pageable);
+        Worker actual = pages.getContent().get(0);
+
+        //Then
+
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getDescription(), actual.getDescription());
+        assertEquals(expected.getFirstName(), actual.getFirstName());
+        assertEquals(expected.getLastName(), actual.getLastName());
+        assertEquals(expected.getOrganisation().getId(), actual.getOrganisation().getId());
+    }
 }

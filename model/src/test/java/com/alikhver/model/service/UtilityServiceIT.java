@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
@@ -328,6 +329,24 @@ public class UtilityServiceIT {
 
     @Test
     @Transactional
+    public void deleteAllUtilitiesOfOrganisation() {
+        //Given
+        int size = utilityService.getUtilitiesOfOrganisation(organisation.getId()).size();
+
+        assertNotEquals(0, size);
+
+        //When
+        utilityService.deleteAllUtilitiesOfOrganisation(organisation.getId());
+        int sizeActual = utilityService.getUtilitiesOfOrganisation(organisation.getId()).size();
+
+        //Then
+        int sizeExpected = 0;
+
+        assertEquals(sizeExpected, sizeActual);
+    }
+
+    @Test
+    @Transactional
     public void deleteAllTest() {
         //Given
         int size = utilityService.getUtilitiesOfOrganisation(organisation.getId()).size();
@@ -341,5 +360,46 @@ public class UtilityServiceIT {
         int sizeActual = utilityService.getUtilitiesOfOrganisation(organisation.getId()).size();
 
         assertEquals(sizeExpected, sizeActual);
+    }
+
+    @Test
+    @Transactional
+    public void getUtilitiesByWorkerIdTest() {
+        //Given
+        Utility expected = utilityService.getUtilitiesOfOrganisation(organisation.getId()).get(0);
+
+        Worker worker = Worker.builder()
+                .firstName("FirstName")
+                .lastName("LastName")
+                .description("Desc")
+                .organisation(organisation)
+                .build();
+
+        List<Utility> utilities = new ArrayList<>();
+        utilities.add(expected);
+
+        List<Worker> workers = new ArrayList<>();
+        workers.add(worker);
+
+        expected.setWorkers(workers);
+        worker.setUtilities(utilities);
+
+
+        workerService.saveWorker(worker);
+        utilityService.saveUtility(expected);
+
+        Pageable pageable = PageRequest.of(0, 5);
+
+        //When
+        Page<Utility> pages = utilityService.getUtilitiesByWorkerId(worker.getId(), pageable);
+        Utility actual = pages.getContent().get(0);
+
+        //Then
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getPrice(), actual.getPrice());
+        assertEquals(expected.getName(), actual.getName());
+        assertEquals(expected.getDescription(), actual.getDescription());
+
+        workerService.deleteWorker(worker.getId());
     }
 }
