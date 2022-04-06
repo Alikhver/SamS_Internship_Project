@@ -285,7 +285,8 @@ public class WorkerServiceIT {
         boolean hasUtilityExpected = true;
 
         assertEquals(hasUtilityExpected, hasUtilityActual);
-        utilityService.deleteAllUtilitiesOfOrganisation(organisation.getId());
+
+        utilityService.deleteUtility(utility.getId());
     }
     @Test
     @Transactional

@@ -8,7 +8,6 @@ import com.alikhver.model.entity.Utility;
 import com.alikhver.model.entity.Worker;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -289,15 +290,40 @@ public class UtilityServiceIT {
     }
 
     @Test
-    @Ignore
     @Transactional
-    public void utilityAlreadyHasWorkerTest() {
+    public void utilityAlreadyHasWorkerWhenHasWorkerTest() {
         //Given
         Utility utility = utilityService.getUtilitiesOfOrganisation(organisation.getId()).get(0);
-        Worker worker = Worker.builder()
 
+        Worker worker = Worker.builder()
+                .firstName("FirstName")
+                .lastName("LastName")
+                .description("Desc")
+                .organisation(organisation)
                 .build();
 
+        List<Utility> utilities = new ArrayList<>();
+        utilities.add(utility);
+
+        List<Worker> workers = new ArrayList<>();
+        workers.add(worker);
+
+        utility.setWorkers(workers);
+        worker.setUtilities(utilities);
+
+
+        workerService.saveWorker(worker);
+        utilityService.saveUtility(utility);
+
+        //When
+        boolean hasWorkerActual = utilityService.utilityAlreadyHasWorker(utility.getId(), worker.getId());
+
+        //Then
+        boolean hasUtilityExpected = true;
+
+        assertEquals(hasUtilityExpected, hasWorkerActual);
+
+        workerService.deleteWorker(worker.getId());
     }
 
     @Test
