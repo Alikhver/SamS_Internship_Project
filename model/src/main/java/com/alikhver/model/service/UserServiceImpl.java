@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -44,6 +45,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<User> getUsers() {
+        log.info("getUsers -> start");
+
+        var response = userRepository.findAll();
+
+        log.info("getUsers -> done");
+        return response;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public boolean existsUserByLogin(String login) {
         log.info("existsUserByLogin -> done");
 
@@ -72,6 +84,15 @@ public class UserServiceImpl implements UserService {
 
         log.info("deleteUser -> done");
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public void deleteAll() {
+        log.info("deleteAll -> start");
+
+        userRepository.deleteAll();
+
+        log.info("deleteAll -> done");
     }
 
     @Override

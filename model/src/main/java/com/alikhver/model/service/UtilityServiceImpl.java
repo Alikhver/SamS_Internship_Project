@@ -108,6 +108,15 @@ public class UtilityServiceImpl implements UtilityService {
         return response;
     }
 
+    @Override
+    public void deleteAll() {
+        log.info("deleteAll -> start");
+
+        repository.deleteAll();
+
+        log.info("deleteAll -> done");
+    }
+
     private void validateUtility(Utility utility) {
         log.info("validateUtility -> start");
 

@@ -20,4 +20,6 @@ public interface UtilityService {
     void deleteUtility(Long utilityId);
 
     boolean utilityAlreadyHasWorker(Long utilityId, Long workerId);
+
+    void deleteAll();
 }

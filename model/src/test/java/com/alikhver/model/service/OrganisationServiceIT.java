@@ -5,6 +5,7 @@ import com.alikhver.model.configuration.ModelConfigurationTest;
 import com.alikhver.model.entity.Organisation;
 import com.alikhver.model.entity.User;
 import com.alikhver.model.entity.UserRole;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,6 +48,11 @@ public class OrganisationServiceIT {
                 .build();
 
         organisationService.saveOrganisation(organisation);
+    }
+
+    @After
+    public void tearDown() {
+        organisationService.deleteAll();
     }
 
     @Test
@@ -247,7 +253,7 @@ public class OrganisationServiceIT {
     public void deleteAll() {
         //Given
         int size = organisationService.getAll().size();
-        assertNotEquals(size, 0);
+        assertNotEquals(0, size);
         //When
         organisationService.deleteAll();
 

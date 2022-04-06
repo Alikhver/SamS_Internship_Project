@@ -4,6 +4,7 @@ import com.alikhver.model.configuration.ModelConfigurationTest;
 import com.alikhver.model.entity.Profile;
 import com.alikhver.model.entity.User;
 import com.alikhver.model.entity.UserRole;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,9 +30,6 @@ public class ProfileServiceIT {
     @Autowired
     private ProfileService profileService;
 
-    @Autowired
-    private UserService userService;
-
     @Before
     public void setUp() {
         profileService.deleteAll();
@@ -52,6 +50,11 @@ public class ProfileServiceIT {
                 .build();
 
         profileService.save(profile);
+    }
+
+    @After
+    public void tearDown() {
+        profileService.deleteAll();
     }
 
     @Test
