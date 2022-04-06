@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -115,6 +116,25 @@ public class UtilityServiceImpl implements UtilityService {
         repository.deleteAll();
 
         log.info("deleteAll -> done");
+    }
+
+    @Override
+    public void deleteAllUtilitiesOfOrganisation(Long orgId) {
+        log.info("deleteAllUtilitiesOfOrganisation -> start");
+
+        repository.deleteByOrganisationId(orgId);
+
+        log.info("deleteAllUtilitiesOfOrganisation -> done");
+    }
+
+    @Override
+    public List<Utility> getUtilitiesOfOrganisation(Long orgId) {
+        log.info("getUtilitiesOfOrganisation -> start");
+
+        var response = repository.findAllByOrganisationId(orgId);
+
+        log.info("getUtilitiesOfOrganisation -> done");
+        return response;
     }
 
     private void validateUtility(Utility utility) {

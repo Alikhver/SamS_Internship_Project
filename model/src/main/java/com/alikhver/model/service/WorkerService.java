@@ -4,6 +4,7 @@ import com.alikhver.model.entity.Worker;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface WorkerService {
@@ -17,5 +18,9 @@ public interface WorkerService {
 
     Page<Worker> findAllWorkersOfOrganisation(Long organisationId, Pageable pageable);
 
+    List<Worker> findAllWorkersOfOrganisation(Long organisationId);
+
     boolean workerAlreadyHasUtility(Long workerId, Long utilityId);
+
+    void deleteWorkersOfOrganisation(Long orgId);
 }

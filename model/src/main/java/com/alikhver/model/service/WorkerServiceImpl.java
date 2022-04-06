@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -69,6 +70,16 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
+    public List<Worker> findAllWorkersOfOrganisation(Long organisationId) {
+        log.info("findAllWorkersOfOrganisation -> start");
+
+        var response = repository.findAllByOrganisationId(organisationId);
+
+        log.info("findAllWorkersOfOrganisation -> done");
+        return response;
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public boolean workerAlreadyHasUtility(Long workerId, Long utilityId) {
         log.info("workerAlreadyHasUtility -> start");
@@ -80,13 +91,22 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
+    public void deleteWorkersOfOrganisation(Long orgId) {
+        log.info("deleteWorkersOfOrganisation -> start");
+
+        repository.deleteAllByOrganisationId(orgId);
+
+        log.info("deleteWorkersOfOrganisation -> done");
+    }
+
+    @Override
     public void saveWorker(Worker worker) {
         log.info("saveWorker -> start");
 
         validateWorker(worker);
+        repository.save(worker);
 
         log.info("saveWorker -> done");
-        repository.save(worker);
     }
 
     private void validateWorker(Worker worker) {
@@ -95,9 +115,9 @@ public class WorkerServiceImpl implements WorkerService {
         validationHelper.validateForCorrectString(worker.getFirstName(), "Worker First Name");
         validationHelper.validateForCorrectString(worker.getDescription(), "Worker Last Name");
         validationHelper.validateForCorrectString(worker.getDescription(), "Worker Description");
+        validateOrganisation(worker.getOrganisation());
 
         log.info("validateWorker -> done");
-        validateOrganisation(worker.getOrganisation());
     }
 
     private void validateOrganisation(Organisation organisation) {
