@@ -1,4 +1,4 @@
-package com.alikhver.web.controller;
+package com.alikhver.web.restcontroller;
 
 import com.alikhver.web.dto.organisation.request.CreateOrganisationRequest;
 import com.alikhver.web.dto.organisation.request.UpdateOrganisationRequest;

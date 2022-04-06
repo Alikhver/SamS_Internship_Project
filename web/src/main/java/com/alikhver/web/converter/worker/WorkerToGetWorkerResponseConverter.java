@@ -9,12 +9,15 @@ import org.springframework.stereotype.Component;
 public class WorkerToGetWorkerResponseConverter implements Converter<Worker, GetWorkerResponse> {
     @Override
     public GetWorkerResponse convert(Worker worker) {
+        boolean hasUtilities = worker.getUtilities().size() != 0;
+
         return GetWorkerResponse.builder()
                 .id(worker.getId())
                 .firstName(worker.getFirstName())
                 .lastName(worker.getLastName())
                 .description(worker.getDescription())
                 .organisationId(worker.getOrganisation().getId())
+                .hasUtilities(hasUtilities)
                 .build();
     }
 }

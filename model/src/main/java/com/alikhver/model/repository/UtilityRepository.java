@@ -19,4 +19,7 @@ public interface UtilityRepository extends JpaRepository<Utility, Long> {
     boolean existsByIdAndWorkersId(Long id, Long workerId);
 
     void deleteByOrganisationId(Long orgId);
+
+    Page<Utility> findUtilitiesByWorkersId(Long workerId, Pageable pageable);
+
 }

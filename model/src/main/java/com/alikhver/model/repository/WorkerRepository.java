@@ -17,4 +17,6 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
     boolean existsWorkerByIdAndUtilitiesId(long id, long utilityId);
 
     void deleteAllByOrganisationId(Long orgId);
+
+    Page<Worker> findWorkerByUtilitiesId(Long utilityId, Pageable pageable);
 }

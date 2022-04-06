@@ -23,4 +23,6 @@ public interface WorkerService {
     boolean workerAlreadyHasUtility(Long workerId, Long utilityId);
 
     void deleteWorkersOfOrganisation(Long orgId);
+
+    Page<Worker> getWorkersByUtilityId(Long utilityId, Pageable pageable);
 }
