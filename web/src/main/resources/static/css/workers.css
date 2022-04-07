@@ -3,18 +3,17 @@
     color: rgb(179, 179, 179)
 }
 
-.option {
-    background-color: rgb(255, 255, 255);
-    border-radius: 15px
+.worker:hover {
+    cursor: pointer;
+    opacity: 0.7;
+    /*border: 1px solid black;*/
 }
 
 .master_name {
     margin-top: -15px;
 }
 
-
-/*@media (max-width: 1200px) {*/
-/*    .option {*/
-/*        width: 500px;*/
-/*    }*/
-/*}*/
+.worker {
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px;
+}

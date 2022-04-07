@@ -2,3 +2,13 @@
     font-size: 15px;
     color: rgb(156, 162, 194)
 }
+
+.option:hover {
+    cursor: pointer;
+    opacity: 0.85;
+}
+
+.option {
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px
+}

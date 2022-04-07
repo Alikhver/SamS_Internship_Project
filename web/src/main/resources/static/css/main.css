@@ -12,3 +12,9 @@ a {
 .go-back-button:hover {
     opacity: 0.5;
 }
+
+.inactive {
+    background-color: rgb(247, 247, 247);
+    border-radius: 15px;
+    opacity: 0.5;
+}
