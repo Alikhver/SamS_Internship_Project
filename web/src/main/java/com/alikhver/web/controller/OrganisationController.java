@@ -26,10 +26,29 @@ public class OrganisationController {
     private final UtilityFacade utilityFacade;
 
     @GetMapping("/{id}")
-    public ModelAndView viewOrganisation(@PathVariable @Positive Long id, ModelAndView modelAndView) {
+    public ModelAndView viewOrganisation(@PathVariable @Positive Long id,
+                                         @RequestParam(value = "worker", required = false) @Positive Long workerId,
+                                         @RequestParam(value = "utility", required = false) @Positive Long utilityId,
+                                         @RequestParam(value = "record", required = false) @Positive Long recordId,
+                                         ModelAndView modelAndView) {
         var org = organisationFacade.getOrganisation(id);
-
         modelAndView.addObject("org", org);
+
+        if (workerId != null) {
+            var worker = workerFacade.getWorkerById(workerId);
+            modelAndView.addObject("worker", worker);
+        }
+
+        if (utilityId != null) {
+            var utility = utilityFacade.getUtility(utilityId);
+            modelAndView.addObject("utility", utility);
+        }
+
+//        if (recordId != null) {
+//            var record = recordService.getRecord(recordId);
+//            modelAndView.addObject("record", record);
+//        }
+
         modelAndView.setViewName("organisation");
 
         return modelAndView;
@@ -40,10 +59,11 @@ public class OrganisationController {
                                     @RequestParam(defaultValue = "0") @PositiveOrZero int page,
                                     @RequestParam(defaultValue = "5") @Positive int size,
                                     @RequestParam(name = "utility", required = false) @Positive Long utilityId,
+                                    @RequestParam(name = "worker", required = false) @Positive Long workerId,
                                     ModelAndView modelAndView) {
         Page<GetWorkerResponse> workers;
 
-        if (utilityId == null) {
+        if (utilityId == null || workerId != null) {
             workers = organisationFacade.getWorkers(orgId, page, size);
         } else {
             workers = utilityFacade.getWorkersOfUtility(utilityId, page, size);

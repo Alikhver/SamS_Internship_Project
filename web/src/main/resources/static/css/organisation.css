@@ -1,6 +1,15 @@
+.org_name {
+    margin: 0em;
+}
+
 .org_address {
     font-size: 15px;
-    color: rgb(156, 162, 194)
+    color: rgb(156, 162, 194);
+    margin: -15px
+}
+
+.org_description {
+    margin: 0em;
 }
 
 .option:hover {
@@ -11,4 +20,13 @@
 .option {
     background-color: rgb(255, 255, 255);
     border-radius: 15px
+}
+
+.master_desc {
+    font-size: 15px;
+    color: rgb(179, 179, 179)
+}
+
+.master_name {
+    margin-top: -15px;
 }

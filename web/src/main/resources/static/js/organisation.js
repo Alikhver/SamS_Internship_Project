@@ -1,21 +1,31 @@
-$('#select-master').on('click', function () {
-    const organisationId = localStorage.getItem("organisationId");
-    const utilityId = localStorage.getItem("utilityId");
-    const workerId = localStorage.getItem("workerId");
+$('.select-master').on('click', function () {
+    const url = new URL(window.location.href);
+    const pathArr = url.pathname.split('/');
 
-    if (utilityId === null || workerId !== null) {
-        window.location.href = window.location.pathname + "/workers"
-    } else {
-        const utilityParam = "utility=" + utilityId;
-        window.location.href = "/utility/" + localStorage.getItem("utilityId") + "/workers";
-        window.location.href = organisationId + "/workers?" + utilityParam;
-    }
+    // const organisationId = parseInt(pathArr[pathArr.length - 1]);
+    // const utilityId = url.searchParams.get('utility');
+    // const workerId = url.searchParams.get('worker');
+
+    url.pathname = url.pathname + "/workers"
+
+    window.location.href = url;
+
+    // if (utilityId === null || workerId !== null) {
+    //     url.pathname = url.pathname + "/workers"
+    // } else {
+    //     url.searchParams.append('utility', utilityId);
+    //     window.location.href = "/utility/" + localStorage.getItem("utilityId") + "/workers";
+    //     window.location.href = organisationId + "/workers?" + utilityParam;
+    // }
 })
 
-$('#select-utility').on('click', function () {
-    const organisationId = localStorage.getItem("organisationId");
-    const utilityId = localStorage.getItem("utilityId");
-    const workerId = localStorage.getItem("workerId");
+$('.select-utility').on('click', function () {
+    const url = new URL(window.location.href);
+    const pathArr = url.pathname.split('/');
+
+    const organisationId = parseInt(pathArr[pathArr.length - 1]);
+    const utilityId = url.searchParams.get('utility');
+    const workerId = url.searchParams.get('worker');
 
 
     if (workerId === null || utilityId !== null) {
@@ -26,20 +36,33 @@ $('#select-utility').on('click', function () {
     }
 })
 
-$('#select-time').on('click', function () {
-    if ($('#select-time').hasClass('inactive')) {
-        return;
-    } else {
+$('.select-time').on('click', function () {
+    if (!$('.select-time').hasClass('inactive')) {
         window.location.href = "#";
     }
+})
 
+$('#trash-utility').on('click', function () {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('utility');
+    window.location.href = url.href;
+
+    localStorage.removeItem("utilityId");
+})
+
+$('#trash-worker').on('click', function () {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('worker');
+    window.location.href = url.href;
+
+    localStorage.removeItem("workerId");
 })
 
 const appendInactiveToSelectTime = function () {
-    const utilityId = localStorage.getItem("utilityId");
-    const workerId = localStorage.getItem("workerId");
+    const url = new URL(window.location.href);
+    const workerId = url.searchParams.get('worker');
 
-    if (utilityId === null || workerId === null) {
-        $('#select-time').addClass('inactive').removeClass('option');
+    if (workerId === null) {
+        $('.select-time').addClass('inactive').removeClass('option');
     }
 }

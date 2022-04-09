@@ -17,53 +17,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body class="container" style="background-color: rgb(247, 247, 247)">
-<div
-        class="d-flex container col-6 justify-content-center navbar sticky-top fixed-top"
-        style="background-color: rgb(255, 255, 255)"
->
-    <div class="col-10 d-flex flex-column">
-        <p class="text-center p-2" style="margin: 0em" th:text="${org.name}"></p>
-        <p class="p-2" style="margin: 0em" th:text="${org.description}"></p>
-        <p class="org_address text-center p-2" style="margin: -15px" th:text="${org.address}"></p>
-    </div>
-<!--    <div>-->
-        <img th:src="@{/img/person.svg}" class="img-fluid"
-             width="35">
-<!--    </div>-->
-</div>
+<th:block th:insert="~{fragment/user/organisation :: body}"></th:block>
+<!--<th:block th:insert="~{fragment/redactor/organisation :: body}"></th:block>-->
 
-<div
-        id="select-master"
-        class="option d-flex container col-6 my-3"
->
-    <div class="d-flex">
-        <img th:src="@{/img/people.svg}" class="img-fluid"
-             width="30">
-        <p class="p-1 my-3 text-center">Выбрать Специалиста</p>
-    </div>
-</div>
-
-<div
-        id="select-utility"
-        class="option d-flex container col-6 my-3"
->
-    <div class="d-flex">
-        <img th:src="@{/img/receipt-cutoff.svg}" class="img-fluid"
-             width="30">
-        <p class="p-1 my-3 text-center">Выбрать Услугу</p>
-    </div>
-</div>
-
-<div
-        id="select-time"
-        class="option d-flex container col-6 my-3"
->
-    <div class="d-flex">
-        <img th:src="@{/img/clock.svg}" class="img-fluid"
-             width="30">
-        <p class="p-1 my-3 text-center">Выбрать Дату и Время</p>
-    </div>
-</div>
 
 <script type="text/javascript" th:src="@{/js/organisation.js}"></script>
 <script type="text/javascript" th:src="@{/js/main.js}"></script>

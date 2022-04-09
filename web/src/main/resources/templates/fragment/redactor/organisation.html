@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="body">
+    <div
+            class="d-flex container col-6 justify-content-center navbar sticky-top fixed-top"
+            style="background-color: rgb(255, 255, 255)"
+    >
+        <div class="col-10 d-flex flex-column">
+            <p class="org_name text-center p-2" th:text="${org.name}"></p>
+            <p class="org_description p-2" th:text="${org.description}"></p>
+            <p class="org_address text-center p-2" th:text="${org.address}"></p>
+        </div>
+        <img th:src="@{/img/person.svg}" class="d-block mx-auto"
+             width="35">
+    </div>
+
+    <div class="select-master option d-flex container col-6 my-3">
+        <div class="d-flex">
+            <img th:src="@{/img/people.svg}" class="d-block mx-auto"
+                 width="30">
+            <p class="p-1 my-3 text-center">Изменить Специалистов</p>
+        </div>
+    </div>
+
+    <div class="select-utility option d-flex container col-6 my-3">
+        <div class="d-flex">
+            <img th:src="@{/img/receipt-cutoff.svg}" class="img-fluid"
+                 width="30">
+            <p class="p-1 my-3 text-center">Изменить Услуги</p>
+        </div>
+    </div>
+</body>
+</html>

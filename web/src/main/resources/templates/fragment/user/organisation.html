@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="body">
+    <div
+            class="d-flex container col-6 justify-content-center navbar sticky-top fixed-top"
+            style="background-color: rgb(255, 255, 255)"
+    >
+        <div class="col-10 d-flex flex-column">
+            <p class="org_name text-center p-2" th:text="${org.name}"></p>
+            <p class="org_description p-2" th:text="${org.description}"></p>
+            <p class="org_address text-center p-2" th:text="${org.address}"></p>
+        </div>
+        <img th:src="@{/img/person.svg}" class="d-block mx-auto"
+             width="35">
+    </div>
+
+    <th:block th:if="${worker}">
+        <div class=" option d-flex container-fluid col-6 px-0 my-3">
+            <div class="select-master d-flex my-3 col-11">
+                <div class="col-1 my-auto mx-auto center-box">
+                    <img th:src="@{/img/person-circle.svg}" class="d-block mx-auto"
+                         width="40">
+                </div>
+                <div class="worker_info col-10">
+                    <p class="master_desc" th:text="${worker.description}"></p>
+                    <p class="master_name" th:text="${worker.firstName}"></p>
+                </div>
+            </div>
+            <div id="trash-worker" class="col-1 d-flex">
+                <img th:src="@{/img/icons8-trash.svg}" class="img-fluid"
+                     width="30"
+                     style="opacity: 0.5">
+            </div>
+        </div>
+    </th:block>
+
+    <th:block th:unless="${worker}">
+        <div class="select-master option d-flex container col-6 my-3">
+            <div class="d-flex">
+                <img th:src="@{/img/people.svg}" class="d-block mx-auto"
+                     width="30">
+                <p class="p-1 my-3 text-center">Выбрать Специалиста</p>
+            </div>
+        </div>
+    </th:block>
+
+    <th:block th:if="${utility}">
+        <div class="option d-flex container-fluid col-6 my-3">
+            <div class="select-utility container-fluid">
+                <div class="d-flex flex-column col-11">
+                    <p th:text="${utility.description}"></p>
+                    <p th:text="${utility.price}"></p>
+                </div>
+            </div>
+            <div id="trash-utility" class="col-1 d-flex">
+                <img th:src="@{/img/icons8-trash.svg}" class="img-fluid"
+                     width="30"
+                     style="opacity: 0.5">
+            </div>
+        </div>
+    </th:block>
+
+    <th:block th:unless="${utility}">
+        <div class="select-utility option d-flex container col-6 my-3">
+            <div class="d-flex">
+                <img th:src="@{/img/receipt-cutoff.svg}" class="img-fluid"
+                     width="30">
+                <p class="p-1 my-3 text-center">Выбрать Услугу</p>
+            </div>
+        </div>
+    </th:block>
+
+    <div class="select-time option d-flex container col-6 my-3">
+        <div class="d-flex">
+            <img th:src="@{/img/clock.svg}" class="img-fluid"
+                 width="30">
+            <p class="p-1 my-3 text-center">Выбрать Дату и Время</p>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

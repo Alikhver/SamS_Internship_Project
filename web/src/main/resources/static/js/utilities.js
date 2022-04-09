@@ -1,4 +1,9 @@
-$(".utility").on("click", function () {
-    const organisationId = localStorage.getItem("organisationId")
-    window.location.href = "../" + organisationId;
-});
+const onclickUtility = function (utilityId) {
+    const url = new URL(window.location.href);
+
+    if ($('#' + utilityId).hasClass('utility')) {
+        url.searchParams.set('utility', utilityId);
+        console.log(url.href.replace('/utilities', ''));
+        window.location.href = url.href.replace('/utilities', '');
+    }
+};

@@ -31,9 +31,9 @@
 </div>
 
 <th:block th:each="utility:${utilities}">
-    <div class="d-flex container-fluid col-6 my-3"
+    <div th:id="${utility.id}" class="d-flex container-fluid col-6 my-3"
          th:classappend="${utility.hasWorkers} ? 'utility' : 'inactive'"
-         th:onclick="localStorage.setItem('utilityId', [[${utility.id}]]);"
+         th:onclick="onclickUtility([[${utility.id}]]);"
     >
         <div class="d-flex flex-column">
             <p th:text="${utility.description}"></p>
