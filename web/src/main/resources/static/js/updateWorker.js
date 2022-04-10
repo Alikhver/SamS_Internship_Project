@@ -2,23 +2,19 @@ const updateWorker = function (workerId) {
     const url = new URL(window.location.href);
 
     const firstName = $('#first-name').val();
-    validateFirstName();
 
     const lastName = $('#last-name').val();
-    validateLastName();
 
     const description = $('#description').val();
-    validateDescription();
 
-
-    const worker = {
-        firstName,
-        lastName,
-        description
-    }
-
-    const restUrl = '/workers/' + workerId;
     if (validateFirstName() && validateLastName() && validateDescription()) {
+        const restUrl = '/workers/' + workerId;
+        const worker = {
+            firstName,
+            lastName,
+            description
+        }
+
         $.ajax({
             url: restUrl,
             type: 'PUT',
@@ -32,17 +28,11 @@ const updateWorker = function (workerId) {
     }
 }
 
-$('#first-name').on('change', function () {
-    validateFirstName();
-})
+$('#first-name').on('change', validateFirstName)
 
-$('#last-name').on('change', function () {
-    validateLastName();
-})
+$('#last-name').on('change', validateLastName)
 
-$('#description').on('change', function () {
-    validateDescription();
-})
+$('#description').on('change', validateDescription)
 
 function validateFirstName() {
     const input = $('#first-name');
@@ -91,7 +81,7 @@ const deleteWorker = function (workerId) {
     $.ajax({
         url: restUrl,
         type: 'DELETE',
-        success: function() {
+        success: function () {
             url.pathname = url.pathname.replace('/' + workerId + '/update', '');
             window.location.href = url.href;
         }

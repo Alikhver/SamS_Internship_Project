@@ -1,43 +1,58 @@
 $('.select-master').on('click', function () {
     const url = new URL(window.location.href);
-    const pathArr = url.pathname.split('/');
 
-    // const organisationId = parseInt(pathArr[pathArr.length - 1]);
-    // const utilityId = url.searchParams.get('utility');
-    // const workerId = url.searchParams.get('worker');
+    url.pathname = url.pathname + "/workers";
 
-    url.pathname = url.pathname + "/workers"
+    window.location.href = url.href;
+})
 
-    window.location.href = url;
+$('.select-master-redactor').on('click', function () {
+    const url = new URL(window.location.href);
 
-    // if (utilityId === null || workerId !== null) {
-    //     url.pathname = url.pathname + "/workers"
-    // } else {
-    //     url.searchParams.append('utility', utilityId);
-    //     window.location.href = "/utility/" + localStorage.getItem("utilityId") + "/workers";
-    //     window.location.href = organisationId + "/workers?" + utilityParam;
-    // }
+    url.pathname = url.pathname + "/workers";
+
+    for (const key of url.searchParams.keys()) {
+        console.log(key)
+        url.searchParams.delete(key);
+    }
+
+    window.location.href = url.href;
 })
 
 $('.select-utility').on('click', function () {
     const url = new URL(window.location.href);
-    const pathArr = url.pathname.split('/');
 
-    const organisationId = parseInt(pathArr[pathArr.length - 1]);
-    const utilityId = url.searchParams.get('utility');
-    const workerId = url.searchParams.get('worker');
+    url.pathname = url.pathname + "/utilities";
 
+    window.location.href = url.href;
+})
 
-    if (workerId === null || utilityId !== null) {
-        window.location.href = window.location.pathname + "/utilities";
-    } else {
-        const workerParam = "worker=" + workerId;
-        window.location.href = organisationId + "/utilities?" + workerParam;
+$('.select-utility-redactor').on('click', function () {
+    const url = new URL(window.location.href);
+
+    url.pathname = url.pathname + "/utilities";
+
+    for (const key of url.searchParams.keys()) {
+        url.searchParams.delete(key);
     }
+
+    window.location.href = url.href;
 })
 
 $('.select-time').on('click', function () {
+
     if (!$('.select-time').hasClass('inactive')) {
+        window.location.href = "#";
+    }
+})
+
+$('.select-time-redactor').on('click', function () {
+    const url = new URL(window.location.href);
+
+    if (!$('.select-time').hasClass('inactive')) {
+        for (const key of url.searchParams.keys()) {
+            url.searchParams.delete(key);
+        }
         window.location.href = "#";
     }
 })
@@ -57,6 +72,19 @@ $('#trash-worker').on('click', function () {
 
     localStorage.removeItem("workerId");
 })
+
+$('.select-change-organisation').on('click', function () {
+    const url = new URL(window.location.href);
+
+    url.pathname = url.pathname + "/update";
+
+    for (const key of url.searchParams.keys()) {
+        console.log(key)
+        url.searchParams.delete(key);
+    }
+
+    window.location.href = url.href;
+});
 
 const appendInactiveToSelectTime = function () {
     const url = new URL(window.location.href);

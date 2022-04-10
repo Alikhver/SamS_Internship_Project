@@ -18,3 +18,11 @@ const gotoUpdateWorker = function (workerId) {
 
     window.location.href = url.href + '/' + workerId + '/update';
 }
+
+const goBack = function () {
+    const url = new URL(window.location.href);
+
+    url.pathname = url.pathname.replace('/workers', '');
+
+    window.location.href = url.href;
+}

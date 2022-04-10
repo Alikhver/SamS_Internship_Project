@@ -7,3 +7,11 @@ const onclickUtility = function (utilityId) {
         window.location.href = url.href.replace('/utilities', '');
     }
 };
+
+const goBack = function () {
+    const url = new URL(window.location.href);
+
+    url.pathname = url.pathname.replace('/utilities', '');
+
+    window.location.href = url.href;
+}
