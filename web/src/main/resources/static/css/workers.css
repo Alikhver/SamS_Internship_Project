@@ -17,3 +17,16 @@
     background-color: rgb(255, 255, 255);
     border-radius: 15px;
 }
+
+.option {
+    background-color: rgb(255, 255, 255);
+    border-radius: 15px
+}
+
+.option:hover {
+    cursor: pointer;
+}
+
+#createWorker:hover {
+    cursor: pointer;
+}

@@ -15,18 +15,28 @@
         </div>
     </div>
 
+    <div id="createWorker" class="select-master option d-flex container-fluid col-6 px-0 my-3">
+        <div class="d-flex my-3 container">
+            <div class="col-1 my-auto mx-auto center-box">
+                <img th:src="@{/img/person-plus.svg}" class="d-block mx-auto"
+                     width="40">
+            </div>
+            <div class="worker_info col-10">
+                <p class="text-center p-2" >Добавить нового работника</p>
+            </div>
+        </div>
+    </div>
+
     <th:block th:each="worker:${workers}">
         <div th:id="${worker.id}" class="select-master option d-flex container-fluid col-6 px-0 my-3"
-             th:classappend="${worker.hasUtilities} ? 'worker' : 'inactive'"
-             th:onclick="onclickWorker([[${worker.id}]]);">
-            <div class="d-flex my-3 col-11">
+        th:onclick="gotoUpdateWorker([[${worker.id}]])">
+            <div class="d-flex my-3 container">
                 <div class="col-1 my-auto mx-auto center-box">
                     <img th:src="@{/img/person-circle.svg}" class="d-block mx-auto"
                          width="40">
                 </div>
                 <div class="worker_info col-10">
-                    <p class="master_desc" th:text="${worker.description}"></p>
-                    <p class="master_name" th:text="${worker.firstName}"></p>
+                    <p class="master_name" th:text="${worker.firstName + ' ' + worker.lastName}">Static content</p>
                 </div>
             </div>
         </div>

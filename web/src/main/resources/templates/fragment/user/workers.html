@@ -16,9 +16,9 @@
     </div>
 
     <th:block th:each="worker:${workers}">
-        <div th:id="${worker.id}" class="select-master option d-flex container-fluid col-6 px-0 my-3"
+        <div th:id="${worker.id}" class="select-master d-flex container-fluid col-6 px-0 my-3"
              th:classappend="${worker.hasUtilities} ? 'worker' : 'inactive'"
-             th:onclick="onclickWorker([[${worker.id}]]);">
+             th:onclick="onclickUser([[${worker.id}]]);">
             <div class="d-flex my-3 col-11">
                 <div class="col-1 my-auto mx-auto center-box">
                     <img th:src="@{/img/person-circle.svg}" class="d-block mx-auto"

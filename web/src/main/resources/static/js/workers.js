@@ -1,11 +1,4 @@
-// $(".worker").on("click", function (workerId) {
-//     const url = new URL(window.location.href);
-//
-//     url.searchParams.append('worker', workerId);
-//     window.location.href = url.href.replace('/workers', '');
-// });
-
-const onclickWorker = function (workerId) {
+const onclickUser = function (workerId) {
     const url = new URL(window.location.href);
 
     if ($('#' + workerId).hasClass('worker')) {
@@ -13,3 +6,15 @@ const onclickWorker = function (workerId) {
         window.location.href = url.href.replace('/workers', '');
     }
 };
+
+$('#createWorker').on('click', function () {
+   const url = new URL(window.location.href);
+   url.pathname = url.pathname + '/createWorker';
+   window.location.href = url.href;
+});
+
+const gotoUpdateWorker = function (workerId) {
+    const url = new URL(window.location.href);
+
+    window.location.href = url.href + '/' + workerId + '/update';
+}

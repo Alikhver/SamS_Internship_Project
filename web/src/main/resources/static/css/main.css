@@ -18,3 +18,7 @@ a {
     border-radius: 15px;
     opacity: 0.5;
 }
+
+body {
+    background-color: rgb(247, 247, 247);
+}
