@@ -42,7 +42,9 @@ public class UtilityController {
         } else {
             utilities = workerFacade.getUtilitiesOfWorker(workerId, page, size);
         }
+        var organisation = organisationFacade.getOrganisation(orgId);
 
+        modelAndView.addObject("orgName", organisation.getName());
         modelAndView.addObject("utilities", utilities.getContent());
         modelAndView.addObject("orgId", orgId);
         modelAndView.setViewName("utility/utilities");
@@ -56,8 +58,12 @@ public class UtilityController {
                                           @PathVariable @Positive Long utilityId,
                                           ModelAndView modelAndView) {
 
-        modelAndView.setViewName("utility/updateUtility");
+        var utility = utilityFacade.getUtility(utilityId);
+        var organisation = organisationFacade.getOrganisation(orgId);
 
+        modelAndView.addObject("orgName", organisation.getName());
+        modelAndView.addObject("utility", utility);
+        modelAndView.setViewName("utility/updateUtility");
 
         return modelAndView;
     }
@@ -66,9 +72,10 @@ public class UtilityController {
     @ApiOperation("Create Utility")
     public ModelAndView viewUpdateUtility(@PathVariable @Positive Long orgId,
                                           ModelAndView modelAndView) {
+        var organisation = organisationFacade.getOrganisation(orgId);
 
+        modelAndView.addObject("orgName", organisation.getName());
         modelAndView.setViewName("utility/createUtility");
-
 
         return modelAndView;
     }

@@ -7,10 +7,10 @@ import javax.validation.constraints.Size;
 
 @Getter
 public class UpdateUtilityRequest {
-    @Size(max = 40)
+    @Size(min = 3, max = 40)
     private String name;
     @Positive
     private Double price;
-    @Size(min = 15)
+    @Size(min = 15, max = 40)
     private String description;
 }

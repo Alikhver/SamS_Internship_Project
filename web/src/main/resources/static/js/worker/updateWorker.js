@@ -88,6 +88,14 @@ const deleteWorker = function (workerId) {
     });
 }
 
+function manageUtilities(workerId) {
+    const url = new URL(window.location.href);
+
+    url.pathname = url.pathname.replace('/update', '/manageUtilities');
+
+    window.location.href = url.href;
+}
+
 const goBack = function () {
     const url = new URL(window.location.href);
     const organisationId = parseInt(url.pathname.split('/')[2]);

@@ -43,7 +43,9 @@ public class WorkerController {
         } else {
             workers = utilityFacade.getWorkersOfUtility(utilityId, page, size);
         }
+        var organisation = organisationFacade.getOrganisation(orgId);
 
+        modelAndView.addObject("orgName", organisation.getName());
         modelAndView.addObject("workers", workers.getContent());
         modelAndView.addObject("orgId", orgId);
         modelAndView.setViewName("worker/workers");
@@ -56,6 +58,9 @@ public class WorkerController {
     public ModelAndView viewCreateWorker(@PathVariable @Positive Long orgId,
                                          ModelAndView modelAndView) {
 
+        var organisation = organisationFacade.getOrganisation(orgId);
+
+        modelAndView.addObject("orgName", organisation.getName());
         modelAndView.setViewName("worker/createWorker");
 
         return modelAndView;
@@ -70,7 +75,25 @@ public class WorkerController {
                                          ModelAndView modelAndView) {
 
         var worker = workerFacade.getWorkerById(workerId);
+        var organisation = organisationFacade.getOrganisation(orgId);
 
+        modelAndView.addObject("orgName", organisation.getName());
+        modelAndView.addObject("worker", worker);
+        modelAndView.setViewName("worker/updateWorker");
+
+        return modelAndView;
+    }
+
+    @GetMapping("/{workerId}/manageUtilities")
+    @ApiOperation("Manage Utilities of Worker")
+    public ModelAndView viewManageUtilities(@PathVariable @Positive Long orgId,
+                                            @PathVariable @Positive Long workerId,
+                                            ModelAndView modelAndView) {
+
+        var worker = workerFacade.getWorkerById(workerId);
+        var organisation = organisationFacade.getOrganisation(orgId);
+
+        modelAndView.addObject("orgName", organisation.getName());
         modelAndView.addObject("worker", worker);
         modelAndView.setViewName("worker/updateWorker");
 

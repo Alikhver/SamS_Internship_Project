@@ -8,6 +8,23 @@ const onclickUtility = function (utilityId) {
     }
 };
 
+const updateUtility = function (utilityId) {
+    const url = new URL(window.location.href);
+
+    url.pathname = url.pathname + '/' + utilityId + '/update'
+
+    window.location.href = url.href;
+}
+
+$('#createUtility').on('click', function () {
+    const url = new URL(window.location.href);
+
+    url.pathname = url.pathname + '/create';
+
+    window.location.href = url.href;
+})
+
+
 const goBack = function () {
     const url = new URL(window.location.href);
 
