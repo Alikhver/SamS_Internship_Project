@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -54,8 +55,8 @@ public class Worker {
     private List<ScheduleRecord> records;
 
     @ManyToMany(mappedBy = "workers",
-            fetch = FetchType.LAZY
-//            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
     )
     private List<Utility> utilities;
 

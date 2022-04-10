@@ -69,6 +69,9 @@ public class WorkerController {
                                          @PathVariable @Positive Long workerId,
                                          ModelAndView modelAndView) {
 
+        var worker = workerFacade.getWorkerById(workerId);
+
+        modelAndView.addObject("worker", worker);
         modelAndView.setViewName("worker/updateWorker");
 
         return modelAndView;

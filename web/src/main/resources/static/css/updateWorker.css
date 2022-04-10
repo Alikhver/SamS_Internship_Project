@@ -1,0 +1,15 @@
+.input-group-prepend {
+    width: 120px;
+}
+
+.btn {
+    width: 200px;
+}
+
+.incorrect {
+    font-size: small;
+    font-weight: revert;
+    color: red;
+    font-style: italic;
+    display: none;
+}

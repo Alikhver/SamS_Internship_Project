@@ -72,7 +72,7 @@ public class WorkerRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}")
     @ApiOperation("Update Worker")
     public ResponseEntity<Void> updateWorker(@PathVariable Long id, @RequestBody @Validated UpdateWorkerRequest request) {
         workerFacade.updateWorker(id, request);

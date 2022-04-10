@@ -9,7 +9,7 @@ const onclickUser = function (workerId) {
 
 $('#createWorker').on('click', function () {
    const url = new URL(window.location.href);
-   url.pathname = url.pathname + '/createWorker';
+   url.pathname = url.pathname + '/create';
    window.location.href = url.href;
 });
 
