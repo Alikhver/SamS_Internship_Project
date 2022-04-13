@@ -28,4 +28,14 @@ public class ScheduleRecordServiceImpl implements ScheduleRecordService {
         log.info("get -> done");
         return record;
     }
+
+    @Override
+    public Long save(ScheduleRecord record) {
+        log.info("save -> start");
+
+        repository.save(record);
+
+        log.info("save -> done");
+        return record.getId();
+    }
 }

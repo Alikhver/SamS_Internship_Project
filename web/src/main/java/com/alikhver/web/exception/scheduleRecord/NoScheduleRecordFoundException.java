@@ -1,4 +1,4 @@
-package com.alikhver.web.exception.schedule_record;
+package com.alikhver.web.exception.scheduleRecord;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

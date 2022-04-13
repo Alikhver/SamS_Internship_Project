@@ -6,9 +6,10 @@ import com.alikhver.web.exception.organisation.OrganisationIsAlreadyLaunchedExce
 import com.alikhver.web.exception.organisation.OrganisationIsAlreadySuspendedException;
 import com.alikhver.web.exception.profile.NoProfileFoundException;
 import com.alikhver.web.exception.profile.UserIsAlreadyBoundedProfileException;
-import com.alikhver.web.exception.schedule_record.NoScheduleRecordFoundException;
+import com.alikhver.web.exception.scheduleRecord.NoScheduleRecordFoundException;
 import com.alikhver.web.exception.user.NoUserFoundException;
 import com.alikhver.web.exception.user.UserAlreadyExistsException;
+import com.alikhver.web.exception.user.UsersRoleIsNotUserException;
 import com.alikhver.web.exception.utility.NoUtilityFoundException;
 import com.alikhver.web.exception.utility.UtilityAlreadyExistsException;
 import com.alikhver.web.exception.utility.UtilityDoesNotHaveProvidedWorkerException;
@@ -152,6 +153,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handle(NoScheduleRecordFoundException e, HttpServletRequest request) {
         ErrorResponse response = buildErrorResponse(e, HttpStatus.NOT_FOUND, request);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UsersRoleIsNotUserException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handle(UsersRoleIsNotUserException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
     private ErrorResponse buildErrorResponse(

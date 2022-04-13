@@ -6,4 +6,6 @@ import java.util.Optional;
 
 public interface ScheduleRecordService {
     Optional<ScheduleRecord> get(Long recordId);
+
+    Long save(ScheduleRecord record);
 }

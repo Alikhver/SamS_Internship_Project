@@ -1,7 +1,10 @@
 package com.alikhver.model.entity;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -22,7 +25,10 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "schedule_record")
+@NoArgsConstructor
+@AllArgsConstructor
 public class ScheduleRecord {
 
     @Id

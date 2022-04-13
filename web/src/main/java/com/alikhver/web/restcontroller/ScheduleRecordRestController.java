@@ -1,5 +1,6 @@
 package com.alikhver.web.restcontroller;
 
+import com.alikhver.web.dto.record.request.CreateRecordRequest;
 import com.alikhver.web.dto.record.response.GetRecordResponse;
 import com.alikhver.web.facade.ScheduleRecordFacade;
 import io.swagger.annotations.ApiOperation;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,5 +30,13 @@ public class ScheduleRecordRestController {
         var response = scheduleRecordFacade.getRecord(recordId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/")
+    @ApiOperation("Create Record")
+    public ResponseEntity<Long> createRecord(@RequestBody @Validated CreateRecordRequest request) {
+        Long requestId = scheduleRecordFacade.createRecord(request);
+
+        return new ResponseEntity<>(requestId, HttpStatus.CREATED);
     }
 }
