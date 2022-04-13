@@ -5,8 +5,6 @@
 
 .worker:hover {
     cursor: pointer;
-    opacity: 0.7;
-    /*border: 1px solid black;*/
 }
 
 .master_name {

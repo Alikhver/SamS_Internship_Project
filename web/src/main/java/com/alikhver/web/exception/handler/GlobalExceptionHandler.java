@@ -6,6 +6,7 @@ import com.alikhver.web.exception.organisation.OrganisationIsAlreadyLaunchedExce
 import com.alikhver.web.exception.organisation.OrganisationIsAlreadySuspendedException;
 import com.alikhver.web.exception.profile.NoProfileFoundException;
 import com.alikhver.web.exception.profile.UserIsAlreadyBoundedProfileException;
+import com.alikhver.web.exception.schedule_record.NoScheduleRecordFoundException;
 import com.alikhver.web.exception.user.NoUserFoundException;
 import com.alikhver.web.exception.user.UserAlreadyExistsException;
 import com.alikhver.web.exception.utility.NoUtilityFoundException;
@@ -144,6 +145,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handle(AttemptToDeleteUtilityFromWorkerOfOtherOrganisationException e, HttpServletRequest request) {
         ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(NoScheduleRecordFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorResponse> handle(NoScheduleRecordFoundException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.NOT_FOUND, request);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     private ErrorResponse buildErrorResponse(
