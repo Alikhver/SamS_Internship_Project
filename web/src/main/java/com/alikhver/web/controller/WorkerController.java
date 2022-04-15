@@ -88,14 +88,27 @@ public class WorkerController {
     @ApiOperation("Manage Utilities of Worker")
     public ModelAndView viewManageUtilities(@PathVariable @Positive Long orgId,
                                             @PathVariable @Positive Long workerId,
+                                            @RequestParam(defaultValue = "0") @PositiveOrZero int page,
+                                            @RequestParam(defaultValue = "5") @Positive int size,
                                             ModelAndView modelAndView) {
 
         var worker = workerFacade.getWorkerById(workerId);
         var organisation = organisationFacade.getOrganisation(orgId);
+        var utilitiesOfWorker = workerFacade.getUtilitiesOfWorker(workerId, page, size).getContent();
+        var utilitiesOfOrganisation = organisation.getUtilities();
+
+        utilitiesOfOrganisation.removeIf(el -> {
+            for (var i : utilitiesOfWorker) {
+                if (i.getId() == el.getId()) return true;
+            }
+            return false;
+        });
 
         modelAndView.addObject("orgName", organisation.getName());
         modelAndView.addObject("worker", worker);
-        modelAndView.setViewName("worker/updateWorker");
+        modelAndView.addObject("utilitiesOfWorker", utilitiesOfWorker);
+        modelAndView.addObject("otherUtilities", utilitiesOfOrganisation);
+        modelAndView.setViewName("worker/manageUtilitiesOfWorker");
 
         return modelAndView;
     }

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title th:text="${orgName + ': обновить работника'}"></title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+            crossorigin="anonymous"
+    />
+    <link th:href="@{/css/utilities.css}" rel="stylesheet"/>
+    <link th:href="@{/css/manageUtilitiesOfWorker.css}" rel="stylesheet"/>
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+<body class="container">
+<div class="d-flex container col-6 justify-content-center d-flex navbar sticky-top fixed-top"
+     style="background-color: rgb(255, 255, 255)"
+>
+    <div class="col-1 my-auto mx-auto">
+        <img th:src="@{/img/arrow-left-circle.svg}" class="img-fluid go-back-button"
+             width="24"
+             onclick="goBack()">
+    </div>
+    <div class="d-flex flex-column col-11">
+        <p class="text-center p-2">Назначить услуги</p>
+    </div>
+
+
+</div>
+
+<th:block th:each="utility:${utilitiesOfWorker}">
+    <div th:id="${utility.id}" class="utility d-flex container-fluid col-6 my-3">
+        <div class="d-flex flex-column col-10">
+            <p th:text="${utility.description}"></p>
+            <p th:text="${utility.price}"></p>
+        </div>
+        <button th:id="'append' + ${utility.id}"  type="button" class="btn btn-primary" style="display: none" th:onclick="appendUtility([[${utility.id}]])">Добавить</button>
+        <button th:id="'remove' + ${utility.id}" type="button" class="btn btn-danger" th:onclick="removeUtility([[${utility.id}]])">Удалить</button>
+    </div>
+</th:block>
+
+<th:block th:each="utility:${otherUtilities}">
+    <div th:id="${utility.id}" class="utility d-flex container-fluid col-6 my-3">
+        <div class="d-flex flex-column col-10">
+            <p th:text="${utility.description}"></p>
+            <p th:text="${utility.price}"></p>
+        </div>
+        <button th:id="'append' + ${utility.id}" type="button" class="btn btn-primary" th:onclick="appendUtility([[${utility.id}]])">Добавить</button>
+        <button th:id="'remove' + ${utility.id}" type="button" class="btn btn-danger" style="display: none" th:onclick="removeUtility(this, [[${utility.id}]])">Удалить</button>
+    </div>
+</th:block>
+
+<script type="text/javascript" th:src="@{/js/worker/manageUtilitiesOfWorker.js}"></script>
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
+
+</body>
+</html>

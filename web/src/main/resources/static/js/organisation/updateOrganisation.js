@@ -8,16 +8,7 @@ $('#update').on('click', function () {
     const address = $('#address').val();
 
     const description = $('#description').val();
-
-
-    // $.get("http://localhost:8080/organisations/1", function (data) {
-    //     console.log(typeof data.dateCreated)
-    //     const date = new Date(data.dateCreated);
-    //     console.log(typeof date)
-    //     console.log(date)
-    //     date.setMinutes()
-    // });
-
+    
     if (validateName() && validateAddress() && validateDescription()) {
         const restUrl = '/organisations/' + organisationId;
         const organisation = {
