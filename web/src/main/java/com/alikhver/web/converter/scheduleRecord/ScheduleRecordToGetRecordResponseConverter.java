@@ -1,6 +1,7 @@
 package com.alikhver.web.converter.scheduleRecord;
 
 import com.alikhver.model.entity.ScheduleRecord;
+import com.alikhver.model.entity.ScheduleRecordStatus;
 import com.alikhver.web.converter.profile.ProfileToGetProfileResponseConverter;
 import com.alikhver.web.converter.utility.UtilityToGetUtilityResponseConverter;
 import com.alikhver.web.converter.worker.WorkerToGetWorkerResponseConverter;
@@ -18,13 +19,18 @@ public class ScheduleRecordToGetRecordResponseConverter implements Converter<Sch
 
     @Override
     public GetRecordResponse convert(ScheduleRecord source) {
-        return GetRecordResponse.builder()
-                .date(source.getDate())
+        GetRecordResponse response = GetRecordResponse.builder()
                 .id(source.getId())
-                .profile(profileConverter.convert(source.getClientProfile()))
                 .status(source.getStatus().toString())
-                .utility(utilityConverter.convert(source.getUtility()))
+                .date(source.getDate())
                 .worker(workerConverter.convert(source.getWorker()))
                 .build();
+
+        if (source.getStatus() != ScheduleRecordStatus.AVAILABLE) {
+            response.setProfile(profileConverter.convert(source.getClientProfile()));
+            response.setUtility(utilityConverter.convert(source.getUtility()));
+        }
+
+        return response;
     }
 }
