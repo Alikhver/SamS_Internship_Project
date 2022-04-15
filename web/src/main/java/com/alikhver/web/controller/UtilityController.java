@@ -18,6 +18,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/organisation/{orgId}/utilities")
@@ -35,17 +37,28 @@ public class UtilityController {
                                       @RequestParam(defaultValue = "5") @Positive int size,
                                       @RequestParam(name = "worker", required = false) @Positive Long workerId,
                                       ModelAndView modelAndView) {
-        Page<GetUtilityResponse> utilities;
+        Page<GetUtilityResponse> utilitiesPage;
+        List<GetUtilityResponse> utilitiesList;
 
         if (workerId == null) {
-            utilities = organisationFacade.getUtilities(orgId, page, size);
+            utilitiesPage = organisationFacade.getUtilities(orgId, page, size);
+            utilitiesList = utilitiesPage.getContent();
         } else {
-            utilities = workerFacade.getUtilitiesOfWorker(workerId, page, size);
+            utilitiesPage = workerFacade.getUtilitiesOfWorker(workerId, page, size);
+            utilitiesList = utilitiesPage.stream().sorted((GetUtilityResponse a, GetUtilityResponse b) -> {
+                if (a.isHasWorkers() == b.isHasWorkers() && a.isHasWorkers()) {
+                    return 1;
+                } else if (a.isHasWorkers() && !b.isHasWorkers()) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }).collect(Collectors.toList());
         }
         var organisation = organisationFacade.getOrganisation(orgId);
 
         modelAndView.addObject("orgName", organisation.getName());
-        modelAndView.addObject("utilities", utilities.getContent());
+        modelAndView.addObject("utilities", utilitiesList);
         modelAndView.addObject("orgId", orgId);
         modelAndView.setViewName("utility/utilities");
 
