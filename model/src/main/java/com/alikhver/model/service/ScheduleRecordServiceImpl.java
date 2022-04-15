@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Slf4j
@@ -23,6 +24,7 @@ public class ScheduleRecordServiceImpl implements ScheduleRecordService {
     public Optional<ScheduleRecord> get(Long recordId) {
         log.info("get -> start");
 
+        validationHelper.validateForCorrectId(recordId, "RecordId");
         var record = repository.findById(recordId);
 
         log.info("get -> done");
@@ -37,5 +39,16 @@ public class ScheduleRecordServiceImpl implements ScheduleRecordService {
 
         log.info("save -> done");
         return record.getId();
+    }
+
+    @Override
+    public boolean existsByWorkerIdAndDate(Long workerId, Date date) {
+        log.info("existsByWorkerIdAndDate -> start");
+
+        validationHelper.validateForCorrectId(workerId, "WorkerId");
+        var exists = repository.existsByWorkerIdAndDate(workerId, date);
+
+        log.info("existsByWorkerIdAndDate -> done");
+        return exists;
     }
 }
