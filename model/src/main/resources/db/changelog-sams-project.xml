@@ -8,4 +8,13 @@
     <changeSet id="1" author="alikhver">
         <sqlFile path="db/script/DB generation.sql"/>
     </changeSet>
+    <changeSet id="2" author="alikhver">
+        <sql>
+            alter table my_db.schedule_record
+            alter column profile_id bigint null;
+
+            alter table my_db.schedule_record
+            alter column utility_id  null;
+        </sql>
+    </changeSet>
 </databaseChangeLog>
