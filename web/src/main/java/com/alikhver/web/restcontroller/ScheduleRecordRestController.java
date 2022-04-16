@@ -11,8 +11,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Positive;
@@ -38,5 +40,34 @@ public class ScheduleRecordRestController {
         Long requestId = scheduleRecordFacade.createRecord(request);
 
         return new ResponseEntity<>(requestId, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{recordId}/book")
+    @ApiOperation("Assign Utility and Profile")
+    public ResponseEntity<Void> assignUtilityAndProfile(@PathVariable @Positive Long recordId,
+                                                        @RequestParam(name = "utility") @Positive Long utilityId,
+                                                        @RequestParam(name = "profile") @Positive Long profileId) {
+
+        scheduleRecordFacade.bookRecord(recordId, utilityId, profileId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/{recordId}/release")
+    @ApiOperation("Release ScheduleRecord(make available again)")
+    public ResponseEntity<Void> releaseRecord(@PathVariable @Positive Long recordId) {
+
+        scheduleRecordFacade.releaseRecord(recordId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/{recordId}/cancel")
+    @ApiOperation("Cancel ScheduleRecord")
+    public ResponseEntity<Void> cancelRecord(@PathVariable @Positive Long recordId) {
+
+        scheduleRecordFacade.cancelRecord(recordId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

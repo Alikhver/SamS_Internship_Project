@@ -7,6 +7,8 @@ import com.alikhver.web.exception.organisation.OrganisationIsAlreadySuspendedExc
 import com.alikhver.web.exception.profile.NoProfileFoundException;
 import com.alikhver.web.exception.profile.UserIsAlreadyBoundedProfileException;
 import com.alikhver.web.exception.scheduleRecord.NoScheduleRecordFoundException;
+import com.alikhver.web.exception.scheduleRecord.ScheduleRecordWithSuchWorkerAndTimeAlreadyExists;
+import com.alikhver.web.exception.scheduleRecord.UtilityIsAlreadyAvailableException;
 import com.alikhver.web.exception.user.NoUserFoundException;
 import com.alikhver.web.exception.user.UserAlreadyExistsException;
 import com.alikhver.web.exception.user.UsersRoleIsNotUserException;
@@ -158,6 +160,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UsersRoleIsNotUserException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<ErrorResponse> handle(UsersRoleIsNotUserException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UtilityIsAlreadyAvailableException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handle(UtilityIsAlreadyAvailableException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ScheduleRecordWithSuchWorkerAndTimeAlreadyExists.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handle(ScheduleRecordWithSuchWorkerAndTimeAlreadyExists e, HttpServletRequest request) {
         ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }

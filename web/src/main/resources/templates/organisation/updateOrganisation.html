@@ -57,8 +57,10 @@
         <p id='incorrect-description' class='my-0 incorrect'>Длина описания должна быть больше 30 и меньше 121 символа</p>
     </div>
 
-    <button type="button" id="update" class="btn btn-primary mx-3 my-2">Сохранить</button>
-    <button type="button" id="delete" class="btn btn-primary">Удалить </button>
+    <button type="button" id="update" class="btn btn-primary mx-1 my-2 w-25">Сохранить</button>
+    <button type="button" id="suspend" class="btn btn-danger mx-1 w-30" th:classappend="${org.active ? 'd-block' : 'd-none'}">Приостановить</button>
+    <button type="button" id="launch" class="btn btn-primary mx-1 w-30" th:classappend="${org.active ? 'd-none' : 'd-block'}">Запустить</button>
+    <button type="button" id="delete" class="btn btn-primary mx-1 w-25">Удалить </button>
 
     <script type="text/javascript" th:src="@{/js/organisation/updateOrganisation.js}"></script>
 

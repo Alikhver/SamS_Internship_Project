@@ -49,12 +49,7 @@ $('.select-time').on('click', function () {
 $('.select-time-redactor').on('click', function () {
     const url = new URL(window.location.href);
 
-    if (!$('.select-time').hasClass('inactive')) {
-        for (const key of url.searchParams.keys()) {
-            url.searchParams.delete(key);
-        }
-        window.location.href = "#";
-    }
+
 })
 
 $('#trash-utility').on('click', function () {
@@ -86,11 +81,15 @@ $('.select-change-organisation').on('click', function () {
     window.location.href = url.href;
 });
 
+$('#suspended').on('click', function () {
+    $('#modal').modal('show');
+})
+
 const appendInactiveToSelectTime = function () {
     const url = new URL(window.location.href);
     const workerId = url.searchParams.get('worker');
 
-    if (workerId === null) {
+    if (workerId === null || $('#suspended').length) {
         $('.select-time').addClass('inactive').removeClass('option');
     }
 }

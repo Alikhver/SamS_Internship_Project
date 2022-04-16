@@ -10,6 +10,7 @@ public class ProfileToCreateProfileResponseConverter implements Converter<Profil
     @Override
     public CreateProfileResponse convert(Profile profile) {
         return CreateProfileResponse.builder()
+                .id(profile.getId())
                 .firstName(profile.getFirstName())
                 .lastName(profile.getLastName())
                 .email(profile.getEmail())

@@ -1,6 +1,7 @@
 package com.alikhver.model.service;
 
 import com.alikhver.model.entity.ScheduleRecord;
+import com.alikhver.model.entity.ScheduleRecordStatus;
 import com.alikhver.model.repository.ScheduleRecordRepository;
 import com.alikhver.model.util.ValidationHelper;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -42,13 +44,26 @@ public class ScheduleRecordServiceImpl implements ScheduleRecordService {
     }
 
     @Override
-    public boolean existsByWorkerIdAndDate(Long workerId, Date date) {
+    @Transactional(readOnly = true)
+    public boolean existsByWorkerIdAndDateAndStatus(Long workerId, Date date, ScheduleRecordStatus status) {
         log.info("existsByWorkerIdAndDate -> start");
 
         validationHelper.validateForCorrectId(workerId, "WorkerId");
-        var exists = repository.existsByWorkerIdAndDate(workerId, date);
+        var exists = repository.existsByWorkerIdAndDateAndStatus(workerId, date, status);
 
         log.info("existsByWorkerIdAndDate -> done");
         return exists;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ScheduleRecord> findAllRecordsOfWorker(Long workerId) {
+        log.info("findAllRecordsOfWorker -> start");
+
+        validationHelper.validateForCorrectId(workerId, "WorkerId");
+        var response = repository.findAllByWorkerId(workerId);
+
+        log.info("findAllRecordsOfWorker -> done");
+        return response;
     }
 }

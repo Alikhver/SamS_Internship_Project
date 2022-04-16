@@ -1,8 +1,10 @@
 package com.alikhver.model.service;
 
 import com.alikhver.model.entity.ScheduleRecord;
+import com.alikhver.model.entity.ScheduleRecordStatus;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 public interface ScheduleRecordService {
@@ -10,5 +12,7 @@ public interface ScheduleRecordService {
 
     Long save(ScheduleRecord record);
 
-    boolean existsByWorkerIdAndDate(Long workerId, Date date);
+    boolean existsByWorkerIdAndDateAndStatus(Long workerId, Date date, ScheduleRecordStatus status);
+
+    List<ScheduleRecord> findAllRecordsOfWorker(Long workerId);
 }

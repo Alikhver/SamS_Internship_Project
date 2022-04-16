@@ -8,12 +8,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class ScheduleRecordConverter {
     private final ScheduleRecordToGetRecordResponseConverter scheduleRecordToGetRecordResponseConverter;
     private final CreateRecordRequestToScheduleRecordConverter createRecordRequestToScheduleRecordConverter;
+    private final ListOfScheduleRecordToListOfGetRecordResponseConverter listOfScheduleRecordToListOfGetRecordResponseConverter;
 
     public GetRecordResponse mapToGetRecordResponse(ScheduleRecord record) {
         log.info("mapToGetRecordResponse -> start");
@@ -30,6 +33,15 @@ public class ScheduleRecordConverter {
         ScheduleRecord response = createRecordRequestToScheduleRecordConverter.convert(request);
 
         log.info("mapToScheduleRecord -> done");
+        return response;
+    }
+
+    public List<GetRecordResponse> mapToListOfGetRecordResponse(List<ScheduleRecord> futureRecords) {
+        log.info("mapToListOfGetRecordResponse -> start");
+
+        var response = listOfScheduleRecordToListOfGetRecordResponseConverter.convert(futureRecords);
+
+        log.info("mapToListOfGetRecordResponse -> done");
         return response;
     }
 }

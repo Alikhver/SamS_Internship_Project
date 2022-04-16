@@ -1,10 +1,12 @@
 package com.alikhver.web.restcontroller;
 
+import com.alikhver.web.dto.record.response.GetRecordResponse;
 import com.alikhver.web.dto.utility.response.GetUtilityResponse;
 import com.alikhver.web.dto.worker.request.CreateWorkerRequest;
 import com.alikhver.web.dto.worker.request.UpdateWorkerRequest;
 import com.alikhver.web.dto.worker.response.CreateWorkerResponse;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
+import com.alikhver.web.facade.ScheduleRecordFacade;
 import com.alikhver.web.facade.WorkerFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,6 +35,7 @@ import javax.validation.constraints.PositiveOrZero;
 @Validated
 public class WorkerRestController {
     private final WorkerFacade workerFacade;
+    private final ScheduleRecordFacade scheduleRecordFacade;
 
     @GetMapping("/{id}")
     @ApiOperation("Get Worker")
@@ -46,6 +50,15 @@ public class WorkerRestController {
                                                                         @RequestParam(defaultValue = "0") @PositiveOrZero int page,
                                                                         @RequestParam(defaultValue = "5") @Positive int size) {
         var response = workerFacade.getUtilitiesOfWorker(id, page, size);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/futureRecords")
+    @ApiOperation("Get All Future Records")
+    public ResponseEntity<List<GetRecordResponse>> getRecordsOfWorker(@PathVariable(name = "id") @Positive Long workerId) {
+
+        var response = workerFacade.getAllFutureRecords(workerId);
+
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

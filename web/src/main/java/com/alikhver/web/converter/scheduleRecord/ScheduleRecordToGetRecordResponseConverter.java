@@ -23,12 +23,12 @@ public class ScheduleRecordToGetRecordResponseConverter implements Converter<Sch
                 .id(source.getId())
                 .status(source.getStatus().toString())
                 .date(source.getDate())
-                .worker(workerConverter.convert(source.getWorker()))
+                .workerId(source.getWorker().getId())
                 .build();
 
         if (source.getStatus() != ScheduleRecordStatus.AVAILABLE) {
-            response.setProfile(profileConverter.convert(source.getClientProfile()));
-            response.setUtility(utilityConverter.convert(source.getUtility()));
+            response.setProfileId(source.getClientProfile().getId());
+            response.setUtilityId(source.getUtility().getId());
         }
 
         return response;

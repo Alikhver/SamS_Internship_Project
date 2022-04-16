@@ -99,3 +99,42 @@ const goBack = function () {
 
     window.location.href = url.href;
 }
+
+$('#suspend').on('click', function () {
+    const url = new URL(window.location.href);
+    const organisationId = parseInt(url.pathname.split('/')[2]);
+
+    const restUrl = '/organisations/' + organisationId + "/suspend";
+
+    $.ajax({
+        url: restUrl,
+        type: 'PATCH',
+        success: function () {
+            //    TODO insert correct link
+        }
+    });
+
+    $('#suspend').removeClass('d-block').addClass('d-none')
+    $('#launch').removeClass('d-none').addClass('d-block');
+
+
+});
+
+$('#launch').on('click', function () {
+    const url = new URL(window.location.href);
+    const organisationId = parseInt(url.pathname.split('/')[2]);
+
+
+    const restUrl = '/organisations/' + organisationId + "/launch";
+
+    $.ajax({
+        url: restUrl,
+        type: 'PATCH',
+        success: function () {
+            //    TODO insert correct link
+        }
+    });
+
+    $('#launch').removeClass('d-block').addClass('d-none');
+    $('#suspend').removeClass('d-none').addClass('d-block');
+});

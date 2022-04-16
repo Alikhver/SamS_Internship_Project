@@ -4,11 +4,14 @@ import com.alikhver.model.entity.Organisation;
 import com.alikhver.model.entity.Utility;
 import com.alikhver.model.entity.Worker;
 import com.alikhver.model.service.OrganisationService;
+import com.alikhver.model.service.ScheduleRecordService;
 import com.alikhver.model.service.UtilityService;
 import com.alikhver.model.service.WorkerService;
 import com.alikhver.model.util.ValidationHelper;
+import com.alikhver.web.converter.scheduleRecord.ScheduleRecordConverter;
 import com.alikhver.web.converter.utility.UtilityConverter;
 import com.alikhver.web.converter.worker.WorkerConverter;
+import com.alikhver.web.dto.record.response.GetRecordResponse;
 import com.alikhver.web.dto.utility.response.GetUtilityResponse;
 import com.alikhver.web.dto.worker.request.CreateWorkerRequest;
 import com.alikhver.web.dto.worker.request.UpdateWorkerRequest;
@@ -31,6 +34,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -41,9 +45,11 @@ public class WorkerFacadeImpl implements WorkerFacade {
     private final OrganisationService organisationService;
     private final WorkerService workerService;
     private final UtilityService utilityService;
+    private final ScheduleRecordService scheduleRecordService;
     private final WorkerConverter workerConverter;
     private final ValidationHelper validationHelper;
     private final UtilityConverter utilityConverter;
+    private final ScheduleRecordConverter scheduleRecordConverter;
 
     @Override
     public GetWorkerResponse getWorkerById(Long id) {
@@ -241,6 +247,25 @@ public class WorkerFacadeImpl implements WorkerFacade {
         var response = utilityConverter.mapToPageOfGetUtilityResponse(utilities);
 
         log.info("getUtilitiesOfWorker -> done");
+        return response;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<GetRecordResponse> getAllFutureRecords(Long workerId) {
+        log.info("getAllFutureRecord -> start");
+
+        if (!workerService.existsWorker(workerId)) {
+            log.warn("NoWorkerFoundException is thrown");
+            throw new NoWorkerFoundException(
+              "No Worker with id = " + workerId + " found"
+            );
+        }
+
+        var futureRecords = scheduleRecordService.findAllRecordsOfWorker(workerId);
+        var response = scheduleRecordConverter.mapToListOfGetRecordResponse(futureRecords);
+
+        log.info("getAllFutureRecord -> done");
         return response;
     }
 

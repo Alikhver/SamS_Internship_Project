@@ -1,11 +1,14 @@
 package com.alikhver.web.facade;
 
+import com.alikhver.web.dto.record.response.GetRecordResponse;
 import com.alikhver.web.dto.utility.response.GetUtilityResponse;
 import com.alikhver.web.dto.worker.request.CreateWorkerRequest;
 import com.alikhver.web.dto.worker.request.UpdateWorkerRequest;
 import com.alikhver.web.dto.worker.response.CreateWorkerResponse;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface WorkerFacade {
     CreateWorkerResponse createWorker(CreateWorkerRequest request);
@@ -21,4 +24,6 @@ public interface WorkerFacade {
     void deleteUtility(Long id, Long utilityId);
 
     Page<GetUtilityResponse> getUtilitiesOfWorker(Long workerId, int page, int size);
+
+    List<GetRecordResponse> getAllFutureRecords(Long workerId);
 }

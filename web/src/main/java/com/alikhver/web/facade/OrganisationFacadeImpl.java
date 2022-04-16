@@ -5,6 +5,7 @@ import com.alikhver.model.entity.User;
 import com.alikhver.model.entity.Utility;
 import com.alikhver.model.entity.Worker;
 import com.alikhver.model.service.OrganisationService;
+import com.alikhver.model.service.ScheduleRecordService;
 import com.alikhver.model.service.UserService;
 import com.alikhver.model.service.UtilityService;
 import com.alikhver.model.service.WorkerService;
@@ -41,6 +42,8 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     private final UserService userService;
     private final WorkerService workerService;
     private final UtilityService utilityService;
+    private final ScheduleRecordService scheduleRecordService;
+    private final ScheduleRecordFacade scheduleRecordFacade;
     private final OrganisationConverter organisationConverter;
     private final WorkerConverter workerConverter;
     private final UtilityConverter utilityConverter;
@@ -203,17 +206,17 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
     @Override
     @Transactional
-    public void suspendOrganisation(Long id) {
+    public void suspendOrganisation(Long orgId) {
         log.info("suspendOrganisation -> start");
 
-        validationHelper.validateForCorrectId(id, "OrganisationId");
+        validationHelper.validateForCorrectId(orgId, "OrganisationId");
 
-        Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(id);
+        Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(orgId);
         Organisation organisation;
         if (optionalOrganisation.isEmpty()) {
             log.warn("NoOrganisationFoundException is thrown");
             throw new NoOrganisationFoundException(
-                    "No organisation with id = " + id + " found"
+                    "No organisation with id = " + orgId + " found"
             );
         } else {
             organisation = optionalOrganisation.get();
@@ -225,9 +228,19 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         } else {
             log.warn("OrganisationIsAlreadySuspendedException is thrown");
             throw new OrganisationIsAlreadySuspendedException(
-                    "Organisation with id = " + id + " is already suspended"
+                    "Organisation with id = " + orgId + " is already suspended"
             );
         }
+
+        var workers = workerService.findAllWorkersOfOrganisation(orgId);
+
+        workers.forEach(worker -> {
+            var workersRecords = scheduleRecordService.findAllRecordsOfWorker(worker.getId());
+
+            workersRecords.forEach(record -> {
+                scheduleRecordFacade.cancelRecord(record.getId());
+            });
+        });
 
         log.info("suspendOrganisation -> done");
     }

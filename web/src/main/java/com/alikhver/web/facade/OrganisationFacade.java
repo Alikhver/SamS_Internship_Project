@@ -23,7 +23,7 @@ public interface OrganisationFacade {
 
     void launchOrganisation(Long id);
 
-    Page<GetWorkerResponse> getWorkers(Long id, int offset, int size);
+    Page<GetWorkerResponse> getWorkers(Long id, int page, int size);
 
     Page<GetUtilityResponse> getUtilities(Long id, int page, int size);
 }

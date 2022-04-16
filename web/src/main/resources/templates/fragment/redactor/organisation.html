@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:float="http://www.w3.org/1999/xhtml">
 <body>
+<script defer src="/examples/libs/bootstrap-4/bootstrap.bundle.min.js"></script>
 <th:block th:fragment="body">
     <div
             class="d-flex container col-6 justify-content-center navbar sticky-top fixed-top"
@@ -13,6 +14,29 @@
         </div>
         <img th:src="@{/img/person.svg}" class="d-block mx-auto"
              width="35">
+    </div>
+
+    <div id="suspended" class="container-fluid mt-3 p-2 h-auto align-middle col-6 d-flex" th:unless="${org.isActive}">
+        <div class="col-11">Организация временно не работает</div>
+        <div class="col-1">
+            <img th:src="@{/img/info-circle.svg}" class="d-block"
+                 width="20px" style="background-color: white; border-radius: 50%" float:right>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" th:unless="${org.isActive}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Что означает организация приостановлена?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    Организация может быть приостановлена по разным причинам. Например: производится ремонт в помещении или несоответствие правилам платформы.
+                    Пока организация приостановлена, вы не сможете записаться на услугу, а созданные услуги будут отменены.
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="select-master-redactor option d-flex container col-6 my-3">
