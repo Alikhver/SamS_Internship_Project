@@ -66,9 +66,6 @@ function validateName() {
 function validatePrice() {
 
     const price = parseFloat($('#price').val());
-    console.log(price);
-    console.log(typeof price);
-    console.log(isNaN(price));
 
     if (price < 0 || isNaN(price) ) {
         $('#incorrect-price').slideDown();

@@ -48,8 +48,9 @@ $('.select-time').on('click', function () {
 
 $('.select-time-redactor').on('click', function () {
     const url = new URL(window.location.href);
+    url.pathname = url.pathname + '/select-worker'
 
-
+    window.location.href = url.href;
 })
 
 $('#trash-utility').on('click', function () {

@@ -23,7 +23,7 @@ public class ScheduleRecordController {
     private final OrganisationFacade organisationFacade;
     private final WorkerFacade workerFacade;
 
-    @GetMapping("/select-worker-to-assign-schedule")
+    @GetMapping("/select-worker")
     @ApiOperation("Select Worker to Assign Schedule")
     public ModelAndView viewSelectWorkerToAssignSchedule(@PathVariable @Positive Long orgId,
                                                          @RequestParam(defaultValue = "0") @PositiveOrZero int page,
@@ -33,9 +33,26 @@ public class ScheduleRecordController {
         var org = organisationFacade.getOrganisation(orgId);
 
         modelAndView.addObject("workers", workers);
-        modelAndView.addObject(org);
+        modelAndView.addObject("org", org);
 
-        modelAndView.setViewName("");
+        modelAndView.setViewName("select-time/selectWorkerToAssignSchedule");
+
+        return modelAndView;
+    }
+
+    @GetMapping("/select-worker/{workerId}/schedule")
+    @ApiOperation("Assign Schedule")
+    public ModelAndView viewAssignSchedule(@PathVariable @Positive Long orgId,
+                                           @PathVariable @Positive Long workerId,
+                                           ModelAndView modelAndView) {
+
+        var worker = workerFacade.getWorkerById(workerId);
+        var organisation = organisationFacade.getOrganisation(orgId);
+
+        modelAndView.addObject("worker", worker);
+        modelAndView.addObject("org", organisation);
+
+        modelAndView.setViewName("select-time/assignSchedule");
 
         return modelAndView;
     }

@@ -51,7 +51,7 @@
             <p th:text="${utility.price}"></p>
         </div>
         <button th:id="'append' + ${utility.id}" type="button" class="btn btn-primary" th:onclick="appendUtility([[${utility.id}]])">Добавить</button>
-        <button th:id="'remove' + ${utility.id}" type="button" class="btn btn-danger" style="display: none" th:onclick="removeUtility(this, [[${utility.id}]])">Удалить</button>
+        <button th:id="'remove' + ${utility.id}" type="button" class="btn btn-danger" style="display: none" th:onclick="removeUtility([[${utility.id}]])">Удалить</button>
     </div>
 </th:block>
 
