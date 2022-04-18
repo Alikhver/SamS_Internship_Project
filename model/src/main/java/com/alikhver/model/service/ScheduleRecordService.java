@@ -15,4 +15,6 @@ public interface ScheduleRecordService {
     boolean existsByWorkerIdAndDateAndStatus(Long workerId, Date date, ScheduleRecordStatus status);
 
     List<ScheduleRecord> findAllRecordsOfWorker(Long workerId);
+
+    Optional<ScheduleRecord> getRecordByWorkerIdAndDateAndStatus(Long workerId, Date date, ScheduleRecordStatus available);
 }

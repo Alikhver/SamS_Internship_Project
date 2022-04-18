@@ -66,4 +66,15 @@ public class ScheduleRecordServiceImpl implements ScheduleRecordService {
         log.info("findAllRecordsOfWorker -> done");
         return response;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<ScheduleRecord> getRecordByWorkerIdAndDateAndStatus(Long workerId, Date date, ScheduleRecordStatus status) {
+        log.info("getRecordByWorkerIdAndDateAndStatus -> start");
+
+        var response = repository.findByWorkerIdAndDateAndStatus(workerId, date, status);
+
+        log.info("getRecordByWorkerIdAndDateAndStatus -> done");
+        return response;
+    }
 }

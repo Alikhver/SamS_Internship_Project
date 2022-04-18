@@ -1,3 +1,5 @@
+const deleteArr = [];
+
 const goBack = function () {
     const url = new URL(window.location.href);
     const workerId = parseInt(url.pathname.split('/')[4]);
@@ -63,21 +65,66 @@ $('#date').on('change', validateDate);
 $('#start-time').on('change', validateStartTime);
 $('#end-time').on('change', validateEndTime);
 
+let numCreated = 0;
 
 const createRecords = function () {
     const url = new URL(window.location.href);
 
-    let date = $('#date').val();
-    let startTime = $('#start-time').val();
-    let endTime = $('#end-time').val();
+    let date = new Date($('#date').val());
+    const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+    const locale = "ru"
+    validateDate();
 
-    $('#createRecords').before(`<div class="option d-flex container-fluid col-3 px-0 my-3 justify-content-center">
-    <p>${new Date(date)}</p>
-</div>`)
+    let startTime = parseInt($('#start-time').val());
+    validateStartTime();
 
-    $('#date').val(null);
-    $('#start-time').val(null);
-    $('#end-time').val(null);
+    let endTime = parseInt($('#end-time').val());
+    validateEndTime()
+
+    const workerId = parseInt(url.pathname.split('/')[4])
+
+
+    if (validateDate() && validateEndTime() && validateStartTime()) {
+
+        const restUrl = url;
+
+        const data = {
+          date,
+          startTime,
+          endTime,
+            workerId
+        };
+
+        restUrl.pathname = '/records/create'
+        $.ajax({
+            url: restUrl,
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function () {
+                const param = `${date.toLocaleDateString(locale, options)} Work time: ${startTime}:00 - ${endTime}:00`;
+
+                $('#deleteRecords').after(
+                    `<div class="option d-flex container-fluid col-8 px-0 my-3 justify-content-center">
+                        <div class="col-9 container justify-content-center" align="center">
+                            <p>${param}</p>
+                        </div>
+                        <div class="col-3 container" align="center">
+                            <button id="${numCreated}" type="button" class="btn btn-danger" onclick="deleteBtn()">Cancel</button>
+                        </div>
+                    </div>`
+                )
+
+                numCreated = numCreated + 1;
+
+                deleteArr.push(data)
+
+                $('#date').val(null);
+                $('#start-time').val(null);
+                $('#end-time').val(null);
+            }
+        });
+    }
 }
 
 
@@ -139,7 +186,6 @@ $('#d-start-time').on('change', validateD_StartTime);
 $('#d-end-time').on('change', validateD_EndTime);
 
 
-
 //Send delete Request
 const deleteRecords = function () {
     const url = new URL(window.location.href);
@@ -149,4 +195,29 @@ const deleteRecords = function () {
     $('#d-date').val(null);
     $('#d-start-time').val(null);
     $('#d-end-time').val(null);
+}
+
+const deleteBtn = function () {
+    const createdNum = parseInt(event.srcElement.id);
+
+    const data = deleteArr[createdNum];
+
+    deleteRequest(data);
+
+    $(`#${createdNum}`).parent().parent().remove();
+}
+
+const deleteRequest = function (data) {
+    const restUrl = new URL(window.location.href);
+
+    restUrl.pathname = '/records/cancel';
+
+    $.ajax({
+        url: restUrl,
+        type: 'PUT',
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: function () {
+        }
+    });
 }

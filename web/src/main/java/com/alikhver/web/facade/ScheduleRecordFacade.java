@@ -1,6 +1,8 @@
 package com.alikhver.web.facade;
 
+import com.alikhver.web.dto.record.request.CancelRecordsRequest;
 import com.alikhver.web.dto.record.request.CreateRecordRequest;
+import com.alikhver.web.dto.record.request.CreateRecordsRequest;
 import com.alikhver.web.dto.record.response.GetRecordResponse;
 
 public interface ScheduleRecordFacade {
@@ -13,4 +15,8 @@ public interface ScheduleRecordFacade {
     void releaseRecord(Long recordId);
 
     void cancelRecord(Long recordId);
+
+    void cancelRecords(CancelRecordsRequest request);
+
+    void createRecords(CreateRecordsRequest request);
 }

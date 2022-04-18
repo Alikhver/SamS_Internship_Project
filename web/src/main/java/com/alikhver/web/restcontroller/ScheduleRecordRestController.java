@@ -1,6 +1,8 @@
 package com.alikhver.web.restcontroller;
 
+import com.alikhver.web.dto.record.request.CancelRecordsRequest;
 import com.alikhver.web.dto.record.request.CreateRecordRequest;
+import com.alikhver.web.dto.record.request.CreateRecordsRequest;
 import com.alikhver.web.dto.record.response.GetRecordResponse;
 import com.alikhver.web.facade.ScheduleRecordFacade;
 import io.swagger.annotations.ApiOperation;
@@ -40,6 +42,23 @@ public class ScheduleRecordRestController {
         Long requestId = scheduleRecordFacade.createRecord(request);
 
         return new ResponseEntity<>(requestId, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/cancel")
+    @ApiOperation("Cancel records of time range")
+    public ResponseEntity<Void> cancelRecordsOfPeriod(@RequestBody @Validated CancelRecordsRequest request) {
+
+        scheduleRecordFacade.cancelRecords(request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/create")
+    @ApiOperation("Cancel records of time range")
+    public ResponseEntity<Void> cancelRecordsOfPeriod(@RequestBody @Validated CreateRecordsRequest request) {
+
+        scheduleRecordFacade.createRecords(request);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/{recordId}/book")

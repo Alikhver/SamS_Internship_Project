@@ -12,7 +12,9 @@ import com.alikhver.model.service.UtilityService;
 import com.alikhver.model.service.WorkerService;
 import com.alikhver.model.util.ValidationHelper;
 import com.alikhver.web.converter.scheduleRecord.ScheduleRecordConverter;
+import com.alikhver.web.dto.record.request.CancelRecordsRequest;
 import com.alikhver.web.dto.record.request.CreateRecordRequest;
+import com.alikhver.web.dto.record.request.CreateRecordsRequest;
 import com.alikhver.web.dto.record.response.GetRecordResponse;
 import com.alikhver.web.exception.profile.NoProfileFoundException;
 import com.alikhver.web.exception.scheduleRecord.NoScheduleRecordFoundException;
@@ -26,6 +28,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @Slf4j
 @Service
@@ -189,5 +193,80 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
         scheduleRecordService.save(record);
 
         log.info("cancelRecord -> done");
+    }
+
+    @Override
+    @Transactional
+    public void cancelRecords(CancelRecordsRequest request) {
+        log.info("cancelRecords -> start");
+
+        Date date = request.getDate();
+        int startTime = request.getStartTime();
+        int endTime = request.getEndTime();
+        Long workerId = request.getWorkerId();
+
+        if (!workerService.existsWorker(workerId)) {
+            log.warn("NoWorkerFoundException is thrown");
+            throw new NoWorkerFoundException(
+              "No Worker with id = " + workerId + " found"
+            );
+        }
+
+
+        for (; startTime < endTime; startTime++) {
+            date.setHours(startTime);
+            var optionalRecord = scheduleRecordService.getRecordByWorkerIdAndDateAndStatus(workerId, date, ScheduleRecordStatus.AVAILABLE);
+            ScheduleRecord record;
+
+            if (optionalRecord.isPresent()) {
+                record = optionalRecord.get();
+                cancelRecord(record.getId());
+            }
+        }
+
+        log.info("cancelRecords -> done");
+    }
+
+    @Override
+    @Transactional
+    public void createRecords(CreateRecordsRequest request) {
+        log.info("createRecords -> start");
+
+        Date date = request.getDate();
+        int startTime = request.getStartTime();
+        int endTime = request.getEndTime();
+        Long workerId = request.getWorkerId();
+
+        Worker worker = workerService.getWorker(workerId).orElseThrow(() -> {
+            log.warn("NoWorkerFoundException is thrown");
+            throw new NoWorkerFoundException(
+                    "No Worker with id = " + workerId + " found"
+            );
+        });
+
+        for (; startTime < endTime; startTime++) {
+            date.setHours(startTime);
+
+//            if (!scheduleRecordService.existsByWorkerIdAndDateAndStatus(workerId, date, ScheduleRecordStatus.AVAILABLE)) {
+//                ScheduleRecord record = ScheduleRecord.builder()
+//                        .worker(worker)
+//                        .status(ScheduleRecordStatus.AVAILABLE)
+//                        .date(date)
+//                        .build();
+//
+//                scheduleRecordService.save(record);
+//            }
+
+            if (!scheduleRecordService.existsByWorkerIdAndDateAndStatus(workerId, date, ScheduleRecordStatus.AVAILABLE)) {
+                CreateRecordRequest record = CreateRecordRequest.builder()
+                        .workerId(workerId)
+                        .date(date)
+                        .build();
+
+                createRecord(record);
+            }
+        }
+
+        log.info("createRecords -> done");
     }
 }
