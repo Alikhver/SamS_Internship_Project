@@ -13,7 +13,7 @@ public class UpdateProfileRequest {
     @Size(max = 45)
     private String lastName;
     //TODO move to properties
-    @Pattern(regexp = "\\(?\\+[0-9]{1,3}\\)? ?-?[0-9]{1,3} ?-?[0-9]{3,5} ?-?[0-9]{4}( ?-?[0-9]{3})?",
+    @Pattern(regexp = "^(\\+375|80)(29|25|44|33)(\\d{3})(\\d{2})(\\d{2})$",
             message = "Not correct phone number")
     private String phoneNumber;
     @Email

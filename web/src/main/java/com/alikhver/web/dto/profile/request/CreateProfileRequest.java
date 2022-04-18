@@ -19,24 +19,7 @@ public class CreateProfileRequest {
     private String lastName;
     @NotBlank
     //TODO move to properties
-//    +55 11 99999-5555 Brazil
-//
-//+593 7 282-3889 Ecuador
-//
-//+1 284 852 5500 BVI
-//
-//+1 345 9490088 Grand Cayman
-//
-//+32 2 702-9200 Belgium
-//
-//+65 6511 9266 Asia Pacific
-//
-//+86 21 2230 1000 Shanghai
-//
-//+9124 4723300 India
-//
-//+821012345678 South Korea
-    @Pattern(regexp = "\\(?\\+[0-9]{1,3}\\)? ?-?[0-9]{1,3} ?-?[0-9]{3,5} ?-?[0-9]{4}( ?-?[0-9]{3})?",
+    @Pattern(regexp = "^(\\+375|80)(29|25|44|33)(\\d{3})(\\d{2})(\\d{2})$",
             message = "Not correct phone number")
     private String phoneNumber;
     @Email

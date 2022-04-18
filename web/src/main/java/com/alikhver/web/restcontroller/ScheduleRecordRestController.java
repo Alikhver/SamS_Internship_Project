@@ -53,7 +53,7 @@ public class ScheduleRecordRestController {
     }
 
     @PostMapping("/create")
-    @ApiOperation("Cancel records of time range")
+    @ApiOperation("Create records of time range")
     public ResponseEntity<Void> cancelRecordsOfPeriod(@RequestBody @Validated CreateRecordsRequest request) {
 
         scheduleRecordFacade.createRecords(request);

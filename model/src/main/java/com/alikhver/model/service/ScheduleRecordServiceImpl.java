@@ -46,12 +46,12 @@ public class ScheduleRecordServiceImpl implements ScheduleRecordService {
     @Override
     @Transactional(readOnly = true)
     public boolean existsByWorkerIdAndDateAndStatus(Long workerId, Date date, ScheduleRecordStatus status) {
-        log.info("existsByWorkerIdAndDate -> start");
+        log.info("existsByWorkerIdAndDateAndStatus -> start");
 
         validationHelper.validateForCorrectId(workerId, "WorkerId");
         var exists = repository.existsByWorkerIdAndDateAndStatus(workerId, date, status);
 
-        log.info("existsByWorkerIdAndDate -> done");
+        log.info("existsByWorkerIdAndDateAndStatus -> done");
         return exists;
     }
 

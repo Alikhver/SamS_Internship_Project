@@ -246,25 +246,26 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
 
         for (; startTime < endTime; startTime++) {
             date.setHours(startTime);
+            Date dt = (Date) date.clone();
+
+            if (!scheduleRecordService.existsByWorkerIdAndDateAndStatus(workerId, dt, ScheduleRecordStatus.AVAILABLE)) {
+                ScheduleRecord record = ScheduleRecord.builder()
+                        .worker(worker)
+                        .status(ScheduleRecordStatus.AVAILABLE)
+                        .date(dt)
+                        .build();
+
+                scheduleRecordService.save(record);
+            }
 
 //            if (!scheduleRecordService.existsByWorkerIdAndDateAndStatus(workerId, date, ScheduleRecordStatus.AVAILABLE)) {
-//                ScheduleRecord record = ScheduleRecord.builder()
-//                        .worker(worker)
-//                        .status(ScheduleRecordStatus.AVAILABLE)
+//                CreateRecordRequest record = CreateRecordRequest.builder()
+//                        .workerId(workerId)
 //                        .date(date)
 //                        .build();
 //
-//                scheduleRecordService.save(record);
+//                createRecord(record);
 //            }
-
-            if (!scheduleRecordService.existsByWorkerIdAndDateAndStatus(workerId, date, ScheduleRecordStatus.AVAILABLE)) {
-                CreateRecordRequest record = CreateRecordRequest.builder()
-                        .workerId(workerId)
-                        .date(date)
-                        .build();
-
-                createRecord(record);
-            }
         }
 
         log.info("createRecords -> done");

@@ -190,11 +190,42 @@ $('#d-end-time').on('change', validateD_EndTime);
 const deleteRecords = function () {
     const url = new URL(window.location.href);
 
+    let date = new Date($('#d-date').val());
+    validateD_Date();
+
+    let startTime = parseInt($('#d-start-time').val());
+    validateD_StartTime();
+
+    let endTime = parseInt($('#d-end-time').val());
+    validateD_EndTime()
+
+    const workerId = parseInt(url.pathname.split('/')[4])
 
 
-    $('#d-date').val(null);
-    $('#d-start-time').val(null);
-    $('#d-end-time').val(null);
+    if (validateD_Date() && validateD_EndTime() && validateD_StartTime()) {
+
+        const restUrl = url;
+
+        const data = {
+            date,
+            startTime,
+            endTime,
+            workerId
+        };
+
+        restUrl.pathname = '/records/cancel'
+        $.ajax({
+            url: restUrl,
+            type: 'PUT',
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function () {
+                $('#d-date').val(null);
+                $('#d-start-time').val(null);
+                $('#d-end-time').val(null);
+            }
+        });
+    }
 }
 
 const deleteBtn = function () {

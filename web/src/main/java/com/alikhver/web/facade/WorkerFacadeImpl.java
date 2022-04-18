@@ -165,7 +165,6 @@ public class WorkerFacadeImpl implements WorkerFacade {
             utility.getWorkers().add(worker);
         }
 
-        //TODO implement save/update utility
         workerService.saveWorker(worker);
         utilityService.saveUtility(utility);
 
