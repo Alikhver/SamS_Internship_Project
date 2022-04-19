@@ -111,6 +111,17 @@ public class WorkerServiceImpl implements WorkerService {
     }
 
     @Override
+    public List<Worker> getWorkersByUtilityId(Long utilityId) {
+        log.info("getWorkersByUtilityId -> start");
+
+        validationHelper.validateForCorrectId(utilityId, "UtilityId");
+        var workers = repository.findWorkerByUtilitiesId(utilityId);
+
+        log.info("getWorkersByUtilityId -> done");
+        return workers;
+    }
+
+    @Override
     public void saveWorker(Worker worker) {
         log.info("saveWorker -> start");
 

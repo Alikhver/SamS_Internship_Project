@@ -25,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -118,6 +119,24 @@ public class UtilityFacadeImpl implements UtilityFacade {
         var workers = workerService.getWorkersByUtilityId(utilityId, pageable);
 
         var response = workerConverter.mapToPageOfGetWorkerResponse(workers);
+
+        log.info("getWorkersOfUtility -> done");
+        return response;
+    }
+
+    @Override
+    public List<GetWorkerResponse> getWorkersOfUtility(Long utilityId) {
+        log.info("getWorkersOfUtility -> start");
+
+        validationHelper.validateForCorrectId(utilityId, "WorkerId");
+        if (!utilityService.existsUtility(utilityId)) {
+            throw new NoWorkerFoundException(
+                    "Utility with id " + utilityId + " was not found"
+            );
+        }
+        var workers = workerService.getWorkersByUtilityId(utilityId);
+
+        var response = workerConverter.mapToListOfGetWorkerResponse(workers);
 
         log.info("getWorkersOfUtility -> done");
         return response;

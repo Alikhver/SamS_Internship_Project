@@ -7,6 +7,8 @@ import com.alikhver.web.dto.utility.response.GetUtilityResponse;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface UtilityFacade {
     CreateUtilityResponse createUtility(CreateUtilityRequest request);
 
@@ -17,4 +19,6 @@ public interface UtilityFacade {
     void deleteUtility(Long id);
 
     Page<GetWorkerResponse> getWorkersOfUtility(Long utilityId, int page, int size);
+
+    List<GetWorkerResponse> getWorkersOfUtility(Long utilityId);
 }

@@ -19,4 +19,6 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
     void deleteAllByOrganisationId(Long orgId);
 
     Page<Worker> findWorkerByUtilitiesId(Long utilityId, Pageable pageable);
+
+    List<Worker> findWorkerByUtilitiesId(Long utilityId);
 }

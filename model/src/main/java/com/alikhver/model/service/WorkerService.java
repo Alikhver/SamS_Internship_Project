@@ -25,4 +25,6 @@ public interface WorkerService {
     void deleteWorkersOfOrganisation(Long orgId);
 
     Page<Worker> getWorkersByUtilityId(Long utilityId, Pageable pageable);
+
+    List<Worker> getWorkersByUtilityId(Long utilityId);
 }
