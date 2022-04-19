@@ -257,15 +257,6 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
 
                 scheduleRecordService.save(record);
             }
-
-//            if (!scheduleRecordService.existsByWorkerIdAndDateAndStatus(workerId, date, ScheduleRecordStatus.AVAILABLE)) {
-//                CreateRecordRequest record = CreateRecordRequest.builder()
-//                        .workerId(workerId)
-//                        .date(date)
-//                        .build();
-//
-//                createRecord(record);
-//            }
         }
 
         log.info("createRecords -> done");
