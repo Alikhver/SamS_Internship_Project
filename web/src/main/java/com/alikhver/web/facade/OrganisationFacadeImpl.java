@@ -186,6 +186,27 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     }
 
     @Override
+    public List<GetUtilityResponse> getUtilities(Long orgId) {
+        log.info("getUtilities -> start");
+
+        validationHelper.validateForCorrectId(orgId, "OrganisationId");
+
+        if (!organisationService.existsById(orgId)) {
+            log.warn("NoOrganisationFoundException is thrown");
+            throw new NoOrganisationFoundException(
+                    "No Organisation with id = " + orgId + "found"
+            );
+        }
+
+        List<Utility> utilities = utilityService.getAllUtilitiesOfOrganisation(orgId);
+
+        var response = utilityConverter.mapToListOfGetUtilityResponse(utilities);
+
+        log.info("getUtilities -> done");
+        return response;
+    }
+
+    @Override
     public void updateOrganisation(Long id, UpdateOrganisationRequest request) {
         log.info("updateOrganisation -> start");
 

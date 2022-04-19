@@ -22,4 +22,5 @@ public interface UtilityRepository extends JpaRepository<Utility, Long> {
 
     Page<Utility> findUtilitiesByWorkersId(Long workerId, Pageable pageable);
 
+    List<Utility> findUtilitiesByWorkersId(Long workerId);
 }

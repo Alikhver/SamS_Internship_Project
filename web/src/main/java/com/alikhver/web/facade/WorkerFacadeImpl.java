@@ -269,6 +269,24 @@ public class WorkerFacadeImpl implements WorkerFacade {
     }
 
     @Override
+    public List<GetUtilityResponse> getUtilitiesOfWorker(Long workerId) {
+        log.info("getUtilitiesOfWorker -> start");
+
+        validationHelper.validateForCorrectId(workerId, "WorkerId");
+        if (!workerService.existsWorker(workerId)) {
+            throw new NoWorkerFoundException(
+                    "Worker with id " + workerId + " was not found"
+            );
+        }
+        List<Utility> utilities = utilityService.getUtilitiesByWorkerId(workerId);
+
+        var response = utilityConverter.mapToListOfGetUtilityResponse(utilities);
+
+        log.info("getUtilitiesOfWorker -> done");
+        return response;
+    }
+
+    @Override
     @Transactional
     public CreateWorkerResponse createWorker(CreateWorkerRequest request) {
         log.info("createWorker -> start");

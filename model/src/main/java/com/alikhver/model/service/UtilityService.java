@@ -29,4 +29,8 @@ public interface UtilityService {
     void deleteAllUtilitiesOfOrganisation(Long orgId);
 
     Page<Utility> getUtilitiesByWorkerId(Long workerId, Pageable pageable);
+
+    List<Utility> getAllUtilitiesOfOrganisation(Long orgId);
+
+    List<Utility> getUtilitiesByWorkerId(Long workerId);
 }

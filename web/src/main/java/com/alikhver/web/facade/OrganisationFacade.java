@@ -30,4 +30,6 @@ public interface OrganisationFacade {
     Page<GetUtilityResponse> getUtilities(Long id, int page, int size);
 
     List<GetWorkerResponse> getWorkers(Long orgId);
+
+    List<GetUtilityResponse> getUtilities(Long orgId);
 }

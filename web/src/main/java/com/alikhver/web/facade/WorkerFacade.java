@@ -26,4 +26,6 @@ public interface WorkerFacade {
     Page<GetUtilityResponse> getUtilitiesOfWorker(Long workerId, int page, int size);
 
     List<GetRecordResponse> getAllFutureRecords(Long workerId);
+
+    List<GetUtilityResponse> getUtilitiesOfWorker(Long workerId);
 }

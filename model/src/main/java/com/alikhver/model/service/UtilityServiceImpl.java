@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.Utilities;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -144,6 +145,29 @@ public class UtilityServiceImpl implements UtilityService {
 
         validationHelper.validateForCorrectId(workerId, "WorkerId");
         var response = repository.findUtilitiesByWorkersId(workerId, pageable);
+
+        log.info("getUtilitiesOfWorker -> done");
+        return response;
+    }
+
+    @Override
+    public List<Utility> getAllUtilitiesOfOrganisation(Long orgId) {
+        log.info("getAllUtilitiesOfOrganisation -> start");
+
+        validationHelper.validateForCorrectId(orgId, "OrganisationId");
+        var organisations = repository.findAllByOrganisationId(orgId);
+
+        log.info("getAllUtilitiesOfOrganisation -> done");
+        return organisations;
+    }
+
+    @Override
+    public List<Utility> getUtilitiesByWorkerId(Long workerId) {
+
+        log.info("getUtilitiesOfWorker -> start");
+
+        validationHelper.validateForCorrectId(workerId, "WorkerId");
+        List<Utility> response = repository.findUtilitiesByWorkersId(workerId);
 
         log.info("getUtilitiesOfWorker -> done");
         return response;

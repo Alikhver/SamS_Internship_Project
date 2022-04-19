@@ -7,7 +7,6 @@ import com.alikhver.web.facade.UtilityFacade;
 import com.alikhver.web.facade.WorkerFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,19 +31,14 @@ public class UtilityController {
     @GetMapping()
     @ApiOperation("View Utilities")
     public ModelAndView viewUtilities(@PathVariable @Positive Long orgId,
-                                      @RequestParam(defaultValue = "0") @PositiveOrZero int page,
-                                      @RequestParam(defaultValue = "5") @Positive int size,
                                       @RequestParam(name = "worker", required = false) @Positive Long workerId,
                                       ModelAndView modelAndView) {
-        Page<GetUtilityResponse> utilitiesPage;
-        List<GetUtilityResponse> utilitiesList;
+        List<GetUtilityResponse> utilities;
 
         if (workerId == null) {
-            utilitiesPage = organisationFacade.getUtilities(orgId, page, size);
-            utilitiesList = utilitiesPage.getContent();
+            utilities = organisationFacade.getUtilities(orgId);
         } else {
-            utilitiesPage = workerFacade.getUtilitiesOfWorker(workerId, page, size);
-            utilitiesList = utilitiesPage.stream().sorted((GetUtilityResponse a, GetUtilityResponse b) -> {
+            utilities = workerFacade.getUtilitiesOfWorker(workerId).stream().sorted((GetUtilityResponse a, GetUtilityResponse b) -> {
                 if (a.isHasWorkers() == b.isHasWorkers() && a.isHasWorkers()) {
                     return 1;
                 } else if (a.isHasWorkers() && !b.isHasWorkers()) {
@@ -58,7 +51,7 @@ public class UtilityController {
         var organisation = organisationFacade.getOrganisation(orgId);
 
         modelAndView.addObject("orgName", organisation.getName());
-        modelAndView.addObject("utilities", utilitiesList);
+        modelAndView.addObject("utilities", utilities);
         modelAndView.addObject("orgId", orgId);
         modelAndView.setViewName("utility/utilities");
 
