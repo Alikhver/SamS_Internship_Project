@@ -8,6 +8,8 @@ import com.alikhver.web.dto.utility.response.GetUtilityResponse;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface OrganisationFacade {
     GetOrganisationResponse getOrganisation(Long id);
 
@@ -26,4 +28,6 @@ public interface OrganisationFacade {
     Page<GetWorkerResponse> getWorkers(Long id, int page, int size);
 
     Page<GetUtilityResponse> getUtilities(Long id, int page, int size);
+
+    List<GetWorkerResponse> getWorkers(Long orgId);
 }

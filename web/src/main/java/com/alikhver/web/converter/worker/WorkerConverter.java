@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -17,6 +19,7 @@ public class WorkerConverter {
     private final WorkerToCreateWorkerResponseConverter workerToCreateWorkerResponseConverter;
     private final WorkerToGetWorkerResponseConverter workerToGetWorkerResponseConverter;
     private final PageOfWorkersToPageOfGetWorkerResponseConverter pageOfWorkersToPageOfGetWorkerResponseConverter;
+    private final ListOfWorkersToListOFGetWorkerResponseConverter listOfWorkersToListOFGetWorkerResponseConverter;
 
     public Worker mapToWorker(CreateWorkerRequest request) {
         log.info("mapToWorker -> start");
@@ -51,6 +54,15 @@ public class WorkerConverter {
         var response = pageOfWorkersToPageOfGetWorkerResponseConverter.convert(workers);
 
         log.info("mapToPageOfGetWorkerResponse -> done");
+        return response;
+    }
+
+    public List<GetWorkerResponse> mapToListOfGetWorkerResponse(List<Worker> workers) {
+        log.info("mapToListOfGetWorkerResponse -> start");
+
+        List<GetWorkerResponse> response = listOfWorkersToListOFGetWorkerResponseConverter.convert( workers);
+
+        log.info("mapToListOfGetWorkerResponse -> done");
         return response;
     }
 }

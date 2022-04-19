@@ -32,6 +32,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -142,7 +143,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<GetUtilityResponse> getUtilities(Long organisationId, int page, int size) {
         log.info("getUtilities -> start");
 
@@ -161,6 +162,26 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         var response = utilityConverter.mapToPageOfGetUtilityResponse(utilities);
 
         log.info("getUtilities -> done");
+        return response;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<GetWorkerResponse> getWorkers(Long orgId) {
+        log.info("getWorkers -> start");
+
+        if (!organisationService.existsById(orgId)) {
+            log.warn("NoOrganisationFoundException is thrown");
+            throw new NoOrganisationFoundException(
+                    "No Organisation with id = " + orgId + "found"
+            );
+        }
+
+        List<Worker> workers = workerService.findAllWorkersOfOrganisation(orgId);
+
+        var response = workerConverter.mapToListOfGetWorkerResponse(workers);
+
+        log.info("getWorkers -> done");
         return response;
     }
 
@@ -237,10 +258,9 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         workers.forEach(worker -> {
             var workersRecords = scheduleRecordService.findAllRecordsOfWorker(worker.getId());
 
-            workersRecords.forEach(record -> {
-                scheduleRecordFacade.cancelRecord(record.getId());
-            });
+            workersRecords.forEach(record -> scheduleRecordFacade.cancelRecord(record.getId()));
         });
+        //TODO check if correct
 
         log.info("suspendOrganisation -> done");
     }
