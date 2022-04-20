@@ -95,7 +95,6 @@ public class OrganisationConverterTests {
     }
 
     @Test
-//    @Ignore
     public void mapToPageOfGetOrganisationResponse() {
         //Given
         PageImpl<Organisation> page = new PageImpl<>(List.of(generator.nextObject(Organisation.class)),

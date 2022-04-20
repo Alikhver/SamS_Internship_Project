@@ -85,7 +85,7 @@ public class WorkerServiceIT {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         workerService.deleteWorkersOfOrganisation(organisation.getId());
     }
 

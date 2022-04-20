@@ -14,8 +14,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ModelConfigurationTest.class,
@@ -49,7 +52,11 @@ public class UserServiceIT {
         User expected = userService.getUsers().get(0);
 
         //When
-        User actual = userService.getUser(expected.getId()).get();
+        Optional<User> optionalUser = userService.getUser(expected.getId());
+
+        assertTrue(optionalUser.isPresent());
+
+        User actual = optionalUser.get();
 
         //Then
         assertEquals(expected.getId(), actual.getId());
@@ -201,7 +208,11 @@ public class UserServiceIT {
         userService.saveUser(expected);
 
         //Then
-        User actual = userService.getUser(expected.getId()).get();
+        Optional<User> optionalUser = userService.getUser(expected.getId());
+
+        assertTrue(optionalUser.isPresent());
+
+        User actual = optionalUser.get();
 
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getLogin(), actual.getLogin());

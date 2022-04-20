@@ -27,6 +27,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ModelConfigurationTest.class,
@@ -101,7 +102,11 @@ public class UtilityServiceIT {
         utilityService.saveUtility(expected);
 
         //Then
-        Utility actual = utilityService.getUtility(expected.getId()).get();
+        var optionalUtility = utilityService.getUtility(expected.getId());
+
+        assertTrue(optionalUtility.isPresent());
+
+        Utility actual = optionalUtility.get();
 
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getId(), actual.getId());
@@ -189,7 +194,11 @@ public class UtilityServiceIT {
         Utility expected = utilityService.getUtilitiesOfOrganisation(organisation.getId()).get(0);
 
         //When
-        Utility actual = utilityService.getUtility(expected.getId()).get();
+        var optionalUtility = utilityService.getUtility(expected.getId());
+
+        assertTrue(optionalUtility.isPresent());
+
+        Utility actual = optionalUtility.get();
 
         //Then
         assertEquals(expected.getId(), actual.getId());
