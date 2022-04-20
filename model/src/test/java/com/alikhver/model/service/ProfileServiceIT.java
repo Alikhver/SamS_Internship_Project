@@ -22,6 +22,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ModelConfigurationTest.class,
@@ -82,8 +83,11 @@ public class ProfileServiceIT {
         profileService.save(expected);
 
         //Then
-        //TODO refactor without warning
-        Profile actual = profileService.getProfile(expected.getId()).get();
+        Optional<Profile> optional = profileService.getProfile(expected.getId());
+
+        assertTrue(optional.isPresent());
+
+        Profile actual = optional.get();
 
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getPhoneNumber(), actual.getPhoneNumber());
@@ -132,7 +136,12 @@ public class ProfileServiceIT {
         Profile expected = profileService.getAllProfiles().get(0);
 
         //When
-        Profile actual = profileService.getProfile(expected.getId()).get();
+        Optional<Profile> optional = profileService.getProfile(expected.getId());
+
+        assertTrue(optional.isPresent());
+
+        Profile actual = optional.get();
+
 
         //Then
         assertEquals(expected.getId(), actual.getId());

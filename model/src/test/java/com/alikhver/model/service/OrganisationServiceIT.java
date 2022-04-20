@@ -18,9 +18,11 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ModelConfigurationTest.class,
@@ -219,8 +221,11 @@ public class OrganisationServiceIT {
 
         //Then
         Long orgId = expected.getId();
-        //TODO how to refactor without isPresent() check warning
-        Organisation actual = organisationService.getOrganisation(orgId).get();
+        Optional<Organisation> optional = organisationService.getOrganisation(orgId);
+
+        assertTrue(optional.isPresent());
+
+        Organisation actual = optional.get();
 
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getName(), actual.getName());
