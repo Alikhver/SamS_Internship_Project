@@ -2,6 +2,7 @@ package com.alikhver.web.facade;
 
 import com.alikhver.model.entity.Profile;
 import com.alikhver.model.entity.User;
+import com.alikhver.model.entity.UserRole;
 import com.alikhver.model.service.ProfileService;
 import com.alikhver.model.service.UserService;
 import com.alikhver.web.converter.profile.ProfileConverter;
@@ -9,6 +10,7 @@ import com.alikhver.web.dto.profile.request.CreateProfileRequest;
 import com.alikhver.web.dto.profile.request.UpdateProfileRequest;
 import com.alikhver.web.dto.profile.response.CreateProfileResponse;
 import com.alikhver.web.dto.profile.response.GetProfileResponse;
+import com.alikhver.web.exception.profile.AttemptToAssignProfileToUserWithWrongRole;
 import com.alikhver.web.exception.profile.NoProfileFoundException;
 import com.alikhver.web.exception.profile.UserIsAlreadyBoundedProfileException;
 import com.alikhver.web.exception.user.NoUserFoundException;
@@ -43,6 +45,12 @@ public class ProfileFacadeImpl implements ProfileFacade{
             log.warn("NoUserFoundException is thrown");
             throw new NoUserFoundException(
               "No user with id = " + request.getUserId() + " found"
+            );
+        }
+        if (user.getRole() != UserRole.USER) {
+            log.warn("");
+            throw new AttemptToAssignProfileToUserWithWrongRole(
+              "Provided user with id = " + user.getId() + " has not role of UserRole.User"
             );
         }
 
