@@ -1,6 +1,7 @@
 package com.alikhver.model.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +31,7 @@ public class ModelConfigurationTest {
     private Environment env;
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Value("${hibernate.dialect}") String hibernateDialect) {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
@@ -38,7 +39,7 @@ public class ModelConfigurationTest {
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
-        em.setJpaProperties(additionalProperties());
+        em.setJpaProperties(additionalProperties(hibernateDialect));
 
         return em;
     }
@@ -60,10 +61,9 @@ public class ModelConfigurationTest {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-    Properties additionalProperties() {
+    Properties additionalProperties(String hibernateDialect) {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "update"); // TODO move to properties and inject
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect"); // TODO move to properties and inject
+        properties.setProperty("hibernate.dialect", hibernateDialect);
         return properties;
     }
 
