@@ -261,4 +261,46 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
 
         log.info("createRecords -> done");
     }
+
+    @Override
+    @Transactional
+    public void setRecordExpired(Long recordId) {
+        log.info("setRecordExpired -> start");
+
+        validationHelper.validateForCorrectId(recordId, "RecordId");
+
+        ScheduleRecord record = scheduleRecordService.get(recordId).orElseThrow(() -> {
+            log.warn("NoScheduleRecordFoundException is thrown");
+            throw new NoScheduleRecordFoundException(
+                    "No ScheduleRecord with id = " + recordId + " found"
+            );
+        });
+
+        record.setStatus(ScheduleRecordStatus.EXPIRED);
+
+        scheduleRecordService.save(record);
+
+        log.info("setRecordExpired -> done");
+    }
+
+    @Override
+    @Transactional
+    public void setRecordDone(Long recordId) {
+        log.info("setRecordDone -> start");
+
+        validationHelper.validateForCorrectId(recordId, "RecordId");
+
+        ScheduleRecord record = scheduleRecordService.get(recordId).orElseThrow(() -> {
+            log.warn("NoScheduleRecordFoundException is thrown");
+            throw new NoScheduleRecordFoundException(
+                    "No ScheduleRecord with id = " + recordId + " found"
+            );
+        });
+
+        record.setStatus(ScheduleRecordStatus.DONE);
+
+        scheduleRecordService.save(record);
+
+        log.info("setRecordDone -> done");
+    }
 }

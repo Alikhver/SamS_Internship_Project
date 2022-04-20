@@ -4,5 +4,6 @@ public enum ScheduleRecordStatus {
     BOOKED,
     AVAILABLE,
     DONE,
-    CANCELED
+    CANCELED,
+    EXPIRED
 }

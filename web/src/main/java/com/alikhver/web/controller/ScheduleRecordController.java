@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Positive;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/organisation/{orgId}")
@@ -50,6 +51,8 @@ public class ScheduleRecordController {
         modelAndView.addObject("org", organisation);
 
         modelAndView.setViewName("select-time/assignSchedule");
+
+        Date date = new Date();
 
         return modelAndView;
     }

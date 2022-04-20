@@ -77,4 +77,14 @@ public class ScheduleRecordServiceImpl implements ScheduleRecordService {
         log.info("getRecordByWorkerIdAndDateAndStatus -> done");
         return response;
     }
+
+    @Override
+    public List<ScheduleRecord> getUtilitiesByTime(Date current) {
+        log.info("getUtilitiesByTime -> start");
+
+        List<ScheduleRecord> records = repository.findAllByDate(current);
+
+        log.info("getUtilitiesByTime -> done");
+        return records;
+    }
 }

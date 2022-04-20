@@ -19,4 +19,8 @@ public interface ScheduleRecordFacade {
     void cancelRecords(CancelRecordsRequest request);
 
     void createRecords(CreateRecordsRequest request);
+
+    void setRecordExpired(Long recordId);
+
+    void setRecordDone(Long recordId);
 }
