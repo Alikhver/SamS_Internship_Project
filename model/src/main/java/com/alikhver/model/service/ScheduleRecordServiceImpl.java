@@ -87,4 +87,16 @@ public class ScheduleRecordServiceImpl implements ScheduleRecordService {
         log.info("getUtilitiesByTime -> done");
         return records;
     }
+
+    @Override
+    public List<ScheduleRecord> findAllRecordsOfWorkersAfterDate(Long recordId, Date date) {
+        log.info("findAllRecordsOfWorkersAfterDate -> start");
+
+        validationHelper.validateForCorrectId(recordId, "RecordId");
+
+        var response = repository.findAllByWorkerIdAndDateAfter(recordId, date);
+
+        log.info("findAllRecordsOfWorkersAfterDate -> done");
+        return response;
+    }
 }

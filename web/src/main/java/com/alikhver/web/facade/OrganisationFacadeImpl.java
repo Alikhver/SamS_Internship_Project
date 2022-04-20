@@ -32,6 +32,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -277,11 +278,10 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         var workers = workerService.findAllWorkersOfOrganisation(orgId);
 
         workers.forEach(worker -> {
-            var workersRecords = scheduleRecordService.findAllRecordsOfWorker(worker.getId());
+            var workersRecords = scheduleRecordService.findAllRecordsOfWorkersAfterDate(worker.getId(), new Date());
 
             workersRecords.forEach(record -> scheduleRecordFacade.cancelRecord(record.getId()));
         });
-        //TODO check if correct
 
         log.info("suspendOrganisation -> done");
     }

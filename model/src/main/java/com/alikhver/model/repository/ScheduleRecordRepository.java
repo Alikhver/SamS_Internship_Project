@@ -18,4 +18,6 @@ public interface ScheduleRecordRepository extends JpaRepository<ScheduleRecord, 
     Optional<ScheduleRecord> findByWorkerIdAndDateAndStatus(Long workerId, Date date, ScheduleRecordStatus status);
 
     List<ScheduleRecord> findAllByDate(Date date);
+
+    List<ScheduleRecord> findAllByWorkerIdAndDateAfter(Long workerId, Date date);
 }

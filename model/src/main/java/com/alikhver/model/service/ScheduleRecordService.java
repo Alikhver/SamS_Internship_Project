@@ -19,4 +19,6 @@ public interface ScheduleRecordService {
     Optional<ScheduleRecord> getRecordByWorkerIdAndDateAndStatus(Long workerId, Date date, ScheduleRecordStatus available);
 
     List<ScheduleRecord> getUtilitiesByTime(Date current);
+
+    List<ScheduleRecord> findAllRecordsOfWorkersAfterDate(Long id, Date date);
 }
