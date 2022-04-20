@@ -187,6 +187,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<GetUtilityResponse> getUtilities(Long orgId) {
         log.info("getUtilities -> start");
 
@@ -230,6 +231,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     }
 
     @Override
+    @Transactional
     public void deleteOrganisation(Long id) {
         log.info("deleteOrganisation -> start");
 
