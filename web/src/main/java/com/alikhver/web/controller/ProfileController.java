@@ -25,16 +25,16 @@ public class ProfileController {
 
     @GetMapping
     @ApiOperation("Get Profiles")
-    public ModelAndView viewProfiles(@RequestParam(defaultValue = "0") @PositiveOrZero int page,
+    public ModelAndView viewProfiles(@RequestParam(defaultValue = "1") @PositiveOrZero int page,
                                      @RequestParam(defaultValue = "5") @Positive int size,
                                      ModelAndView modelAndView) {
 
-        var profiles = profileFacade.getProfiles(page, size);
+        var profiles = profileFacade.getProfiles(page - 1, size);
 
         int totalPages = profiles.getTotalPages();
         modelAndView.addObject("totalPages", totalPages);
 
-
+        modelAndView.addObject("page", page);
         modelAndView.addObject("profiles", profiles.getContent());
         modelAndView.setViewName("profile/profiles");
 

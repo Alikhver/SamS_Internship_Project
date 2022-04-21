@@ -66,6 +66,33 @@
     </div>
 </th:block>
 
+<nav aria-label="Page navigation example" th:if="${totalPages > 1}">
+    <ul class="pagination justify-content-center">
+        <li id="previous" class="page-item" th:classappend="${page == 1} ? 'disabled' : ''"
+            th:onclick="onPrevious()">
+            <a class="page-link">Previous</a>
+        </li>
+        <th:block th:each="i:${#numbers.sequence(1, totalPages, 1)}">
+            <li th:id="'li' + ${i}" class="page-item" th:classappend="${page == i} ? ' active' : ''"
+                th:onclick="switchPage([[${i}]])">
+                <a class="page-link" th:text="${ i }"></a>
+            </li>
+        </th:block>
+        <!--        <th:block th:if="${ totalPages > 10 }">-->
+        <!--            <li th:id="'li' + ${totalPages}" class="page-item">-->
+        <!--                <a class="page-link">...</a>-->
+        <!--            </li>-->
+        <!--            <li th:id="'li' + ${totalPages}" class="page-item" th:onclick="switchPage([[${i}]])">-->
+        <!--                <a class="page-link" th:text="${ totalPages }"></a>-->
+        <!--            </li>-->
+        <!--        </th:block>-->
+        <li id="next" class="page-item" th:classappend="${page == totalPages} ? 'disabled' : ''"
+            th:onclick="onNext()">
+            <a class="page-link">Next</a>
+        </li>
+    </ul>
+</nav>
+
 <script type="text/javascript" th:src="@{/js/main.js}"></script>
 <script type="text/javascript" th:src="@{/js/profiles/profiles.js}"></script>
 
