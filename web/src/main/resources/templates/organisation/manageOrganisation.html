@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title th:text="${org.name + ': обновить организацию'}"></title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+            crossorigin="anonymous"
+    />
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link th:href="@{/css/updateWorker.css}" rel="stylesheet"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+<body class="container">
+<div class="d-flex container col-6 justify-content-center d-flex navbar sticky-top fixed-top"
+     style="background-color: rgb(255, 255, 255)">
+    <div class="col-1 my-auto mx-auto">
+        <img th:src="@{/img/arrow-left-circle.svg}" class="img-fluid go-back-button"
+             width="24"
+             onclick="goBackM()">
+    </div>
+    <div class="d-flex flex-column col-11">
+        <p class="text-center p-2">Изменить Организацию</p>
+    </div>
+    <div class="option d-flex container-fluid px-0 my-3">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Название</span>
+            </div>
+            <input type="text" id="name" class="form-control" placeholder="Название" aria-label="Name" aria-describedby="basic-addon1" th:value="${org.name}" disabled>
+        </div>
+        <p id="incorrect-name" class='my-0 incorrect'>Длина названия должна быть больше 1 и меньше 30 символов</p>
+    </div>
+
+    <div class="option d-flex container-fluid px-0 my-3">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon2">Адрес</span>
+            </div>
+            <input type="text" id="address" class="form-control" placeholder="Адрес" aria-label="LastName" aria-describedby="basic-addon2" th:value="${org.address}" disabled>
+        </div>
+        <p id='incorrect-address' class='my-0 incorrect'>Длина фамилии должна быть больше 4 и меньше 46 символов</p>
+    </div>
+
+    <div class="option d-flex container-fluid px-0 my-3">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">Описание</span>
+            </div>
+            <input type="text" id="description" class="form-control" placeholder="Описание" aria-label="Description" aria-describedby="basic-addon3" th:value="${org.description}" disabled>
+        </div>
+        <p id='incorrect-description' class='my-0 incorrect'>Длина описания должна быть больше 30 и меньше 121 символа</p>
+    </div>
+
+    <button type="button" id="suspend" class="btn btn-primary mx-1 w-30" th:classappend="${org.active ? 'd-block' : 'd-none'}">Приостановить</button>
+    <button type="button" id="launch" class="btn btn-primary mx-1 w-30" th:classappend="${org.active ? 'd-none' : 'd-block'}">Запустить</button>
+    <button type="button" id="delete" class="btn btn-danger mx-1 w-25">Удалить </button>
+
+    <script type="text/javascript" th:src="@{/js/organisation/updateOrganisation.js}"></script>
+    <script type="text/javascript" th:src="@{/js/organisation/manageOrganisation.js}"></script>
+
+</div>
+
+</body>
+</html>

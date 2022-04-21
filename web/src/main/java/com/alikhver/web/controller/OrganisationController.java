@@ -56,13 +56,24 @@ public class OrganisationController {
 
 
     @GetMapping("/{orgId}/update")
-    @ApiOperation("UpdateOrganisation")
+    @ApiOperation("Update Organisation")
     public ModelAndView viewUpdateOrganisation(@PathVariable @Positive Long orgId,
                                                ModelAndView modelAndView) {
 
         var organisation = organisationFacade.getOrganisation(orgId);
         modelAndView.addObject("org", organisation);
         modelAndView.setViewName("organisation/updateOrganisation");
+
+        return modelAndView;
+    }
+    @GetMapping("/{orgId}/manage")
+    @ApiOperation("Manage Organisation by Admin")
+    public ModelAndView viewManageOrganisation(@PathVariable @Positive Long orgId,
+                                               ModelAndView modelAndView) {
+
+        var organisation = organisationFacade.getOrganisation(orgId);
+        modelAndView.addObject("org", organisation);
+        modelAndView.setViewName("organisation/manageOrganisation");
 
         return modelAndView;
     }
