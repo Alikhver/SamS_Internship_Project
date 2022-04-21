@@ -14,4 +14,6 @@ public interface ProfileFacade {
     Page<GetProfileResponse> getProfiles(int page, int size);
 
     void updateProfile(Long id, UpdateProfileRequest request);
+
+    void deleteProfile(Long id);
 }

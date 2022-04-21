@@ -101,6 +101,15 @@ public class ProfileServiceImpl implements ProfileService {
         log.info("deleteAll -> done");
     }
 
+    @Override
+    public void delete(Long id) {
+        log.warn("delete -> start");
+
+        repository.deleteById(id);
+
+        log.warn("delete -> done");
+    }
+
     private void validateProfile(Profile profile) {
         log.info("validateProfile -> start");
 

@@ -5,6 +5,7 @@ import com.alikhver.model.entity.User;
 import com.alikhver.model.entity.UserRole;
 import com.alikhver.model.service.ProfileService;
 import com.alikhver.model.service.UserService;
+import com.alikhver.model.util.ValidationHelper;
 import com.alikhver.web.converter.profile.ProfileConverter;
 import com.alikhver.web.dto.profile.request.CreateProfileRequest;
 import com.alikhver.web.dto.profile.request.UpdateProfileRequest;
@@ -31,6 +32,7 @@ public class ProfileFacadeImpl implements ProfileFacade{
     private final ProfileService profileService;
     private final UserService userService;
     private final ProfileConverter profileConverter;
+    private final ValidationHelper validationHelper;
 
     @Override
     @Transactional
@@ -76,6 +78,8 @@ public class ProfileFacadeImpl implements ProfileFacade{
     public GetProfileResponse getProfile(Long id) throws NoProfileFoundException {
         log.info("getProfile -> start");
 
+        validationHelper.validateForCorrectId(id, "ProfileId");
+
         Optional<Profile> optionalProfile = profileService.getProfile(id);
         if (optionalProfile.isPresent()) {
             Profile profile = optionalProfile.get();
@@ -110,6 +114,8 @@ public class ProfileFacadeImpl implements ProfileFacade{
     public void updateProfile(Long id, UpdateProfileRequest request) {
         log.info("updateProfile -> start");
 
+        validationHelper.validateForCorrectId(id, "ProfileId");
+
         Optional<Profile> optionalProfile = profileService.getProfile(id);
         Profile profile;
         if (optionalProfile.isPresent()) {
@@ -128,5 +134,27 @@ public class ProfileFacadeImpl implements ProfileFacade{
 
         profileService.save(profile);
         log.info("updateProfile -> done");
+    }
+
+    @Override
+    public void deleteProfile(Long id) {
+        log.info("deleteProfile -> start");
+
+        validationHelper.validateForCorrectId(id, "ProfileId");
+
+        Profile profile = profileService.getProfile(id).orElseThrow(() -> {
+            log.warn("NoProfileFoundException is thrown");
+            throw new NoProfileFoundException(
+              "No Profile with id = " + id + " found"
+            );
+        });
+
+        User user = profile.getUser();
+
+        profileService.delete(id);
+
+        userService.deleteUser(user.getId());
+
+        log.info("deleteProfile -> done");
     }
 }

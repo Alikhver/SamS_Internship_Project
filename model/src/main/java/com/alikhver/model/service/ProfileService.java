@@ -22,4 +22,6 @@ public interface ProfileService {
     boolean isUserAlreadyBounded(Long userId);
 
     void deleteAll();
+
+    void delete(Long id);
 }
