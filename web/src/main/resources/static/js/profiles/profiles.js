@@ -5,3 +5,8 @@ const viewProfile = function (profileId) {
 
     window.location.href = url.href;
 }
+
+
+const goBack = function () {
+    window.location.href = '/';
+}

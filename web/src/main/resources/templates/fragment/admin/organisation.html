@@ -6,6 +6,11 @@
             class="d-flex container col-6 justify-content-center navbar sticky-top fixed-top"
             style="background-color: rgb(255, 255, 255)"
     >
+        <div id="back" class="col-1 h-100">
+            <img th:src="@{/img/arrow-left-circle.svg}" class="img-fluid go-back-button"
+                 width="24"
+                 onclick="goBack()">
+        </div>
         <div class="col-10 d-flex flex-column">
             <p class="org_name text-center p-2" th:text="${org.name}"></p>
             <p class="org_description p-2" th:text="${org.description}"></p>

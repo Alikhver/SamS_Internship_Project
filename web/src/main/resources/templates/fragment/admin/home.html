@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:float="http://www.w3.org/1999/xhtml">
+<body>
+<th:block th:fragment="body">
+    <div
+            class="d-flex container col-6 justify-content-center navbar sticky-top fixed-top"
+            style="background-color: rgb(255, 255, 255)"
+    >
+        <div class="col-10 d-flex flex-column">
+            <p class="org_name text-center p-2">Welcome Admin</p>
+        </div>
+        <img th:src="@{/img/person.svg}" class="d-block mx-auto"
+             width="35">
+    </div>
+
+    <div id="organisations" class="option d-flex container col-6 my-3">
+        <div class="d-flex">
+            <img th:src="@{/img/people.svg}" class="d-block mx-auto"
+                 width="30">
+            <p class="p-1 my-3 text-center">Организации</p>
+        </div>
+    </div>
+
+    <div id="profiles" class="option d-flex container col-6 my-3">
+        <div class="d-flex">
+            <img th:src="@{/img/people.svg}" class="d-block mx-auto"
+                 width="30">
+            <p class="p-1 my-3 text-center">Профили</p>
+        </div>
+    </div>
+
+    <script type="text/javascript" th:src="@{/js/home/home.js}"></script>
+
+</th:block>
+</body>
+</html>

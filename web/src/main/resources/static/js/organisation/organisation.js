@@ -49,7 +49,6 @@ const appendInactiveToSelectTime = function () {
 }
 
 
-
 //REDACTOR
 $('.select-master-redactor').on('click', function () {
     const url = new URL(window.location.href);
@@ -143,6 +142,15 @@ $('.select-suspend-organisation-admin').on('click', function () {
     window.location.href = url.href;
 });
 
+$('#back').on('click', function () {
+    const url = new URL(window.location.href);
+
+    const orgId = parseInt(url.pathname.split('/')[2]);
+    url.pathname = '/organisation';
+    console.log(url.href)
+
+    window.location.href = url.href;
+});
 
 
 //COMMON

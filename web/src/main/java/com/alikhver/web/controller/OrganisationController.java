@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 @Controller
 @RequestMapping("/organisation")
@@ -66,6 +67,7 @@ public class OrganisationController {
 
         return modelAndView;
     }
+
     @GetMapping("/{orgId}/manage")
     @ApiOperation("Manage Organisation by Admin")
     public ModelAndView viewManageOrganisation(@PathVariable @Positive Long orgId,
@@ -74,6 +76,24 @@ public class OrganisationController {
         var organisation = organisationFacade.getOrganisation(orgId);
         modelAndView.addObject("org", organisation);
         modelAndView.setViewName("organisation/manageOrganisation");
+
+        return modelAndView;
+    }
+
+    @GetMapping
+    @ApiOperation("View Organisations by Admin")
+    public ModelAndView viewManageOrganisation(@RequestParam(defaultValue = "1") @PositiveOrZero int page,
+                                               @RequestParam(defaultValue = "5") @Positive int size,
+                                               ModelAndView modelAndView) {
+
+        var organisations = organisationFacade.getOrganisations(page - 1, size);
+
+        int totalPages = organisations.getTotalPages();
+
+        modelAndView.addObject("page", page);
+        modelAndView.addObject("totalPages", totalPages);
+        modelAndView.addObject("organisations", organisations.getContent());
+        modelAndView.setViewName("organisation/organisations");
 
         return modelAndView;
     }
