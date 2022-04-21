@@ -52,8 +52,7 @@ public class Profile {
     @Column(name = "date_created")
     private Date dateCreated;
 
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
