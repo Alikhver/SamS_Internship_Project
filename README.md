@@ -35,6 +35,10 @@ Once all listed above is completed, run database script on path
 
 ```model/src/main/resources/db/script/DB generation.sql```.
 
+To create Database for tests run script on location
+
+```model/src/test/resources/db/script/Test DB generation.sql```.
+
 Now application is ready to start.
 
 ## API Reference
