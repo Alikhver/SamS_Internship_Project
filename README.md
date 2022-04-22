@@ -17,7 +17,7 @@ User has functionality to make a reservation.
 To launch this project you have to download a dev branch:
 
 ```bash
-  git clone --single-branch --branch dev https://github.com/Alikhver/SamS_Internship_Project.git
+  git clone --single-branch --branch Review_2_DB_Generation https://github.com/Alikhver/SamS_Internship_Project.git
 ```
 
 To create database you need a mysql user with credentials:
