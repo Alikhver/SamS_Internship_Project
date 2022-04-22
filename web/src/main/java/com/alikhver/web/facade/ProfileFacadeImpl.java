@@ -153,7 +153,7 @@ public class ProfileFacadeImpl implements ProfileFacade{
 
         profileService.delete(id);
 
-        userService.deleteUser(user.getId());
+//        userService.deleteUser(user.getId());
 
         log.info("deleteProfile -> done");
     }
