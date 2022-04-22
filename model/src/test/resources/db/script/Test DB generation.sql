@@ -83,8 +83,8 @@ CREATE TABLE IF NOT EXISTS `my_db_test`.`worker`
 CREATE TABLE IF NOT EXISTS `my_db_test`.`schedule_record`
 (
     `id`         BIGINT                                               NOT NULL AUTO_INCREMENT,
-    `time`       TIME                                                 ,
-    `status`     ENUM ('BOOKED', 'AVAILABLE', 'DONE', 'CANCELED')     ,
+    `time`       TIMESTAMP                                                 ,
+    `status`     ENUM ('BOOKED', 'AVAILABLE', 'DONE', 'CANCELED', 'EXPIRED')     ,
     `profile_id` BIGINT                                               ,
     `version`    BIGINT                                               DEFAULT 0,
     `worker_id`  BIGINT                                               NOT NULL,
