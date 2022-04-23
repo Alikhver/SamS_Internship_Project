@@ -21,7 +21,7 @@
     </div>
 
     <div id="suspended" class="container-fluid mt-3 p-2 h-auto align-middle col-6 d-flex" th:unless="${org.isActive}">
-        <div class="col-11">Организация временно не работает</div>
+        <div class="col-11" th:text="#{organisation.suspended}"></div>
         <div class="col-1">
             <img th:src="@{/img/info-circle.svg}" class="d-block"
                  width="20px" style="background-color: white; border-radius: 50%" float:right>
@@ -32,7 +32,7 @@
         <div class="d-flex">
             <img th:src="@{/img/people.svg}" class="d-block mx-auto"
                  width="30">
-            <p class="p-1 my-3 text-center">Специалисты</p>
+            <p class="p-1 my-3 text-center" th:text="#{masters}"></p>
         </div>
     </div>
 
@@ -40,7 +40,7 @@
         <div class="d-flex">
             <img th:src="@{/img/receipt-cutoff.svg}" class="img-fluid"
                  width="30">
-            <p class="p-1 my-3 text-center">Услуги</p>
+            <p class="p-1 my-3 text-center" th:text="services"></p>
         </div>
     </div>
 
@@ -48,7 +48,7 @@
         <div class="d-flex">
             <img th:src="@{/img/gear.svg}" class="img-fluid"
                  width="30">
-            <p class="p-1 my-3 text-center">Изменить Организацию</p>
+            <p class="p-1 my-3 text-center" th:text="#{organisation.change}"></p>
         </div>
     </div>
 </th:block>

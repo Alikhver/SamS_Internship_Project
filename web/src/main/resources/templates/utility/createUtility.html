@@ -26,43 +26,43 @@
              onclick="goBackCreate()">
     </div>
     <div class="d-flex flex-column col-11">
-        <p class="text-center p-2">Создать услугу</p>
+        <p class="text-center p-2" th:text="#{service.create}"></p>
     </div>
 
     <div class="option d-flex container-fluid px-0 my-3">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Название</span>
+                <span class="input-group-text" id="basic-addon1" th:text="#{service.name}"></span>
             </div>
-            <input type="text" id="name" class="form-control" placeholder="Название" aria-label="Name" aria-describedby="basic-addon1" required>
+            <input type="text" id="name" class="form-control" th:placeholder="#{service.name}" aria-label="Name" aria-describedby="basic-addon1" required>
         </div>
-        <p id="incorrect-name" class='my-0 incorrect'>Длина названия должна быть больше 2 и меньше 40 символов</p>
+        <p id="incorrect-name" class='my-0 incorrect' th:text="#{service.name.incorrect}"></p>
     </div>
 
     <div class="option d-flex container-fluid px-0 my-3">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon2">Цена</span>
+                <span class="input-group-text" id="basic-addon2" th:text="#{service.price}"></span>
             </div>
             <input type="number"  min="0" step="0.1" id="price" class="form-control" placeholder="0" aria-label="LastName" aria-describedby="basic-addon2" required>
             <div class="input-group-append">
                 <span class="input-group-text" id="basic-addon">$</span>
             </div>
         </div>
-        <p id='incorrect-price' class='my-0 incorrect'>Цена должна быть положительна</p>
+        <p id='incorrect-price' class='my-0 incorrect' th:text="#{service.price.incorrect}"></p>
     </div>
 
     <div class="option d-flex container-fluid px-0 my-3">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon3">Описание</span>
+                <span class="input-group-text" id="basic-addon3" th:text="#{service.desc}"></span>
             </div>
-            <input type="text" id="description" class="form-control" placeholder="Описание" aria-label="Description" aria-describedby="basic-addon3" required>
+            <input type="text" id="description" class="form-control" th:placeholder="#{service.desc}" aria-label="Description" aria-describedby="basic-addon3" required>
         </div>
-        <p id='incorrect-description' class='my-0 incorrect'>Длина описания должна быть больше 14 символов</p>
+        <p id='incorrect-description' class='my-0 incorrect' th:text="#{service.desc.incorrect}"></p>
     </div>
 
-    <button type="button" id="create" class="btn btn-primary mx-3 my-2">Сохранить</button>
+    <button type="button" id="create" class="btn btn-primary mx-3 my-2" th:text="#{service.save}"></button>
 
     <script type="text/javascript" th:src="@{/js/utility/updateUtility.js}"></script>
     <script type="text/javascript" th:src="@{/js/utility/createUtility.js}"></script>

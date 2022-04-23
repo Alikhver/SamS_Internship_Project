@@ -3,8 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
-        <title th:text="${org.name + ': обновить организацию'}"></title>
+        <title th:text="|${org.name}: #{organisation.change}|"></title>
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -25,42 +24,42 @@
              onclick="goBack()">
     </div>
     <div class="d-flex flex-column col-11">
-        <p class="text-center p-2">Изменить Организацию</p>
+        <p class="text-center p-2" th:text="#{organisation.change}"></p>
     </div>
     <div class="option d-flex container-fluid px-0 my-3">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Название</span>
+                <span class="input-group-text" id="basic-addon1" th:text="#{organisation.name}"></span>
             </div>
-            <input type="text" id="name" class="form-control" placeholder="Название" aria-label="Name" aria-describedby="basic-addon1" th:value="${org.name}" required>
+            <input type="text" id="name" class="form-control" th:placeholder="#{organisation.name}" aria-label="Name" aria-describedby="basic-addon1" th:value="${org.name}" required>
         </div>
-        <p id="incorrect-name" class='my-0 incorrect'>Длина названия должна быть больше 1 и меньше 30 символов</p>
+        <p id="incorrect-name" class='my-0 incorrect' th:text="#{organisation.name.invalid}"></p>
     </div>
 
     <div class="option d-flex container-fluid px-0 my-3">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon2">Адрес</span>
+                <span class="input-group-text" id="basic-addon2" th:text="#{organisation.address}"></span>
             </div>
-            <input type="text" id="address" class="form-control" placeholder="Адрес" aria-label="LastName" aria-describedby="basic-addon2" th:value="${org.address}" required>
+            <input type="text" id="address" class="form-control" th:placeholder="#{organisation.address}" aria-label="LastName" aria-describedby="basic-addon2" th:value="${org.address}" required>
         </div>
-        <p id='incorrect-address' class='my-0 incorrect'>Длина фамилии должна быть больше 4 и меньше 46 символов</p>
+        <p id='incorrect-address' class='my-0 incorrect' th:text="#{organisation.address.invalid}"></p>
     </div>
 
     <div class="option d-flex container-fluid px-0 my-3">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon3">Описание</span>
+                <span class="input-group-text" id="basic-addon3" th:text="#{organisation.desc}"></span>
             </div>
-            <input type="text" id="description" class="form-control" placeholder="Описание" aria-label="Description" aria-describedby="basic-addon3" th:value="${org.description}" required>
+            <input type="text" id="description" class="form-control" th:placeholder="#{organisation.desc}" aria-label="Description" aria-describedby="basic-addon3" th:value="${org.description}" required>
         </div>
-        <p id='incorrect-description' class='my-0 incorrect'>Длина описания должна быть больше 30 и меньше 121 символа</p>
+        <p id='incorrect-description' class='my-0 incorrect' th:text="#{organisation.desc.invalid}"></p>
     </div>
 
-    <button type="button" id="update" class="btn btn-primary mx-1 my-2 w-25">Сохранить</button>
-    <button type="button" id="suspend" class="btn btn-danger mx-1 w-30" th:classappend="${org.active ? 'd-block' : 'd-none'}">Приостановить</button>
-    <button type="button" id="launch" class="btn btn-primary mx-1 w-30" th:classappend="${org.active ? 'd-none' : 'd-block'}">Запустить</button>
-    <button type="button" id="delete" class="btn btn-primary mx-1 w-25">Удалить </button>
+    <button type="button" id="update" class="btn btn-primary mx-1 my-2 w-25" th:text="#{organisation.save}"></button>
+    <button type="button" id="suspend" class="btn btn-danger mx-1 w-30" th:classappend="${org.active ? 'd-block' : 'd-none'}" th:text="#{organisation.suspend}"></button>
+    <button type="button" id="launch" class="btn btn-primary mx-1 w-30" th:classappend="${org.active ? 'd-none' : 'd-block'}" th:text="#{organisation.launch}"></button>
+    <button type="button" id="delete" class="btn btn-primary mx-1 w-25" th:text="#{organisation.delete}"></button>
 
     <script type="text/javascript" th:src="@{/js/organisation/updateOrganisation.js}"></script>
 

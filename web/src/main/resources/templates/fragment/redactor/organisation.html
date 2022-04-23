@@ -16,24 +16,22 @@
     </div>
 
     <div id="suspended" class="container-fluid mt-3 p-2 h-auto align-middle col-6 d-flex" th:unless="${org.isActive}">
-        <div class="col-11">Организация временно не работает</div>
+        <div class="col-11" th:text="#{organisation.suspended}"></div>
         <div class="col-1">
             <img th:src="@{/img/info-circle.svg}" class="d-block"
                  width="20px" style="background-color: white; border-radius: 50%" float:right>
         </div>
     </div>
 
-    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" th:unless="${org.isActive}">
+    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+         th:unless="${org.isActive}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Что означает организация приостановлена?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel" th:text="#{organisation.suspended.title}"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
-                <div class="modal-body">
-                    Организация может быть приостановлена по разным причинам. Например: производится ремонт в помещении или несоответствие правилам платформы.
-                    Пока организация приостановлена, вы не сможете записаться на услугу, а созданные услуги будут отменены.
-                </div>
+                <div class="modal-body" th:text="#{organisation.suspended.body}"></div>
             </div>
         </div>
     </div>
@@ -42,7 +40,7 @@
         <div class="d-flex">
             <img th:src="@{/img/people.svg}" class="d-block mx-auto"
                  width="30">
-            <p class="p-1 my-3 text-center">Изменить Специалистов</p>
+            <p class="p-1 my-3 text-center" th:text="#{organisation.change_masters}"></p>
         </div>
     </div>
 
@@ -50,7 +48,7 @@
         <div class="d-flex">
             <img th:src="@{/img/receipt-cutoff.svg}" class="img-fluid"
                  width="30">
-            <p class="p-1 my-3 text-center">Изменить Услуги</p>
+            <p class="p-1 my-3 text-center" th:text="#{organisation.change_services}"></p>
         </div>
     </div>
 
@@ -58,7 +56,7 @@
         <div class="d-flex">
             <img th:src="@{/img/clock.svg}" class="img-fluid"
                  width="30">
-            <p class="p-1 my-3 text-center">Редактирование расписания</p>
+            <p class="p-1 my-3 text-center" th:text="#{organisation.change_schedule}"></p>
         </div>
     </div>
 
@@ -66,7 +64,7 @@
         <div class="d-flex">
             <img th:src="@{/img/gear.svg}" class="img-fluid"
                  width="30">
-            <p class="p-1 my-3 text-center">Изменить Организацию</p>
+            <p class="p-1 my-3 text-center" th:text="#{organisation.change}"></p>
         </div>
     </div>
 </th:block>

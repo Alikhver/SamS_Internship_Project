@@ -16,7 +16,7 @@
     </div>
 
     <div id="suspended" class="container-fluid mt-3 p-2 h-auto align-middle col-6 d-flex" th:unless="${org.isActive}">
-        <div class="col-11">Организация временно не работает</div>
+        <div class="col-11" th:text="#{organisation.suspended}"></div>
         <div class="col-1">
             <img th:src="@{/img/info-circle.svg}" class="d-block"
                  width="20px" style="background-color: white; border-radius: 50%" float:right>
@@ -27,10 +27,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Что означает организация приостановлена?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel" th:text="#{organisation.suspended.title}"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
-                <div class="modal-body">
+<!--                TODO implement correctly-->
+                <div class="modal-body" th:text="#{organisation.suspended.body}">
                     Организация может быть приостановлена по разным причинам. Например: производится ремонт в помещении или несоответствие правилам платформы.
                     Пока организация приостановлена, вы не сможете записаться на услугу, а созданные услуги будут отменены.
                 </div>
@@ -63,7 +64,7 @@
             <div class="d-flex">
                 <img th:src="@{/img/people.svg}" class="d-block mx-auto"
                      width="30">
-                <p class="p-1 my-3 text-center">Выбрать Специалиста</p>
+                <p class="p-1 my-3 text-center" th:text="#{master.select}"></p>
             </div>
         </div>
     </th:block>
@@ -89,7 +90,7 @@
             <div class="d-flex">
                 <img th:src="@{/img/receipt-cutoff.svg}" class="img-fluid"
                      width="30">
-                <p class="p-1 my-3 text-center">Выбрать Услугу</p>
+                <p class="p-1 my-3 text-center" th:text="#{service.select}"></p>
             </div>
         </div>
     </th:block>
@@ -98,7 +99,7 @@
         <div class="d-flex">
             <img th:src="@{/img/clock.svg}" class="img-fluid"
                  width="30">
-            <p class="p-1 my-3 text-center">Выбрать Дату и Время</p>
+            <p class="p-1 my-3 text-center" th:text="#{date_time.select}"></p>
         </div>
     </div>
 </th:block>

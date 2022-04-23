@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <title th:text="${worker.firstName + ' ' + worker.lastName + ': расписание'}"></title>
+    <title th:text="|${worker.firstName} ${worker.lastName}: #{schedule}|"></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
@@ -32,7 +32,7 @@
              onclick="goBack()">
     </div>
     <div class="d-flex flex-column col-11">
-        <p class="text-center p-2" th:text="${'расписание: ' + worker.firstName + ' ' + worker.lastName}"></p>
+        <p class="text-center p-2" th:text="|#{schedule}: ${worker.firstName} ${worker.lastName}|"></p>
     </div>
 </div>
 

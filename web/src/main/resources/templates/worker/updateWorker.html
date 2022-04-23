@@ -26,42 +26,42 @@
              th:onclick="goBack()">
     </div>
     <div class="d-flex flex-column col-11">
-        <p class="text-center p-2">Изменить специалиста</p>
+        <p class="text-center p-2" th:text="#{master.change}"></p>
     </div>
 
     <div class="option d-flex container-fluid px-0 my-3">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">Имя</span>
+                <span class="input-group-text" id="basic-addon1" th:text="#{master.name}"></span>
             </div>
-            <input type="text" id="first-name" class="form-control" placeholder="Имя" aria-label="Username" aria-describedby="basic-addon1" th:value="${worker.firstName}">
+            <input type="text" id="first-name" class="form-control" th:placeholder="#{master.name}" aria-label="Username" aria-describedby="basic-addon1" th:value="${worker.firstName}">
         </div>
-        <p id="incorrect-first-name" class='my-0 incorrect'>Длина имени должна быть больше 2 и меньше 46 символов</p>
+        <p id="incorrect-first-name" class='my-0 incorrect' th:text="#{master.name.incorrect}"></p>
     </div>
 
     <div class="option d-flex container-fluid px-0 my-3">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon2">Фамилия</span>
+                <span class="input-group-text" id="basic-addon2" th:text="#{master.last_name}"></span>
             </div>
-            <input type="text" id="last-name" class="form-control" placeholder="Фамилия" aria-label="Username" aria-describedby="basic-addon1" th:value="${worker.lastName}">
+            <input type="text" id="last-name" class="form-control" th:placeholder="#{master.last_name}" aria-label="Username" aria-describedby="basic-addon1" th:value="${worker.lastName}">
         </div>
-        <p id='incorrect-last-name' class='my-0 incorrect'>Длина фамилии должна быть больше 2 и меньше 46 символов</p>
+        <p id='incorrect-last-name' class='my-0 incorrect' th:text="#{master.name.incorrect}"></p>
     </div>
 
     <div class="option d-flex container-fluid px-0 my-3">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon3">Описание</span>
+                <span class="input-group-text" id="basic-addon3" th:text="#{master.desc}"></span>
             </div>
-            <input type="text" id="description" class="form-control" placeholder="Описание" aria-label="Username" aria-describedby="basic-addon1" th:value="${worker.description}">
+            <input type="text" id="description" class="form-control" th:placeholder="#{master.desc}" aria-label="Username" aria-describedby="basic-addon1" th:value="${worker.description}">
         </div>
-        <p id='incorrect-description' class='my-0 incorrect'>Длина описания должна быть больше 14 символов</p>
+        <p id='incorrect-description' class='my-0 incorrect' th:text="#{master.desc.incorrect}"></p>
     </div>
 
-    <button type="button" class="btn btn-primary mx-1 my-2 w-25" th:onclick="updateWorker([[${worker.id}]])">Сохранить</button>
-    <button type="button" class="btn btn-primary mx-1 w-30" th:onclick="manageUtilities([[${worker.id}]])">Назначить услуги</button>
-    <button type="button" class="btn btn-primary mx-1 w-25" th:onclick="deleteWorker([[${worker.id}]])">Удалить </button>
+    <button type="button" class="btn btn-primary mx-1 my-2 w-25" th:onclick="updateWorker([[${worker.id}]])" th:text="#{master.save}"></button>
+    <button type="button" class="btn btn-primary mx-1 w-30" th:onclick="manageUtilities([[${worker.id}]])" th:text="#{master.assign_services}"></button>
+    <button type="button" class="btn btn-primary mx-1 w-25" th:onclick="deleteWorker([[${worker.id}]])" th:text="#{master.delete}"></button>
 
 
     <script type="text/javascript" th:src="@{/js/worker/updateWorker.js}"></script>
