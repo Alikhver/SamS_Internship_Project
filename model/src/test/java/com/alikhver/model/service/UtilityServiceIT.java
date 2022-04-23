@@ -48,6 +48,7 @@ public class UtilityServiceIT {
     @Before
     public void setUp() {
         utilityService.deleteAll();
+        organisationService.deleteAll();
 
         if (organisationService.getAll().size() == 0) {
             User redactor = User.builder()
@@ -85,6 +86,7 @@ public class UtilityServiceIT {
     @After
     public void tearDown() {
         utilityService.deleteAll();
+        organisationService.deleteAll();
     }
 
     @Test

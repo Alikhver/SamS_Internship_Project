@@ -48,31 +48,26 @@ public class WorkerServiceIT {
 
     @Before
     public void setUp() {
+        organisationService.deleteAll();
 
-        if (organisationService.getAll().size() == 0) {
-            User redactor = User.builder()
-                    .login("Login")
-                    .password("Password")
-                    .role(UserRole.REDACTOR)
-                    .build();
+        User redactor = User.builder()
+                .login("Login")
+                .password("Password")
+                .role(UserRole.REDACTOR)
+                .build();
 
-            Organisation org = Organisation.builder()
-                    .name("Name")
-                    .address("Address")
-                    .description("Description")
-                    .redactor(redactor)
-                    .dateCreated(new Date())
-                    .isActive(false)
-                    .build();
+        Organisation org = Organisation.builder()
+                .name("Name")
+                .address("Address")
+                .description("Description")
+                .redactor(redactor)
+                .dateCreated(new Date())
+                .isActive(false)
+                .build();
 
-            organisationService.saveOrganisation(org);
+        organisationService.saveOrganisation(org);
 
-            organisation = org;
-        } else {
-            organisation = organisationService.getAll().get(0);
-        }
-
-        workerService.deleteWorkersOfOrganisation(organisation.getId());
+        organisation = organisationService.getAll().get(0);
 
         Worker worker = Worker.builder()
                 .firstName("FirstName")
@@ -87,6 +82,7 @@ public class WorkerServiceIT {
     @After
     public void tearDown() {
         workerService.deleteWorkersOfOrganisation(organisation.getId());
+        organisationService.deleteAll();
     }
 
     @Test
