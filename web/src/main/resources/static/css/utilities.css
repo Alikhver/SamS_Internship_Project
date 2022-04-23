@@ -10,3 +10,11 @@
 .utility:hover {
     cursor: pointer;
 }
+
+.utility-price {
+    color: rgb(119, 119, 119);
+}
+
+.utility-description {
+    color: rgb(154, 164, 196);
+}

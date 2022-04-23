@@ -19,9 +19,9 @@
          th:classappend="${utility.hasWorkers} ? 'utility' : 'inactive'"
          th:onclick="onclickUtility([[${utility.id}]]);">
         <div class="d-flex flex-column">
-            <p th:text="${utility.name}"></p>
-            <p th:text="${utility.description}"></p>
-            <p th:text="${utility.price + ' $'}"></p>
+            <p class="mt-2 mb-1" th:text="${utility.name}"></p>
+            <p class="mt-1 mb-1 utility-description" th:text="${utility.description}"></p>
+            <p class="utility-price" th:text="${utility.price + ' $'}"></p>
         </div>
     </div>
 </th:block>
