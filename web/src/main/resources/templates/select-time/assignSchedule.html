@@ -42,7 +42,7 @@
         <section class="container-fluid">
             <form class="row">
                 <div class="col-2">
-                    <label for="datepicker" class="col-form-label">Date</label>
+                    <label for="datepicker" class="col-form-label" th:text="#{date}"></label>
                 </div>
                 <div class="col-10">
                     <div class="input-group date" id="datepicker">
@@ -53,7 +53,7 @@
                             </span>
                         </span>
                     </div>
-                    <p id="incorrect-date" class="incorrect">You must choose future date</p>
+                    <p id="incorrect-date" class="incorrect" th:text="#{date.incorrect}"></p>
                 </div>
             </form>
 
@@ -65,13 +65,15 @@
         </section>
     </div>
 
+<!--    TODO incorrect messages-->
     <div class="input-group mb-3 mt-3 mx-1">
         <div class="input-group-prepend col-2">
-            <span class="input-group-text" id="basic-addon2">Start</span>
+            <span class="input-group-text" id="basic-addon2" th:text="#{date.start}"></span>
         </div>
         <div class="col-8">
             <input type="number" min="0" max="23" step="1" id="start-time" class="form-control"
                    placeholder="8" aria-label="Start" aria-describedby="basic-addon2" required>
+<!--            <p id="incorrect-start-hour" class="incorrect">Must be g</p>-->
             <p id="incorrect-start-hour" class="incorrect">Hour must be >= 0 & < 24</p>
         </div>
         <div class="input-group-append col-2">
@@ -79,9 +81,10 @@
         </div>
     </div>
 
+<!--    TODO incorrect messages internationalization-->
     <div class="input-group mb-3 mt-3 mx-1">
         <div class="input-group-prepend col-2">
-            <span class="input-group-text" id="basic-addon4">End</span>
+            <span class="input-group-text" id="basic-addon4" th:text="#{date.end}">End</span>
         </div>
         <div class="col-8">
             <input type="number" min="0" max="23" step="1" id="end-time" class="form-control"
