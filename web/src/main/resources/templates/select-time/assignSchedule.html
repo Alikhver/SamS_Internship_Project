@@ -65,32 +65,29 @@
         </section>
     </div>
 
-<!--    TODO incorrect messages-->
     <div class="input-group mb-3 mt-3 mx-1">
-        <div class="input-group-prepend col-2">
+        <div class="input-group-prepend col-3">
             <span class="input-group-text" id="basic-addon2" th:text="#{date.start}"></span>
         </div>
-        <div class="col-8">
+        <div class="col-7">
             <input type="number" min="0" max="23" step="1" id="start-time" class="form-control"
                    placeholder="8" aria-label="Start" aria-describedby="basic-addon2" required>
-<!--            <p id="incorrect-start-hour" class="incorrect">Must be g</p>-->
-            <p id="incorrect-start-hour" class="incorrect">Hour must be >= 0 & < 24</p>
+            <p id="incorrect-start-hour" class="incorrect" th:text="#{date.start.incorrect}"></p>
         </div>
         <div class="input-group-append col-2">
             <span class="input-group-text" id="basic-addon3">:00</span>
         </div>
     </div>
 
-<!--    TODO incorrect messages internationalization-->
     <div class="input-group mb-3 mt-3 mx-1">
-        <div class="input-group-prepend col-2">
+        <div class="input-group-prepend col-3">
             <span class="input-group-text" id="basic-addon4" th:text="#{date.end}">End</span>
         </div>
-        <div class="col-8">
+        <div class="col-7">
             <input type="number" min="0" max="23" step="1" id="end-time" class="form-control"
                    placeholder="17" aria-label="Start" aria-describedby="basic-addon2" required>
-            <p id="incorrect-end-hour" class="incorrect">Hour must be >= Start time & < 24</p>
-            <p id="incorrect-end-hour1" class="incorrect">End time !== Start time</p>
+            <p id="incorrect-end-hour" class="incorrect" th:text="#{date.end.incorrect1}"></p>
+            <p id="incorrect-end-hour1" class="incorrect" th:text="#{date.end.incorrect2}"></p>
         </div>
         <div class="input-group-append col-2">
             <span class="input-group-text" id="basic-addon5">:00</span>
@@ -105,72 +102,72 @@
 <!--Delete Records-->
 
 <div class="option d-flex container-fluid col-3 px-0 my-3 justify-content-center">
-    <p>Cancel records</p>
+    <p th:text="#{record.cancel}"></p>
 </div>
 
-<div id="deleteRecords" class="option d-flex container-fluid col-10 px-0 my-3">
+<!--<div id="deleteRecords" class="option d-flex container-fluid col-10 px-0 my-3">-->
 
-    <div class="d-flex my-3 container-fluid col-4 mx-0">
-        <section class="container-fluid">
-            <form class="row">
-                <div class="col-2">
-                    <label for="d-datepicker" class="col-form-label">Date</label>
-                </div>
-                <div class="col-10">
-                    <div class="input-group date" id="d-datepicker">
-                        <input type="text" class="form-control" id="d-date"/>
-                        <span class="input-group-append">
-                            <span class="input-group-text bg-light d-block">
-                                <i class="fa fa-calendar"></i>
-                            </span>
-                        </span>
-                    </div>
-                    <p id="d-incorrect-date" class="incorrect">You must choose future date</p>
-                </div>
-            </form>
+<!--    <div class="d-flex my-3 container-fluid col-4 mx-0">-->
+<!--        <section class="container-fluid">-->
+<!--            <form class="row">-->
+<!--                <div class="col-2">-->
+<!--                    <label for="d-datepicker" class="col-form-label">Date</label>-->
+<!--                </div>-->
+<!--                <div class="col-10">-->
+<!--                    <div class="input-group date" id="d-datepicker">-->
+<!--                        <input type="text" class="form-control" id="d-date"/>-->
+<!--                        <span class="input-group-append">-->
+<!--                            <span class="input-group-text bg-light d-block">-->
+<!--                                <i class="fa fa-calendar"></i>-->
+<!--                            </span>-->
+<!--                        </span>-->
+<!--                    </div>-->
+<!--                    <p id="d-incorrect-date" class="incorrect">You must choose future date</p>-->
+<!--                </div>-->
+<!--            </form>-->
 
-            <script type="text/javascript">
-                $(function () {
-                    $('#d-datepicker').datepicker({format: 'd MM yyyy'});
-                });
-            </script>
-        </section>
-    </div>
+<!--            <script type="text/javascript">-->
+<!--                $(function () {-->
+<!--                    $('#d-datepicker').datepicker({format: 'd MM yyyy'});-->
+<!--                });-->
+<!--            </script>-->
+<!--        </section>-->
+<!--    </div>-->
 
-    <div class="input-group mb-3 mt-3 mx-1">
-        <div class="input-group-prepend col-2">
-            <span class="input-group-text" id="basic-addon6">Start</span>
-        </div>
-        <div class="col-8">
-            <input type="number" min="0" max="23" step="1" id="d-start-time" class="form-control"
-                   placeholder="8" aria-label="Start" aria-describedby="basic-addon6" required>
-            <p id="d-incorrect-start-hour" class="incorrect">Hour must be >= 0 & < 24</p>
-        </div>
-        <div class="input-group-append col-2">
-            <span class="input-group-text" id="basic-addon7">:00</span>
-        </div>
-    </div>
+<!--    <div class="input-group mb-3 mt-3 mx-1">-->
+<!--        <div class="input-group-prepend col-2">-->
+<!--            <span class="input-group-text" id="basic-addon6">Start</span>-->
+<!--        </div>-->
+<!--        <div class="col-8">-->
+<!--            <input type="number" min="0" max="23" step="1" id="d-start-time" class="form-control"-->
+<!--                   placeholder="8" aria-label="Start" aria-describedby="basic-addon6" required>-->
+<!--            <p id="d-incorrect-start-hour" class="incorrect">Hour must be >= 0 & < 24</p>-->
+<!--        </div>-->
+<!--        <div class="input-group-append col-2">-->
+<!--            <span class="input-group-text" id="basic-addon7">:00</span>-->
+<!--        </div>-->
+<!--    </div>-->
 
-    <div class="input-group mb-3 mt-3 mx-1">
-        <div class="input-group-prepend col-2">
-            <span class="input-group-text" id="basic-addon8">End</span>
-        </div>
-        <div class="col-8">
-            <input type="number" min="0" max="23" step="1" id="d-end-time" class="form-control"
-                   placeholder="17" aria-label="End" aria-describedby="basic-addon8" required>
-            <p id="d-incorrect-end-hour" class="incorrect">Hour must be >= Start time & < 24</p>
-            <p id="d-incorrect-end-hour1" class="incorrect">End time !== Start time</p>
-        </div>
-        <div class="input-group-append col-2">
-            <span class="input-group-text" id="basic-addon9">:00</span>
-        </div>
-    </div>
+<!--    <div class="input-group mb-3 mt-3 mx-1">-->
+<!--        <div class="input-group-prepend col-2">-->
+<!--            <span class="input-group-text" id="basic-addon8">End</span>-->
+<!--        </div>-->
+<!--        <div class="col-8">-->
+<!--            <input type="number" min="0" max="23" step="1" id="d-end-time" class="form-control"-->
+<!--                   placeholder="17" aria-label="End" aria-describedby="basic-addon8" required>-->
+<!--            <p id="d-incorrect-end-hour" class="incorrect">Hour must be >= Start time & < 24</p>-->
+<!--            <p id="d-incorrect-end-hour1" class="incorrect">End time !== Start time</p>-->
+<!--        </div>-->
+<!--        <div class="input-group-append col-2">-->
+<!--            <span class="input-group-text" id="basic-addon9">:00</span>-->
+<!--        </div>-->
+<!--    </div>-->
 
-    <button type="button" class="btn btn-danger" th:onclick="deleteRecords()"><img th:src="@{/img/calendar2-x.svg}"
-                                                                                   class="d-block mx-auto"
-                                                                                   width="25">
-    </button>
-</div>
+<!--    <button type="button" class="btn btn-danger" th:onclick="deleteRecords()"><img th:src="@{/img/calendar2-x.svg}"-->
+<!--                                                                                   class="d-block mx-auto"-->
+<!--                                                                                   width="25">-->
+<!--    </button>-->
+<!--</div>-->
 
 
 <script type="text/javascript" th:src="@{/js/scheduleRecord/assignSchedule.js}"></script>
