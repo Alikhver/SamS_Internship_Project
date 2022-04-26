@@ -104,7 +104,7 @@ const createRecords = function () {
             success: function () {
                 const param = `${date.toLocaleDateString(locale, options)} Work time: ${startTime}:00 - ${endTime}:00`;
 
-                $('#deleteRecords').after(
+                $('#cancelRecords').after(
                     `<div class="option d-flex container-fluid col-8 px-0 my-3 justify-content-center">
                         <div class="col-9 container justify-content-center" align="center">
                             <p>${param}</p>
