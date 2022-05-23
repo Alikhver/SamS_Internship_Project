@@ -39,6 +39,8 @@
         <org.springframework.data>2.6.3</org.springframework.data>
         <org.hibernate>6.0.0.Final</org.hibernate>
         <org.projectlombok>1.18.24</org.projectlombok>
+        <jjwt.version>0.9.1</jjwt.version>
+        <org.thymeleaf.extras>3.0.4.RELEASE</org.thymeleaf.extras>
     </properties>
 
     <dependencyManagement>
@@ -136,6 +138,18 @@
                 <version>${org.mockito}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.thymeleaf.extras</groupId>
+                <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+                <version>${org.thymeleaf.extras}</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 

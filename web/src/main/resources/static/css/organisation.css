@@ -40,3 +40,7 @@
 #suspended:hover {
     cursor: pointer;
 }
+
+.profile-link:hover {
+    cursor: pointer;
+}

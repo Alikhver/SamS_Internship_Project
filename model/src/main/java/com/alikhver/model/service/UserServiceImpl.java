@@ -97,6 +97,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    public Optional<User> findUserByLogin(String login) {
+        log.info("findUserByLogin -> start");
+
+        var response = userRepository.findUserByLogin(login);
+
+        log.info("findUserByLogin -> done");
+        return response;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public boolean existsUserById(Long userId) {
         log.info("existsUserById -> start");
 

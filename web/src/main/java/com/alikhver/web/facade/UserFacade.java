@@ -16,4 +16,6 @@ public interface UserFacade {
     void deleteUser(Long id);
 
     void updateUser(Long id, UpdateUserRequest request);
+
+    GetUserResponse findByLogin(String login);
 }

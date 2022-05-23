@@ -29,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,6 +53,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     private final ValidationHelper validationHelper;
 
     @Override
+    @Transactional
     public GetOrganisationResponse getOrganisation(Long id) throws NoOrganisationFoundException {
         log.info("getOrganisation -> start");
 
@@ -60,6 +62,10 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         Optional<Organisation> optionalOrganisation = organisationService.getOrganisation(id);
         if (optionalOrganisation.isPresent()) {
             Organisation organisation = optionalOrganisation.get();
+
+            var authentication = SecurityContextHolder.getContext().getAuthentication();
+//            UserDetails user = (UserDetails) authentication.getPrincipal();
+            // Todo refator security redactor
             var result = organisationConverter.mapToGetOrganisationResponse(organisation);
 
             log.info("getOrganisation -> done");

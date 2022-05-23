@@ -5,6 +5,7 @@ import com.alikhver.web.facade.UtilityFacade;
 import com.alikhver.web.facade.WorkerFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,8 @@ public class OrganisationController {
                                          @RequestParam(value = "worker", required = false) @Positive Long workerId,
                                          @RequestParam(value = "utility", required = false) @Positive Long utilityId,
                                          @RequestParam(value = "record", required = false) @Positive Long recordId,
-                                         ModelAndView modelAndView) {
+                                         ModelAndView modelAndView,
+                                         Authentication authentication) {
         var org = organisationFacade.getOrganisation(orgId);
         modelAndView.addObject("org", org);
 

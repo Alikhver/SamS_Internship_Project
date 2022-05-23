@@ -41,6 +41,7 @@ public class UserRestController {
 
     @GetMapping
     @ApiOperation("Get Users")
+//    @PreAuthorize("hasAnyAuthority()")
     public ResponseEntity<Page<GetUserResponse>> getAllUsers(@RequestParam(defaultValue = "0") @PositiveOrZero int page,
                                                              @RequestParam(defaultValue = "5") @Positive int size) {
         Page<GetUserResponse> response = userFacade.getAllUsers(page, size);

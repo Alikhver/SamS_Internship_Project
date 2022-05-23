@@ -4,6 +4,8 @@ import com.alikhver.web.facade.ProfileFacade;
 import com.alikhver.web.facade.UserFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,4 +57,15 @@ public class ProfileController {
 
         return modelAndView;
     }
+
+    @GetMapping("/")
+    @ApiOperation("View Active Profile")
+    public ModelAndView viewActiveProfile(ModelAndView modelAndView) {
+
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getDetails();
+
+        return modelAndView;
+    }
+
 }

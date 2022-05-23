@@ -23,4 +23,6 @@ public interface UserService {
     void deleteUser(Long userId);
 
     void deleteAll();
+
+    Optional<User> findUserByLogin(String login);
 }

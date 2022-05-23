@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public class UserFacadeImpl implements UserFacade {
     private final UserService userService;
     private final UserConverter userConverter;
     private final ValidationHelper validationHelper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public GetUserResponse getUser(Long id) {
@@ -77,6 +79,7 @@ public class UserFacadeImpl implements UserFacade {
             );
         } else {
             User user = userConverter.mapToUser(request);
+            user.setPassword(encodePassword(user.getPassword()));
             user = userService.saveUser(user);
 
             var response = userConverter.mapToCreateUserResponse(user);
@@ -119,10 +122,30 @@ public class UserFacadeImpl implements UserFacade {
             );
         }
         Optional.ofNullable(request.getLogin()).ifPresent(user::setLogin);
-        Optional.ofNullable(request.getPassword()).ifPresent(user::setPassword);
+        Optional.ofNullable(request.getPassword()).map(this::encodePassword).ifPresent(user::setPassword);
 
         log.info("updateUser -> done");
         userService.saveUser(user);
+    }
+
+    @Override
+    public GetUserResponse findByLogin(String login) {
+        log.info("findByLogin -> start");
+
+        validationHelper.validateForCorrectString(login, "Login");
+
+        User user = userService.findUserByLogin(login).orElseThrow(() -> {
+            log.warn("NoUserFoundException is thrown");
+            throw new NoUserFoundException(
+              "User with logi"
+            );
+//            TOdo message
+        });
+
+        var response = userConverter.mapToGetUserResponse(user);
+
+        log.info("findByLogin -> done");
+        return response;
     }
 
     private void validatePageAndSize(int page, int size) {
@@ -143,5 +166,9 @@ public class UserFacadeImpl implements UserFacade {
         }
 
         log.info("validateForPageAndSize -> done");
+    }
+
+    private String encodePassword(String password) {
+        return passwordEncoder.encode(password);
     }
 }

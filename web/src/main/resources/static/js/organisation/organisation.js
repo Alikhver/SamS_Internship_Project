@@ -147,7 +147,6 @@ $('#back').on('click', function () {
 
     const orgId = parseInt(url.pathname.split('/')[2]);
     url.pathname = '/organisation';
-    console.log(url.href)
 
     window.location.href = url.href;
 });
@@ -157,4 +156,8 @@ $('#back').on('click', function () {
 
 $('#suspended').on('click', function () {
     $('#modal').modal('show');
+})
+
+$('.profile-link').on('click', function () {
+    window.location.href = '/profile';
 })
