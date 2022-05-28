@@ -13,18 +13,50 @@ $('#login-btn').on('click', function () {
 
     const restUrl = '/auth/login';
 
-    const loginDTO = {
-      login: login,
-      password: password
+    const loginInfo = {
+        login: login,
+        password: password
     };
 
     $.ajax({
         url: restUrl,
         type: 'POST',
-        data: JSON.stringify(loginDTO),
+        data: JSON.stringify(loginInfo),
         contentType: "application/json",
         success: function (data) {
             console.log(data.jwt)
+            localStorage.setItem("Authorization", data.jwt);
+            //todo redirect
         }
     });
 });
+
+const validateLogin = function () {
+    const input = $('#login-input');
+    const length = input.val().length;
+
+    if (length < 7 || length > 30) {
+        $('#incorrect-login').slideDown();
+        return false;
+    } else {
+        $('#incorrect-login').slideUp();
+        return true;
+    }
+}
+
+
+const validatePassword = function () {
+    const input = $('#password-input');
+    const length = input.val().length;
+
+    if (length < 7 || length > 30) {
+        $('#incorrect-password').slideDown();
+        return false;
+    } else {
+        $('#incorrect-password').slideUp();
+        return true;
+    }
+}
+
+$('#login-input').on('change', validateLogin)
+$('#password-input').on('change', validatePassword)

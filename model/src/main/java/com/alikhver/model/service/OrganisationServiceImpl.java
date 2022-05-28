@@ -107,6 +107,17 @@ public class OrganisationServiceImpl implements OrganisationService {
         log.info("deleteAll -> done");
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Organisation> getOrganisationByRedactorLogin(String login) {
+        log.info("getOrganisationIdByRedactorLogin -> start");
+
+        Optional<Organisation> organisation = repository.getOrganisationByRedactorLogin(login);
+
+        log.info("getOrganisationIdByRedactorLogin -> done");
+        return organisation;
+    }
+
     private void validateOrganisation(Organisation organisation) {
         log.info("validateOrganisation -> start");
 

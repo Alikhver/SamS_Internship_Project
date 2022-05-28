@@ -32,4 +32,6 @@ public interface OrganisationFacade {
     List<GetWorkerResponse> getWorkers(Long orgId);
 
     List<GetUtilityResponse> getUtilities(Long orgId);
+
+    Long getOrganisationIdByRedactorLogin(String username);
 }

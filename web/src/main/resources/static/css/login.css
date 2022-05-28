@@ -13,3 +13,12 @@
         height: 100%;
     }
 }
+
+
+.incorrect {
+    font-size: small;
+    font-weight: revert;
+    color: red;
+    font-style: italic;
+    display: none;
+}

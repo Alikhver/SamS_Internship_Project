@@ -23,4 +23,6 @@ public interface OrganisationService {
     void deleteOrganisation(Long organisationId);
 
     void deleteAll();
+
+    Optional<Organisation> getOrganisationByRedactorLogin(String login);
 }

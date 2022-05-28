@@ -159,5 +159,5 @@ $('#suspended').on('click', function () {
 })
 
 $('.profile-link').on('click', function () {
-    window.location.href = '/profile';
+    window.location.href = '/profile/';
 })

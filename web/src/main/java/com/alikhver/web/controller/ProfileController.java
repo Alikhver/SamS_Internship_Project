@@ -4,8 +4,8 @@ import com.alikhver.web.facade.ProfileFacade;
 import com.alikhver.web.facade.UserFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/profile")
@@ -62,8 +63,18 @@ public class ProfileController {
     @ApiOperation("View Active Profile")
     public ModelAndView viewActiveProfile(ModelAndView modelAndView) {
 
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getDetails();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String authority = new ArrayList<>(authentication.getAuthorities()).get(0).getAuthority();
+
+//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        if (!authority.equals("anonymousUser")) {
+
+        } else {
+
+        }
+
+        modelAndView.setViewName("personal-cabinet/personal_cabinet");
 
         return modelAndView;
     }

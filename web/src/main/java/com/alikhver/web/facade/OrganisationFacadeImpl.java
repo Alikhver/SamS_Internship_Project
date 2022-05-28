@@ -215,6 +215,22 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Long getOrganisationIdByRedactorLogin(String login) {
+        log.info("getOrganisationIdByRedactorLogin -> start");
+
+        Organisation organisation = organisationService.getOrganisationByRedactorLogin(login).orElseThrow(() -> {
+            log.warn("NoOrganisationFoundException is thrown");
+            throw new NoOrganisationFoundException(
+              "No Organisation with Redactors Login = " + login + " found"
+            );
+        });
+
+        log.info("getOrganisationIdByRedactorLogin -> done");
+        return organisation.getId();
+    }
+
+    @Override
     public void updateOrganisation(Long id, UpdateOrganisationRequest request) {
         log.info("updateOrganisation -> start");
 
