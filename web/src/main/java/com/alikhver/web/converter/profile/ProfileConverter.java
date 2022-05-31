@@ -2,6 +2,7 @@ package com.alikhver.web.converter.profile;
 
 import com.alikhver.model.entity.Profile;
 import com.alikhver.web.dto.profile.request.CreateProfileRequest;
+import com.alikhver.web.dto.profile.request.CreateUserAndProfileRequest;
 import com.alikhver.web.dto.profile.response.CreateProfileResponse;
 import com.alikhver.web.dto.profile.response.GetProfileResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ public class ProfileConverter {
     private final ProfileToCreateProfileResponseConverter profileToCreateProfileResponseConverter;
     private final ProfileToGetProfileResponseConverter profileToGetProfileResponseConverter;
     private final PageOfProfilesToPageOfGetProfileResponseConverter pageOfProfilesToPageOfGetProfileResponseConverter;
+    private final CreateUserAndProfileRequestToProfileConverter createUserAndProfileRequestToProfileConverter;
 
     public Profile mapToCreateProfileRequest(CreateProfileRequest request) {
         log.info("mapToCreateProfileRequest -> start");
@@ -51,6 +53,15 @@ public class ProfileConverter {
         var response = pageOfProfilesToPageOfGetProfileResponseConverter.convert(profiles);
 
         log.info("mapToListOfGetProfileResponse -> done");
+        return response;
+    }
+
+    public Profile mapToProfile(CreateUserAndProfileRequest request) {
+        log.info("mapToProfile -> start");
+
+        var response = createUserAndProfileRequestToProfileConverter.convert(request);
+
+        log.info("mapToProfile -> done");
         return response;
     }
 }

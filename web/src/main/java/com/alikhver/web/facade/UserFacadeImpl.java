@@ -148,6 +148,16 @@ public class UserFacadeImpl implements UserFacade {
         return response;
     }
 
+    @Override
+    public boolean loginExists(String login) {
+        log.info("loginExists -> start");
+
+        boolean exists = userService.existsUserByLogin(login);
+
+        log.info("loginExists -> done");
+        return exists;
+    }
+
     private void validatePageAndSize(int page, int size) {
         log.info("validatePageAndSize -> start");
 

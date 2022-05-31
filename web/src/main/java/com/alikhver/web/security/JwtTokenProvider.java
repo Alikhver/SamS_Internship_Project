@@ -15,8 +15,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 
@@ -29,7 +31,7 @@ public class JwtTokenProvider {
     private String secretKey;
 
     @Value("${jwt.header}")
-    private String authorizationHeader;
+    private String authorizationName;
 
     @Value("${jwt.expiration}")
     private long validityInMilliseconds;
@@ -75,7 +77,10 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String resolveToken(HttpServletRequest  request) {
-        return request.getHeader(authorizationHeader);
+    public String resolveToken(HttpServletRequest request) {
+        return Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals(authorizationName)).findFirst()
+                .map(Cookie::getValue)
+                .orElse(null);
     }
 }

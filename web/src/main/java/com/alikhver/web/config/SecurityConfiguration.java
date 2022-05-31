@@ -1,6 +1,7 @@
 package com.alikhver.web.config;
 
 import com.alikhver.web.security.JwtConfigurer;
+import com.alikhver.web.security.handler.CustomAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,8 +20,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final JwtConfigurer jwtConfigurer;
 
-    public SecurityConfiguration(JwtConfigurer jwtConfigurer) {
+    private final CustomAuthenticationSuccessHandler successHandler;
+
+    public SecurityConfiguration(JwtConfigurer jwtConfigurer
+            , CustomAuthenticationSuccessHandler successHandler
+    ) {
         this.jwtConfigurer = jwtConfigurer;
+        this.successHandler = successHandler;
     }
 
     @Override
@@ -30,7 +36,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/register", "/auth/*", "/profile/").permitAll()
+                .antMatchers("/", "/register", "/auth/*", "/profile/*",
+                        "/profiles/createUserAndProfile", "/profiles/phoneNumberExists","/profiles/emailExists",
+                        "/users/loginExists").permitAll()
                 .antMatchers("/login", "/auth/login", "/organisation/*",
                         "/organisation/*/workers", "/organisation/*/utilities").permitAll()
                 .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**").permitAll()
@@ -38,6 +46,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
+//                .usernameParameter().passwordParameter()
+//                .loginProcessingUrl("/auth/login")
+                .successHandler(successHandler)
                 .and()
                 .apply(jwtConfigurer);
     }

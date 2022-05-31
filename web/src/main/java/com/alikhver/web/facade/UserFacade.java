@@ -18,4 +18,6 @@ public interface UserFacade {
     void updateUser(Long id, UpdateUserRequest request);
 
     GetUserResponse findByLogin(String login);
+
+    boolean loginExists(String login);
 }

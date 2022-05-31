@@ -2,6 +2,7 @@ package com.alikhver.web.controller.rest;
 
 
 import com.alikhver.web.dto.profile.request.CreateProfileRequest;
+import com.alikhver.web.dto.profile.request.CreateUserAndProfileRequest;
 import com.alikhver.web.dto.profile.request.UpdateProfileRequest;
 import com.alikhver.web.dto.profile.response.CreateProfileResponse;
 import com.alikhver.web.dto.profile.response.GetProfileResponse;
@@ -54,6 +55,12 @@ public class ProfileRestController {
         return new ResponseEntity<>(profileFacade.createProfile(request), HttpStatus.CREATED);
     }
 
+    @PostMapping("/createUserAndProfile")
+    @ApiOperation("Create User And Profile")
+    public void createUserAndProfile(@RequestBody @Validated CreateUserAndProfileRequest request) {
+        profileFacade.createUserAndProfile(request);
+    }
+
     @PutMapping("/{id}")
     @ApiOperation("Update Profile")
     public void updateProfile(@PathVariable @Positive Long id, @RequestBody @Validated UpdateProfileRequest request) {
@@ -67,5 +74,17 @@ public class ProfileRestController {
         profileFacade.deleteProfile(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/emailExists")
+    @ApiOperation("Checks if provided email already exists")
+    public boolean isEmailUnique(@RequestParam String email) {
+        return profileFacade.emailExists(email);
+    }
+
+    @GetMapping("/phoneNumberExists")
+    @ApiOperation("Checks if provided phone number already exists")
+    public boolean isPhoneNumberUnique(@RequestParam String phoneNumber) {
+        return profileFacade.phoneNumberExists(phoneNumber);
     }
 }

@@ -30,7 +30,7 @@
                                         <div class="col-md-6 mb-4 pb-2">
 
                                             <div class="form-outline">
-                                                <input id="firstName" type="text" class="form-control form-control-lg"/>
+                                                <input id="firstName" type="text" class="form-control form-control-lg" th:placeholder="#{reg.firstName.placeholder}"/>
                                                 <p id="incorrect-firstName" class='my-0 incorrect'
                                                    th:text="#{reg.incorrect-firstName}"></p>
                                                 <label class="form-label" for="firstName"
@@ -41,7 +41,7 @@
                                         <div class="col-md-6 mb-4 pb-2">
 
                                             <div class="form-outline">
-                                                <input id="lastName" type="text" class="form-control form-control-lg"/>
+                                                <input id="lastName" type="text" class="form-control form-control-lg" th:placeholder="#{reg.lastName.placeholder}"/>
                                                 <p id="incorrect-lastName" class='my-0 incorrect'
                                                    th:text="#{reg.incorrect-lastName}"></p>
                                                 <label class="form-label" for="lastName"
@@ -53,9 +53,11 @@
 
                                     <div class="mb-4 pb-2">
                                         <div class="form-outline">
-                                            <input id="login" type="text" class="form-control form-control-lg"/>
+                                            <input id="login" type="text" class="form-control form-control-lg" th:placeholder="#{reg.login.placeholder}"/>
                                             <p id="incorrect-login" class='my-0 incorrect'
                                                th:text="#{reg.incorrect-login}"></p>
+                                            <p id="incorrect-login-exists" class='my-0 incorrect'
+                                               th:text="#{reg.incorrect-login.exists}"></p>
                                             <label class="form-label" for="login" th:text="#{reg.login}"></label>
                                         </div>
                                     </div>
@@ -64,7 +66,7 @@
                                         <div class=" mb-4 pb-2 mb-md-0 pb-md-0">
 
                                             <div class="form-outline">
-                                                <input type="text" id="password" class="form-control form-control-lg"/>
+                                                <input type="password" id="password" class="form-control form-control-lg"/>
                                                 <p id="incorrect-password" class='my-0 incorrect'
                                                    th:text="#{reg.incorrect-password}"></p>
                                                 <label class="form-label" for="password"
@@ -82,18 +84,22 @@
 
                                     <div class="mb-4 pb-2">
                                         <div class="form-outline form-white">
-                                            <input type="text" id="email" class="form-control form-control-lg"/>
+                                            <input type="text" id="email" class="form-control form-control-lg" th:placeholder="#{reg.email.placeholder}"/>
                                             <p id="incorrect-email" class='my-0 incorrect1'
                                                th:text="#{reg.incorrect-email}"></p>
+                                            <p id="incorrect-email-exists" class='my-0 incorrect1'
+                                               th:text="#{reg.incorrect-email.exists}"></p>
                                             <label class="form-label" for="email" th:text="#{reg.email}"></label>
                                         </div>
                                     </div>
 
                                     <div class="mb-4 pb-2">
                                         <div class="form-outline form-white">
-                                            <input type="text" id="phoneNumber" class="form-control form-control-lg"/>
+                                            <input type="text" id="phoneNumber" class="form-control form-control-lg" th:placeholder="#{reg.phoneNumber.placeholder}"/>
                                             <p id="incorrect-phoneNumber" class='my-0 incorrect1'
                                                th:text="#{reg.incorrect-phoneNumber}"></p>
+                                            <p id="incorrect-phoneNumber-exists" class='my-0 incorrect1'
+                                               th:text="#{reg.incorrect-phoneNumber.exists}"></p>
                                             <label class="form-label" for="phoneNumber"
                                                    th:text="#{reg.phoneNumber}"></label>
                                         </div>

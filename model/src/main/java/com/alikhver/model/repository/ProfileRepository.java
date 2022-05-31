@@ -5,4 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
     boolean existsProfileByUserId(Long userId);
+
+    boolean existsProfileByEmail(String email);
+
+    boolean existsProfileByPhoneNumber(String phoneNumber);
 }

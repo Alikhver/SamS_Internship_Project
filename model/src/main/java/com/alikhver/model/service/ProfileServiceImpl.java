@@ -110,6 +110,29 @@ public class ProfileServiceImpl implements ProfileService {
         log.warn("delete -> done");
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsProfileByEmail(String email) {
+        log.info("existsProfileByLogin -> start");
+
+        boolean exists = repository.existsProfileByEmail(email);
+
+        log.info("existsProfileByLogin -> done");
+        return exists;
+
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean phoneNumberExists(String phoneNumber) {
+        log.info("phoneNumberExists -> start");
+
+        boolean exists = repository.existsProfileByPhoneNumber(phoneNumber);
+
+        log.info("phoneNumberExists -> done");
+        return exists;
+    }
+
     private void validateProfile(Profile profile) {
         log.info("validateProfile -> start");
 

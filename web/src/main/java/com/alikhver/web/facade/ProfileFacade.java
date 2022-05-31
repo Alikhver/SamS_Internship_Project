@@ -1,6 +1,7 @@
 package com.alikhver.web.facade;
 
 import com.alikhver.web.dto.profile.request.CreateProfileRequest;
+import com.alikhver.web.dto.profile.request.CreateUserAndProfileRequest;
 import com.alikhver.web.dto.profile.request.UpdateProfileRequest;
 import com.alikhver.web.dto.profile.response.CreateProfileResponse;
 import com.alikhver.web.dto.profile.response.GetProfileResponse;
@@ -16,4 +17,10 @@ public interface ProfileFacade {
     void updateProfile(Long id, UpdateProfileRequest request);
 
     void deleteProfile(Long id);
+
+    void createUserAndProfile(CreateUserAndProfileRequest request);
+
+    boolean emailExists(String email);
+
+    boolean phoneNumberExists(String phoneNumber);
 }

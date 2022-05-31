@@ -70,4 +70,10 @@ public class UserRestController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
+    @GetMapping("/loginExists")
+    @ApiOperation("Checks if login already exists")
+    public boolean loginExits(@RequestParam String login) {
+        return userFacade.loginExists(login);
+    }
+
 }

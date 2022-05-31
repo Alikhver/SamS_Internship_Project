@@ -24,11 +24,12 @@ $('#login-btn').on('click', function () {
         data: JSON.stringify(loginInfo),
         contentType: "application/json",
         success: function (data) {
-            console.log(data.jwt)
+            console.log(data)
             localStorage.setItem("Authorization", data.jwt);
-            //todo redirect
         }
     });
+
+    console.log('data')
 });
 
 const validateLogin = function () {

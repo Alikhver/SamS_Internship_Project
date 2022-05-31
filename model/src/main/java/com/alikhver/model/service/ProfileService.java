@@ -24,4 +24,8 @@ public interface ProfileService {
     void deleteAll();
 
     void delete(Long id);
+
+    boolean existsProfileByEmail(String login);
+
+    boolean phoneNumberExists(String phoneNumber);
 }

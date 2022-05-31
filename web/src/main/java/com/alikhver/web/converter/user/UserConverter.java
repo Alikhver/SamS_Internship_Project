@@ -1,6 +1,7 @@
 package com.alikhver.web.converter.user;
 
 import com.alikhver.model.entity.User;
+import com.alikhver.web.dto.profile.request.CreateUserAndProfileRequest;
 import com.alikhver.web.dto.user.request.CreateUserRequest;
 import com.alikhver.web.dto.user.response.CreateUserResponse;
 import com.alikhver.web.dto.user.response.GetUserResponse;
@@ -17,6 +18,7 @@ public class UserConverter {
     private final PageOfUsersToPageOfGetUserResponseConverter pageOfUsersToPageOfGetUserResponseConverter;
     private final CreateUserRequestToUserConverter createUserRequestToUserConverter;
     private final UserToCreateUserResponseConverter userToCreateUserResponseConverter;
+    private final CreateUserAndProfileRequestToUserConverter createUserAndProfileRequestToUserConverter;
 
     public GetUserResponse mapToGetUserResponse(User user) {
         log.info("mapToGetUserResponse -> start");
@@ -51,6 +53,15 @@ public class UserConverter {
         var response = userToCreateUserResponseConverter.convert(user);
 
         log.info("mapToCreateUserResponse -> done");
+        return response;
+    }
+
+    public User mapToUser(CreateUserAndProfileRequest request) {
+        log.info("mapToUser -> start");
+
+        var response = createUserAndProfileRequestToUserConverter.convert(request);
+
+        log.info("mapToUser -> done");
         return response;
     }
 }

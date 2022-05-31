@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -39,17 +40,22 @@ public class AuthenticationController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<?> authenticate(HttpServletResponse httpServletResponse,
+                                          @RequestBody AuthenticationRequest authInfo) {
         try {
 //            TODO user not found not correct password
 //            TODO method in facade
-            GetUserResponse user = userFacade.findByLogin(request.getLogin());
-            var authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getLogin(), request.getPassword()));
+            GetUserResponse user = userFacade.findByLogin(authInfo.getLogin());
+            var authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authInfo.getLogin(), authInfo.getPassword()));
             authentication.getPrincipal();
-            String token = jwtTokenProvider.createToken(request.getLogin(), user.getRole());
-            Map<Object, Object> response = new HashMap<>();
-            response.put("jwt", token);
-            return ResponseEntity.ok(response);
+            String token = jwtTokenProvider.createToken(authInfo.getLogin(), user.getRole());
+            Cookie authCookie = new Cookie("Authorization", token);
+            authCookie.setPath("/");
+            httpServletResponse.addCookie(authCookie);
+
+            Map<Object, Object> responseBody = new HashMap<>();
+            responseBody.put("jwt", token);
+            return ResponseEntity.ok(responseBody);
         } catch (AuthenticationException e) {
             return new ResponseEntity<>("Invalid login/password combination", HttpStatus.FORBIDDEN);
         }

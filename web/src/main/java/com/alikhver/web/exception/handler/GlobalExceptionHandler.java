@@ -6,6 +6,7 @@ import com.alikhver.web.exception.organisation.OrganisationIsAlreadyLaunchedExce
 import com.alikhver.web.exception.organisation.OrganisationIsAlreadySuspendedException;
 import com.alikhver.web.exception.profile.AttemptToAssignProfileToUserWithWrongRole;
 import com.alikhver.web.exception.profile.NoProfileFoundException;
+import com.alikhver.web.exception.profile.ProfileAlreadyExistsException;
 import com.alikhver.web.exception.profile.UserIsAlreadyBoundedProfileException;
 import com.alikhver.web.exception.scheduleRecord.NoScheduleRecordFoundException;
 import com.alikhver.web.exception.scheduleRecord.ScheduleRecordWithSuchWorkerAndTimeAlreadyExists;
@@ -182,6 +183,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AttemptToAssignProfileToUserWithWrongRole.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<ErrorResponse> handle(AttemptToAssignProfileToUserWithWrongRole e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ProfileAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handle(ProfileAlreadyExistsException e, HttpServletRequest request) {
         ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
