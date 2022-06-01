@@ -2,6 +2,8 @@ package com.alikhver.web.config;
 
 import com.alikhver.web.security.JwtConfigurer;
 import com.alikhver.web.security.handler.CustomAuthenticationSuccessHandler;
+import com.alikhver.web.security.handler.CustomLogoutHandler;
+import com.alikhver.web.security.handler.CustomLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,31 +24,46 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtConfigurer jwtConfigurer;
     @Autowired
-    private CustomAuthenticationSuccessHandler successHandler;
+    private CustomAuthenticationSuccessHandler authSuccessHandler;
+    @Autowired
+    private CustomLogoutSuccessHandler logoutSuccessHandler;
+    @Autowired
+    private CustomLogoutHandler customLogoutHandler;
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .csrf()
+                                .disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                    .and()
                 .authorizeRequests()
                 .antMatchers("/", "/register", "/auth/*", "/profile/*",
                         "/profiles/createUserAndProfile", "/profiles/phoneNumberExists", "/profiles/emailExists",
-                        "/users/loginExists").permitAll()
+                        "/users/loginExists")
+                                .permitAll()
                 .antMatchers("/login", "/auth/login", "/organisation/*", "/authenticate",
-                        "/organisation/*/workers", "/organisation/*/utilities").permitAll()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**").permitAll()
+                        "/organisation/*/workers", "/organisation/*/utilities")
+                                .permitAll()
+                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**")
+                                .permitAll()
                 .anyRequest().authenticated()
-                .and()
+                    .and()
                 .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/authenticate")
-                .usernameParameter("login")
-                .passwordParameter("password")
-                .successHandler(successHandler)
-                .and()
+                                .loginPage("/login")
+                                .loginProcessingUrl("/authenticate")
+                                .usernameParameter("login")
+                                .passwordParameter("password")
+                                .successHandler(authSuccessHandler)
+                    .and()
+                .logout()
+                                .logoutUrl("/logout")
+                                .invalidateHttpSession(true)
+                                .deleteCookies("Authorization")
+                                .addLogoutHandler(customLogoutHandler)
+//                                .logoutSuccessHandler(logoutSuccessHandler)
+                    .and()
                 .apply(jwtConfigurer);
     }
 
