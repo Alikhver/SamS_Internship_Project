@@ -24,12 +24,13 @@ import com.alikhver.web.exception.organisation.OrganisationAlreadyExistsExceptio
 import com.alikhver.web.exception.organisation.OrganisationIsAlreadyLaunchedException;
 import com.alikhver.web.exception.organisation.OrganisationIsAlreadySuspendedException;
 import com.alikhver.web.exception.user.UserAlreadyExistsException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,18 +40,29 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class OrganisationFacadeImpl implements OrganisationFacade {
-    private final OrganisationService organisationService;
-    private final UserService userService;
-    private final WorkerService workerService;
-    private final UtilityService utilityService;
-    private final ScheduleRecordService scheduleRecordService;
-    private final ScheduleRecordFacade scheduleRecordFacade;
-    private final OrganisationConverter organisationConverter;
-    private final WorkerConverter workerConverter;
-    private final UtilityConverter utilityConverter;
-    private final ValidationHelper validationHelper;
+    @Autowired
+    private OrganisationService organisationService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private WorkerService workerService;
+    @Autowired
+    private UtilityService utilityService;
+    @Autowired
+    private ScheduleRecordService scheduleRecordService;
+    @Autowired
+    private ScheduleRecordFacade scheduleRecordFacade;
+    @Autowired
+    private OrganisationConverter organisationConverter;
+    @Autowired
+    private WorkerConverter workerConverter;
+    @Autowired
+    private UtilityConverter utilityConverter;
+    @Autowired
+    private ValidationHelper validationHelper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -65,12 +77,13 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
             var authentication = SecurityContextHolder.getContext().getAuthentication();
 //            UserDetails user = (UserDetails) authentication.getPrincipal();
-            // Todo refator security redactor
+            // Todo refactor security redactor
             var result = organisationConverter.mapToGetOrganisationResponse(organisation);
 
             log.info("getOrganisation -> done");
             return result;
-        } {
+        }
+        {
             log.warn("NoOrganisationFoundException is thrown");
             throw new NoOrganisationFoundException(
                     "No Organisation with id = " + id + " found"
@@ -86,7 +99,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         if (organisationService.existsOrganisationByName(request.getName())) {
             log.warn("OrganisationAlreadyExistsException is thrown");
             throw new OrganisationAlreadyExistsException(
-              "Organisation with name = " + request.getName() + " already exists"
+                    "Organisation with name = " + request.getName() + " already exists"
             );
         }
 
@@ -97,6 +110,8 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             );
         }
         User redactor = organisationConverter.mapToRedactor(request);
+
+        redactor.setPassword(passwordEncoder.encode(redactor.getPassword()));
 
         Organisation organisation = organisationConverter.mapToOrganisation(request);
         organisation.setRedactor(redactor);
@@ -134,7 +149,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         if (!organisationService.existsById(organisationId)) {
             log.warn("NoOrganisationFoundException is thrown");
             throw new NoOrganisationFoundException(
-              "No Organisation with id = " + organisationId + "found"
+                    "No Organisation with id = " + organisationId + "found"
             );
         }
 
@@ -146,7 +161,6 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         log.info("getWorkers -> done");
         return response;
     }
-
 
 
     @Override
@@ -222,7 +236,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         Organisation organisation = organisationService.getOrganisationByRedactorLogin(login).orElseThrow(() -> {
             log.warn("NoOrganisationFoundException is thrown");
             throw new NoOrganisationFoundException(
-              "No Organisation with Redactors Login = " + login + " found"
+                    "No Organisation with Redactors Login = " + login + " found"
             );
         });
 
@@ -264,7 +278,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         } else {
             log.warn("NoOrganisationFoundException is thrown");
             throw new NoOrganisationFoundException(
-              "No Organisation with id = " + id + " found"
+                    "No Organisation with id = " + id + " found"
             );
         }
 

@@ -2,6 +2,7 @@ package com.alikhver.web.config;
 
 import com.alikhver.web.security.JwtConfigurer;
 import com.alikhver.web.security.handler.CustomAuthenticationSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,16 +19,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final JwtConfigurer jwtConfigurer;
+    @Autowired
+    private JwtConfigurer jwtConfigurer;
+    @Autowired
+    private CustomAuthenticationSuccessHandler successHandler;
 
-    private final CustomAuthenticationSuccessHandler successHandler;
-
-    public SecurityConfiguration(JwtConfigurer jwtConfigurer
-            , CustomAuthenticationSuccessHandler successHandler
-    ) {
-        this.jwtConfigurer = jwtConfigurer;
-        this.successHandler = successHandler;
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -37,17 +33,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/", "/register", "/auth/*", "/profile/*",
-                        "/profiles/createUserAndProfile", "/profiles/phoneNumberExists","/profiles/emailExists",
+                        "/profiles/createUserAndProfile", "/profiles/phoneNumberExists", "/profiles/emailExists",
                         "/users/loginExists").permitAll()
-                .antMatchers("/login", "/auth/login", "/organisation/*",
+                .antMatchers("/login", "/auth/login", "/organisation/*", "/authenticate",
                         "/organisation/*/workers", "/organisation/*/utilities").permitAll()
                 .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-//                .usernameParameter().passwordParameter()
-//                .loginProcessingUrl("/auth/login")
+                .loginProcessingUrl("/authenticate")
+                .usernameParameter("login")
+                .passwordParameter("password")
                 .successHandler(successHandler)
                 .and()
                 .apply(jwtConfigurer);

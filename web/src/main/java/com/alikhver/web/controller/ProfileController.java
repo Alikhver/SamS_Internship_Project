@@ -4,6 +4,7 @@ import com.alikhver.web.facade.ProfileFacade;
 import com.alikhver.web.facade.UserFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 @Controller
@@ -25,6 +30,9 @@ import java.util.ArrayList;
 public class ProfileController {
     private final ProfileFacade profileFacade;
     private final UserFacade userFacade;
+
+    @Value("${hostName}")
+    private String hostName;
 
     @GetMapping
     @ApiOperation("Get Profiles")
@@ -61,7 +69,20 @@ public class ProfileController {
 
     @GetMapping("/")
     @ApiOperation("View Active Profile")
-    public ModelAndView viewActiveProfile(ModelAndView modelAndView) {
+    public ModelAndView viewActiveProfile(HttpServletRequest request, HttpSession session, ModelAndView modelAndView) {
+        try {
+            URL url = new URL(request.getHeader("Referer"));
+            String host = url.getHost();
+            String path = url.getPath();
+
+             if (host.equals(hostName)) {
+                session.setAttribute("referer", url.toString());
+            } else {
+                session.removeAttribute("referer");
+            }
+        } catch (MalformedURLException e) {
+            session.removeAttribute("referer");
+        }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
