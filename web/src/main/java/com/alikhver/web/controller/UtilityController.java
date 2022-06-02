@@ -7,6 +7,7 @@ import com.alikhver.web.facade.UtilityFacade;
 import com.alikhver.web.facade.WorkerFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ public class UtilityController {
     private final UtilityFacade utilityFacade;
 
     @GetMapping()
+    @PreAuthorize("permitAll()")
     @ApiOperation("View Utilities")
     public ModelAndView viewUtilities(@PathVariable @Positive Long orgId,
                                       @RequestParam(name = "worker", required = false) @Positive Long workerId,
@@ -59,6 +61,7 @@ public class UtilityController {
     }
 
     @GetMapping("/{utilityId}/update")
+    @PreAuthorize("hasAuthority('REDACTOR')")
     @ApiOperation("Update Utility")
     public ModelAndView viewUpdateUtility(@PathVariable @Positive Long orgId,
                                           @PathVariable @Positive Long utilityId,
@@ -75,6 +78,7 @@ public class UtilityController {
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasAuthority('REDACTOR')")
     @ApiOperation("Create Utility")
     public ModelAndView viewUpdateUtility(@PathVariable @Positive Long orgId,
                                           ModelAndView modelAndView) {

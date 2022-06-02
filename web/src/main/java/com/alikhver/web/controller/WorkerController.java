@@ -7,6 +7,7 @@ import com.alikhver.web.facade.UtilityFacade;
 import com.alikhver.web.facade.WorkerFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,7 @@ public class WorkerController {
     private final UtilityFacade utilityFacade;
 
     @GetMapping
+    @PreAuthorize("permitAll()")
     @ApiOperation("View Workers")
     public ModelAndView viewWorkers(@PathVariable @Positive Long orgId,
                                     @RequestParam(name = "utility", required = false) @Positive Long utilityId,
@@ -51,6 +53,7 @@ public class WorkerController {
     }
 
     @GetMapping("/create")
+    @PreAuthorize("hasAuthority('REDACTOR')")
     @ApiOperation("Create Worker")
     public ModelAndView viewCreateWorker(@PathVariable @Positive Long orgId,
                                          ModelAndView modelAndView) {
@@ -66,6 +69,7 @@ public class WorkerController {
 
 
     @GetMapping("/{workerId}/update")
+    @PreAuthorize("hasAuthority('REDACTOR')")
     @ApiOperation("Update Worker")
     public ModelAndView viewCreateWorker(@PathVariable @Positive Long orgId,
                                          @PathVariable @Positive Long workerId,
@@ -82,6 +86,7 @@ public class WorkerController {
     }
 
     @GetMapping("/{workerId}/manageUtilities")
+    @PreAuthorize("hasAuthority('REDACTOR')")
     @ApiOperation("Manage Utilities of Worker")
     public ModelAndView viewManageUtilities(@PathVariable @Positive Long orgId,
                                             @PathVariable @Positive Long workerId,

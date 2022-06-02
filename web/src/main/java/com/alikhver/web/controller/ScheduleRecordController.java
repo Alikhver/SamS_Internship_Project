@@ -4,6 +4,7 @@ import com.alikhver.web.facade.OrganisationFacade;
 import com.alikhver.web.facade.WorkerFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ public class ScheduleRecordController {
     private final WorkerFacade workerFacade;
 
     @GetMapping("/select-worker")
+    @PreAuthorize("permitAll()")
     @ApiOperation("Select Worker to Assign Schedule")
     public ModelAndView viewSelectWorkerToAssignSchedule(@PathVariable @Positive Long orgId,
                                                          ModelAndView modelAndView) {
@@ -39,6 +41,7 @@ public class ScheduleRecordController {
     }
 
     @GetMapping("/select-worker/{workerId}/schedule")
+    @PreAuthorize("hasAuthority('REDACTOR')")
     @ApiOperation("Assign Schedule")
     public ModelAndView viewAssignSchedule(@PathVariable @Positive Long orgId,
                                            @PathVariable @Positive Long workerId,

@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,7 @@ public class ProfileController {
     private String hostName;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ApiOperation("Get Profiles")
     public ModelAndView viewProfiles(@RequestParam(defaultValue = "1") @PositiveOrZero int page,
                                      @RequestParam(defaultValue = "5") @Positive int size,
@@ -54,6 +56,7 @@ public class ProfileController {
     }
 
     @GetMapping("/{profileId}/manage")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ApiOperation("Manage Profile")
     public ModelAndView viewProfiles(@PathVariable @Positive Long profileId,
                                      ModelAndView modelAndView) {
@@ -69,6 +72,7 @@ public class ProfileController {
     }
 
     @GetMapping("/current")
+    @PreAuthorize("permitAll()")
     @ApiOperation("View Active Profile")
     public ModelAndView viewActiveProfile(HttpServletRequest request, HttpSession session, ModelAndView modelAndView) {
         try {
