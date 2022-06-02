@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +36,7 @@ public class OrganisationRestController {
     private final OrganisationFacade organisationFacade;
 
     @GetMapping("/{id}")
+    @PreAuthorize("permitAll()")
     @ApiOperation("Get Organisation")
     public ResponseEntity<GetOrganisationResponse> getOrganisation(@PathVariable @Positive Long id) {
         GetOrganisationResponse response = organisationFacade.getOrganisation(id);
@@ -42,6 +44,7 @@ public class OrganisationRestController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ApiOperation("Get Organisations")
     public ResponseEntity<Page<GetOrganisationResponse>> getOrganisations(@RequestParam(defaultValue = "0") @PositiveOrZero int page,
                                                                           @RequestParam(defaultValue = "5") @Positive int size) {
@@ -50,6 +53,7 @@ public class OrganisationRestController {
     }
 
     @GetMapping("/{id}/workers")
+    @PreAuthorize("permitAll()")
     @ApiOperation("Get Workers of Organisation")
     public ResponseEntity<Page<GetWorkerResponse>> getWorkers(@PathVariable @Positive Long id,
                                                               @RequestParam(defaultValue = "0") @PositiveOrZero int page,
@@ -59,6 +63,7 @@ public class OrganisationRestController {
     }
 
     @GetMapping("/{id}/utilities")
+    @PreAuthorize("permitAll()")
     @ApiOperation("Get Utilities of Organisation")
     public ResponseEntity<Page<GetUtilityResponse>> getUtilities(@PathVariable @Positive Long id,
                                                                  @RequestParam(defaultValue = "0") @PositiveOrZero int page,
@@ -68,6 +73,7 @@ public class OrganisationRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_ANONYMOUS')")
     @ApiOperation("Create Organisation")
     public ResponseEntity<CreateOrganisationResponse> createOrganisation(@RequestBody @Validated CreateOrganisationRequest request) {
         CreateOrganisationResponse response = organisationFacade.createOrganisation(request);
@@ -75,12 +81,14 @@ public class OrganisationRestController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('REDACTOR')")
     @ApiOperation("Update Organisation")
     public void updateOrganisation(@PathVariable @Positive Long id, @RequestBody @Validated UpdateOrganisationRequest request) {
         organisationFacade.updateOrganisation(id, request);
     }
 
     @PatchMapping("/{id}/suspend")
+    @PreAuthorize("hasAnyAuthority('REDACTOR', 'ADMIN')")
     @ApiOperation("Suspend working process of Organisation")
     public ResponseEntity<Void> suspendOrganisation(@PathVariable @Positive Long id) {
         organisationFacade.suspendOrganisation(id);
@@ -88,6 +96,7 @@ public class OrganisationRestController {
     }
 
     @PatchMapping("{id}/launch")
+    @PreAuthorize("hasAnyAuthority('REDACTOR', 'ADMIN')")
     @ApiOperation("Launch working process of Organisation")
     public ResponseEntity<Void> launchOrganisation(@PathVariable @Positive Long id) {
         organisationFacade.launchOrganisation(id);
@@ -95,6 +104,7 @@ public class OrganisationRestController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('REDACTOR', 'ADMIN')")
     @ApiOperation("Delete Organisation")
     public ResponseEntity<Long> deleteOrganisation(@PathVariable @Positive Long id) {
         organisationFacade.deleteOrganisation(id);
