@@ -5,6 +5,7 @@ import com.alikhver.web.facade.UtilityFacade;
 import com.alikhver.web.facade.WorkerFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -27,6 +28,7 @@ public class OrganisationController {
     private final UtilityFacade utilityFacade;
 
     @GetMapping("/{orgId}")
+    @PreAuthorize("permitAll()")
     @ApiOperation("View Organisation")
     public ModelAndView viewOrganisation(@PathVariable @Positive Long orgId,
                                          @RequestParam(value = "worker", required = false) @Positive Long workerId,
@@ -59,6 +61,7 @@ public class OrganisationController {
 
 
     @GetMapping("/{orgId}/update")
+    @PreAuthorize("hasAuthority('REDACTOR')")
     @ApiOperation("Update Organisation")
     public ModelAndView viewUpdateOrganisation(@PathVariable @Positive Long orgId,
                                                ModelAndView modelAndView) {

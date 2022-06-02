@@ -5,6 +5,7 @@ import com.alikhver.web.facade.UserFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -67,7 +68,7 @@ public class ProfileController {
         return modelAndView;
     }
 
-    @GetMapping("/")
+    @GetMapping("/current")
     @ApiOperation("View Active Profile")
     public ModelAndView viewActiveProfile(HttpServletRequest request, HttpSession session, ModelAndView modelAndView) {
         try {
@@ -75,13 +76,17 @@ public class ProfileController {
             String host = url.getHost();
             String path = url.getPath();
 
-             if (host.equals(hostName)) {
+            if (host.equals(hostName) && !path.equals("/profile/current")) {
                 session.setAttribute("referer", url.toString());
-            } else {
+            } else if (path.equals("/profile/current")) {
+                url = new URL((String) session.getAttribute("referer"));
+            } else if (!host.equals(hostName)) {
                 session.removeAttribute("referer");
             }
+
+            modelAndView.addObject("referer", url);
         } catch (MalformedURLException e) {
-            session.removeAttribute("referer");
+
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -94,6 +99,9 @@ public class ProfileController {
         } else {
 
         }
+
+        String locale = LocaleContextHolder.getLocale().toLanguageTag();
+        modelAndView.addObject("locale", locale);
 
         modelAndView.setViewName("personal-cabinet/personal_cabinet");
 

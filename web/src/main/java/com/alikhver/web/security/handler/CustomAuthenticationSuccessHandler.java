@@ -43,13 +43,17 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         String redirectTo = "/";
 
         if (Objects.isNull(referer)) {
-            if (authority.equals("REDACTOR")) {
-                Long organisationId = organisationFacade.getOrganisationIdByRedactorLogin(login);
-                redirectTo = "/organisation/" + organisationId;
-            } else if (authority.equals("ADMIN")) {
-                redirectTo = "/adminHome";
-            } else if (authority.equals("USER")) {
-                redirectTo = "/";
+            switch (authority) {
+                case "REDACTOR":
+                    Long organisationId = organisationFacade.getOrganisationIdByRedactorLogin(login);
+                    redirectTo = "/organisation/" + organisationId;
+                    break;
+                case "ADMIN":
+                    redirectTo = "/adminHome";
+                    break;
+                case "USER":
+                    redirectTo = "/";
+                    break;
             }
         } else {
             redirectTo = referer;

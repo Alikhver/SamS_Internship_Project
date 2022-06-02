@@ -49,7 +49,7 @@ public class LoginController {
             URL url = new URL(request.getHeader("Referer"));
             String host = url.getHost();
             String path = url.getPath();
-            if (host.equals(hostName) && path.equals("/profile/")) {
+            if (host.equals(hostName) && path.equals("/profile/current")) {
 
             } else if (host.equals(hostName)) {
                 session.setAttribute("referer", url.toString());
