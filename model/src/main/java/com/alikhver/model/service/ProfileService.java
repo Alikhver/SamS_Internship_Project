@@ -28,4 +28,6 @@ public interface ProfileService {
     boolean existsProfileByEmail(String login);
 
     boolean phoneNumberExists(String phoneNumber);
+
+    Optional<Profile> getProfileByUserId(Long userId);
 }

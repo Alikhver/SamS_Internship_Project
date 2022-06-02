@@ -34,3 +34,19 @@ function goBack (referer) {
     url.href = referer;
     window.location.href = url.href;
 }
+
+$('#view-profile').on('click', function () {
+    const url = new URL(window.location.href);
+
+    url.pathname = '/profile/update'
+
+    window.location.href = url.href;
+});
+
+$('#view-records').on('click', function () {
+    const url = new URL(window.location.href);
+
+    url.pathname = '/profile/records';
+
+    window.location.href = url.href;
+});

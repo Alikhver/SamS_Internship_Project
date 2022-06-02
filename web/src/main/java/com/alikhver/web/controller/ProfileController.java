@@ -1,5 +1,6 @@
 package com.alikhver.web.controller;
 
+import com.alikhver.model.entity.Profile;
 import com.alikhver.web.facade.ProfileFacade;
 import com.alikhver.web.facade.UserFacade;
 import io.swagger.annotations.ApiOperation;
@@ -9,6 +10,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,7 +63,7 @@ public class ProfileController {
     public ModelAndView viewProfiles(@PathVariable @Positive Long profileId,
                                      ModelAndView modelAndView) {
 
-        var profile = profileFacade.getProfile(profileId);
+        var profile = profileFacade.getProfileByUserLogin(profileId);
         var user = userFacade.getUser(profile.getUserId());
 
         modelAndView.addObject("profile", profile);
@@ -80,7 +82,7 @@ public class ProfileController {
             String host = url.getHost();
             String path = url.getPath();
 
-            if (host.equals(hostName) && !path.equals("/profile/current")) {
+            if (host.equals(hostName) && !path.equals("/profile/current") && !path.equals("/profile/update")) {
                 session.setAttribute("referer", url.toString());
             } else if (path.equals("/profile/current")) {
                 url = new URL((String) session.getAttribute("referer"));
@@ -97,10 +99,8 @@ public class ProfileController {
 
         String authority = new ArrayList<>(authentication.getAuthorities()).get(0).getAuthority();
 
-//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        if (!authority.equals("anonymousUser")) {
 
-        } else {
+        if (authority.equals("USER")) {
 
         }
 
@@ -108,6 +108,24 @@ public class ProfileController {
         modelAndView.addObject("locale", locale);
 
         modelAndView.setViewName("personal-cabinet/personal_cabinet");
+
+        return modelAndView;
+    }
+
+    @GetMapping("/update")
+    @ApiOperation("Update profile by USER")
+    @PreAuthorize("hasAuthority('USER')")
+    public ModelAndView updateProfile(Authentication authentication, ModelAndView modelAndView) {
+
+        String login = ((User) authentication.getPrincipal()).getUsername();
+
+        var user = userFacade.findByLogin(login);
+        Profile profile = profileFacade.getProfileByUserLogin(login);
+
+
+        modelAndView.addObject("profile", profile);
+        modelAndView.addObject("user", user);
+        modelAndView.setViewName("profile/updateProfile");
 
         return modelAndView;
     }

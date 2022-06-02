@@ -38,7 +38,7 @@ public class ProfileRestController {
     @GetMapping("/{id}")
     @ApiOperation("Get Profile")
     public ResponseEntity<GetProfileResponse> getProfile(@PathVariable @Positive Long id) throws NoProfileFoundException {
-        return new ResponseEntity<>(profileFacade.getProfile(id), HttpStatus.OK);
+        return new ResponseEntity<>(profileFacade.getProfileByUserLogin(id), HttpStatus.OK);
     }
 
     @GetMapping

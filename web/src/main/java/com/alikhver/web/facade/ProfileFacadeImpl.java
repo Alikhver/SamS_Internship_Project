@@ -82,7 +82,7 @@ public class ProfileFacadeImpl implements ProfileFacade {
     }
 
     @Override
-    public GetProfileResponse getProfile(Long id) throws NoProfileFoundException {
+    public GetProfileResponse getProfileByUserLogin(Long id) throws NoProfileFoundException {
         log.info("getProfile -> start");
 
         validationHelper.validateForCorrectId(id, "ProfileId");
@@ -175,7 +175,7 @@ public class ProfileFacadeImpl implements ProfileFacade {
         if (userService.existsUserByLogin(user.getLogin())) {
             log.warn("UserAlreadyExistsException is thrown");
             throw new UserAlreadyExistsException(
-                 "User with login=" + user.getLogin() + " already exists"
+                    "User with login=" + user.getLogin() + " already exists"
             );
         }
 
@@ -184,14 +184,14 @@ public class ProfileFacadeImpl implements ProfileFacade {
         if (profileService.existsProfileByEmail(profile.getEmail())) {
             log.warn("ProfileAlreadyExistsException is thrown");
             throw new ProfileAlreadyExistsException(
-              "Profile with email = " + profile.getEmail() + " already exists"
+                    "Profile with email = " + profile.getEmail() + " already exists"
             );
         }
 
         if (profileService.phoneNumberExists(profile.getPhoneNumber())) {
             log.warn("ProfileAlreadyExistsException is thrown");
             throw new ProfileAlreadyExistsException(
-              "Profile with phoneNumber=" + profile.getPhoneNumber() + " already exists"
+                    "Profile with phoneNumber=" + profile.getPhoneNumber() + " already exists"
             );
         }
 
@@ -222,5 +222,27 @@ public class ProfileFacadeImpl implements ProfileFacade {
 
         log.info("phoneNumberExists -> done");
         return exists;
+    }
+
+    @Override
+    public Profile getProfileByUserLogin(String login) {
+        log.info("getProfile -> start");
+
+        User user = userService.findUserByLogin(login).orElseThrow(() -> {
+            log.warn("NoProfileFoundException is thrown");
+            throw new NoUserFoundException(
+                    "No User with login = " + login + " found"
+            );
+        });
+
+        Profile profile = profileService.getProfileByUserId(user.getId()).orElseThrow(() -> {
+            log.warn("NoProfileFoundException is thrown");
+            throw new NoProfileFoundException(
+                    "No Profile with userId = " + user.getId() + " found"
+            );
+        });
+
+        log.info("getProfile -> done");
+        return profile;
     }
 }

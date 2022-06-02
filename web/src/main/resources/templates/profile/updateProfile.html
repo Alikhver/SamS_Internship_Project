@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title th:text="#{profiles.change}"></title>
+
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+            crossorigin="anonymous"
+    />
+    <link th:href="@{/css/main.css}" rel="stylesheet"/>
+    <link th:href="@{/css/updateWorker.css}" rel="stylesheet"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+<body class="container">
+<div class="d-flex container col-6 justify-content-center d-flex navbar sticky-top fixed-top"
+     style="background-color: rgb(255, 255, 255)">
+    <div class="col-1 my-auto mx-auto">
+        <img th:src="@{/img/arrow-left-circle.svg}" class="img-fluid go-back-button"
+             width="24"
+             onclick="goBack()">
+    </div>
+    <div class="d-flex flex-column col-11">
+        <p class="text-center p-2" th:text="|#{profile} №${profile.id}|"></p>
+    </div>
+
+    <div class="option d-flex container-fluid px-0 my-3">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon4" th:text="#{updateProfile.login}"></span>
+            </div>
+            <input type="text" id="login" class="form-control" th:placeholder="#{updateProfile.login}"
+                   aria-label="Description" aria-describedby="basic-addon3" th:value="${user.login}" disabled>
+        </div>
+    </div>
+
+    <div class="option d-flex container-fluid px-0 my-3">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon5" th:text="#{updateProfile.password}"></span>
+            </div>
+            <input type="text" id="password" class="form-control" th:placeholder="#{updateProfile.password}"
+                   aria-label="Description" aria-describedby="basic-addon3">
+            <p id="incorrect-password" class='my-0 incorrect' th:text="#{reg.incorrect-password}"></p>
+        </div>
+    </div>
+    <div class="option d-flex container-fluid px-0 my-3">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1" th:text="#{updateProfile.firstName}"></span>
+            </div>
+            <input type="text" id="name" class="form-control" th:placeholder="#{updateProfile.firstName}"
+                   aria-label="Name" aria-describedby="basic-addon1" th:value="${profile.firstName}">
+        </div>
+    </div>
+
+    <div class="option d-flex container-fluid px-0 my-3">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon2" th:text="#{updateProfile.lastName}"></span>
+            </div>
+            <input type="text" id="address" class="form-control" th:placeholder="#{updateProfile.lastName}"
+                   aria-label="LastName" aria-describedby="basic-addon2" th:value="${profile.lastName}">
+        </div>
+    </div>
+
+    <div class="option d-flex container-fluid px-0 my-3">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3" th:text="#{updateProfile.email}"></span>
+                </div>
+                <input type="text" id="email" class="form-control" th:placeholder="#{updateProfile.email}"
+                       aria-label="Description" aria-describedby="basic-addon3" th:value="${profile.email}">
+            </div>
+            <p id="incorrect-email" class='my-0 incorrect'
+               th:text="#{reg.incorrect-email}"></p>
+            <p id="incorrect-email-exists" class='my-0 incorrect'
+               th:text="#{reg.incorrect-email.exists}"></p>
+    </div>
+
+    <div class="option d-flex container-fluid px-0 my-3">
+        <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3" th:text="#{updateProfile.phoneNumber}"></span>
+                </div>
+                <input type="text" id="phoneNumber" class="form-control" th:placeholder="#{updateProfile.phoneNumber}"
+                       aria-label="Description" aria-describedby="basic-addon3" th:value="${profile.phoneNumber}">
+
+        </div>
+        <p id="incorrect-phoneNumber" class='my-0 incorrect'
+                 th:text="#{reg.incorrect-phoneNumber}"></p>
+        <p id="incorrect-phoneNumber-exists" class='my-0 incorrect'
+           th:text="#{reg.incorrect-phoneNumber.exists}"></p>
+    </div>
+
+    <button type="button" id="update" class="btn btn-primary mx-1 w-40" th:onclick="updateProfile()"
+            th:text="#{updateProfile.update}"></button>
+    <button type="button" id="delete" class="btn btn-danger mx-1 w-40" th:onclick="deleteProfile([[${profile.id}]])"
+            th:text="#{updateProfile.delete}">Удалить
+    </button>
+
+    <script type="text/javascript" th:src="@{/js/profiles/updateProfile.js}"></script>
+
+</div>
+
+</body>
+</html>

@@ -133,6 +133,17 @@ public class ProfileServiceImpl implements ProfileService {
         return exists;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Profile> getProfileByUserId(Long userId) {
+        log.info("getProfileByUserId -> start");
+
+        var response = repository.getProfileByUserId(userId);
+
+        log.info("getProfileByUserId -> done");
+        return response;
+    }
+
     private void validateProfile(Profile profile) {
         log.info("validateProfile -> start");
 
