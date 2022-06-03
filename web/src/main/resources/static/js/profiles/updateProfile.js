@@ -1,11 +1,11 @@
 function goBack() {
-    window.location.href = "/profile/current";
+    const url = new URL(window.location.href);
+
+    url.pathname = "/profile/current";
+    window.location.href = url.href;
 }
 
-$('#phoneNumber').on('change', validatePhoneNumber);
-$('#email').on('change', validateEmail);
-
-function validateEmail() {
+function validateEmail(currentEmail) {
     const email = $('#email').val();
 
     $.ajax({
@@ -13,8 +13,8 @@ function validateEmail() {
         type: 'get',
         data: {email},
         contentType: "application/json",
-        success: function (data) {
-            if (data) {
+        success: function (exists) {
+            if (exists && currentEmail !== email) {
                 $('#incorrect-email-exists').slideDown();
                 return false;
             } else {
@@ -32,7 +32,7 @@ function validateEmail() {
     }
 }
 
-function validatePhoneNumber() {
+function validatePhoneNumber(currentNumber) {
     const phoneNumber = $('#phoneNumber').val();
 
 
@@ -43,21 +43,132 @@ function validatePhoneNumber() {
         $('#incorrect-phoneNumber').slideUp();
     }
 
-    // phoneNumber.replace('+', "%2B");
-
     $.ajax({
         url: "/profiles/phoneNumberExists",
         type: 'get',
         data: {phoneNumber},
         contentType: "application/json",
-        success: function (data) {
-            if (data) {
+        success: function (exists) {
+            if (exists && currentNumber !== phoneNumber) {
                 $('#incorrect-phoneNumber-exists').slideDown();
                 return false;
             } else {
                 $('#incorrect-phoneNumber-exists').slideUp();
-                return phoneNumber;
             }
         }
     });
+    return phoneNumber;
 }
+
+function validateFirstName() {
+    const firstName = $('#firstName').val();
+    const length = firstName.length;
+
+    if (length > 45 || length < 1) {
+        $('#incorrect-firstName').slideDown();
+        return false;
+    } else {
+        $('#incorrect-firstName').slideUp();
+        return firstName;
+    }
+}
+
+function validateLastName() {
+    const lastName = $('#lastName').val();
+    const length = lastName.length;
+
+    if (length > 45 || length < 1) {
+        $('#incorrect-lastName').slideDown();
+        return false;
+    } else {
+        $('#incorrect-lastName').slideUp();
+        return lastName;
+    }
+}
+
+function enablePasswordChange() {
+    const updatePasswordCheckbox = $('#updatePasswordCheckbox').is(':checked');
+
+    if (updatePasswordCheckbox) {
+        $('#password').attr('enabled', 'enabled');
+        $('#password').removeAttr('disabled');
+    } else {
+        $('#password').attr('disabled', 'disabled');
+        $('#password').removeAttr('enabled');
+
+    }
+
+    return updatePasswordCheckbox;
+}
+
+function validatePassword() {
+    const password = $('#password').val();
+    const length = password.length;
+    const updatePasswordCheckbox = enablePasswordChange();
+
+    if (updatePasswordCheckbox) {
+        if (length > 30 || length < 6) {
+            $('#incorrect-password').slideDown();
+            return false;
+        } else {
+            $('#incorrect-password').slideUp();
+            return password;
+        }
+    } else {
+        return "not include";
+    }
+}
+
+function updateProfile(profile) {
+    const url = new URL(window.location.href);
+
+    const firstName = validateFirstName(profile.firstName);
+    const lastName = validateLastName(profile.lastName);
+    let password = validatePassword();
+    const email = validateEmail(profile.email);
+    const phoneNumber = validatePhoneNumber(profile.phoneNumber);
+
+
+    if (firstName && lastName && email && phoneNumber && password) {
+        const restUrl = `/profiles/${profile.id}`;
+        if (password === "not include") {
+            password = null;
+        }
+
+        $.ajax({
+            url: restUrl,
+            type: 'put',
+            data: JSON.stringify({
+                firstName,
+                lastName,
+                password,
+                email,
+                phoneNumber
+            }),
+            contentType: "application/json",
+            success: function () {
+                goBack()
+            }
+        });
+    }
+
+    console.log(password)
+}
+
+const deleteProfile = function (profileId) {
+    const url = new URL(window.location.href);
+
+    const restUrl = '/profiles/' + profileId;
+
+    console.log(restUrl);
+    $.ajax({
+        url: restUrl,
+        type: 'DELETE',
+        success: function () {
+            url.pathname = "/logout";
+            window.location.href = url.href;
+        }
+    });
+}
+
+

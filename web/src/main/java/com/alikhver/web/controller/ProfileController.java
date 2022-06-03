@@ -82,12 +82,18 @@ public class ProfileController {
             String host = url.getHost();
             String path = url.getPath();
 
-            if (host.equals(hostName) && !path.equals("/profile/current") && !path.equals("/profile/update")) {
+            if (
+                    host.equals(hostName) &&
+                    !path.equals("/profile/current") &&
+                    !path.equals("/profile/update") &&
+                    !path.equals("/register")
+
+            ) {
                 session.setAttribute("referer", url.toString());
             } else if (path.equals("/profile/current")) {
                 url = new URL((String) session.getAttribute("referer"));
             } else if (!host.equals(hostName)) {
-                session.removeAttribute("referer");
+                session.setAttribute("referer", "/");
             }
 
             modelAndView.addObject("referer", url);
@@ -108,6 +114,7 @@ public class ProfileController {
         modelAndView.addObject("locale", locale);
 
         modelAndView.setViewName("personal-cabinet/personal_cabinet");
+        //TODO fix on back from /profile/update null referer
 
         return modelAndView;
     }
@@ -115,7 +122,8 @@ public class ProfileController {
     @GetMapping("/update")
     @ApiOperation("Update profile by USER")
     @PreAuthorize("hasAuthority('USER')")
-    public ModelAndView updateProfile(Authentication authentication, ModelAndView modelAndView) {
+    public ModelAndView updateProfile(Authentication authentication, ModelAndView modelAndView, HttpSession
+                                      session) {
 
         String login = ((User) authentication.getPrincipal()).getUsername();
 

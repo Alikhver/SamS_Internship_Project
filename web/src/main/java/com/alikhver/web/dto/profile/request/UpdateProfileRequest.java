@@ -19,4 +19,6 @@ public class UpdateProfileRequest {
     @Email
     @Size(max = 45)
     private String email;
+    @Size(min = 7, max = 30)
+    private String password;
 }

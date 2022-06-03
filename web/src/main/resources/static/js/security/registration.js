@@ -125,10 +125,11 @@ function validatePhoneNumber() {
                 return false;
             } else {
                 $('#incorrect-phoneNumber-exists').slideUp();
-                return phoneNumber;
+
             }
         }
     });
+    return phoneNumber;
 }
 
 $("#agreedOnTerms").on('change', function () {

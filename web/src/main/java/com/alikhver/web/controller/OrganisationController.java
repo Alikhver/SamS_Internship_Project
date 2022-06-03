@@ -75,6 +75,7 @@ public class OrganisationController {
 
     @GetMapping("/{orgId}/manage")
     @ApiOperation("Manage Organisation by Admin")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ModelAndView viewManageOrganisation(@PathVariable @Positive Long orgId,
                                                ModelAndView modelAndView) {
 
@@ -87,6 +88,7 @@ public class OrganisationController {
 
     @GetMapping
     @ApiOperation("View Organisations by Admin")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ModelAndView viewManageOrganisation(@RequestParam(defaultValue = "1") @PositiveOrZero int page,
                                                @RequestParam(defaultValue = "5") @Positive int size,
                                                ModelAndView modelAndView) {

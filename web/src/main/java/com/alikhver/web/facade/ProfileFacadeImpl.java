@@ -134,6 +134,9 @@ public class ProfileFacadeImpl implements ProfileFacade {
             );
         }
 
+        User user = profile.getUser();
+
+        Optional.ofNullable(request.getPassword()).ifPresent(password -> user.setPassword(passwordEncoder.encode(password)));
         Optional.ofNullable(request.getFirstName()).ifPresent(profile::setFirstName);
         Optional.ofNullable(request.getLastName()).ifPresent(profile::setLastName);
         Optional.ofNullable(request.getPhoneNumber()).ifPresent(profile::setPhoneNumber);
