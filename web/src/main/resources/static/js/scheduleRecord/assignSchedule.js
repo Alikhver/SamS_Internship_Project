@@ -5,6 +5,9 @@ const goBack = function () {
     const workerId = parseInt(url.pathname.split('/')[4]);
 
     url.pathname = url.pathname.replace('/' + workerId + '/schedule', '');
+    url.searchParams.delete("date");
+    url.searchParams.delete("worker")
+    url.searchParams.delete("utility ")
 
     window.location.href = url.href;
 }
@@ -89,9 +92,9 @@ const createRecords = function () {
         const restUrl = url;
 
         const data = {
-          date,
-          startTime,
-          endTime,
+            date,
+            startTime,
+            endTime,
             workerId
         };
 
@@ -249,6 +252,40 @@ const deleteRequest = function (data) {
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function () {
+        }
+    });
+}
+
+$('#datepicker1').on('change', function () {
+    const date = validateDateOnDelete();
+    if (date) {
+        const url = new URL(window.location.href);
+        url.searchParams.set("date", date.toString());
+        window.location.href = url.href;
+    }
+})
+
+const validateDateOnDelete = function () {
+    const inputVal = $('#date1').val();
+    const date = new Date(inputVal);
+
+    if (date < new Date()) {
+        $('#incorrect-date1').slideDown();
+        return false;
+    } else {
+        $('#incorrect-date1').slideUp();
+        return date;
+    }
+}
+
+const cancelRecord = function (recordId) {
+    const restUrl = `/records/${recordId}/cancel`;
+    $.ajax({
+        url: restUrl,
+        type: 'put',
+        contentType: "application/json",
+        success: function () {
+            $(`#record${recordId}`).remove();
         }
     });
 }

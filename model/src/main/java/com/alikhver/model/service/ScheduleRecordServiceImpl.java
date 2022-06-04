@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -98,5 +100,21 @@ public class ScheduleRecordServiceImpl implements ScheduleRecordService {
 
         log.info("findAllRecordsOfWorkersAfterDate -> done");
         return response;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ScheduleRecord> findAllRecordsOfWorkerByTimeAndStatus(Long workerId, LocalDate start, LocalDate end) {
+        log.info("findAllRecordsOfWorkerByTime -> start");
+
+        Date startDate = Date.from(start.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+
+        Date endDate = Date.from(end.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+
+        List<ScheduleRecord> records = repository.findRecordsOfDay(workerId, startDate, endDate);
+//        List<ScheduleRecord> records = repository.findAllByWorkerIdAndDateAfterAndDateBeforeAndStatusOrStatus(workerId, startDate, endDate, ScheduleRecordStatus.AVAILABLE, ScheduleRecordStatus.BOOKED);
+
+        log.info("findAllRecordsOfWorkerByTime -> done");
+        return records;
     }
 }

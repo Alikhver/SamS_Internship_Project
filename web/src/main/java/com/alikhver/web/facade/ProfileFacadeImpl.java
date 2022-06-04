@@ -82,7 +82,7 @@ public class ProfileFacadeImpl implements ProfileFacade {
     }
 
     @Override
-    public GetProfileResponse getProfileByUserLogin(Long id) throws NoProfileFoundException {
+    public GetProfileResponse getProfileById(Long id) throws NoProfileFoundException {
         log.info("getProfile -> start");
 
         validationHelper.validateForCorrectId(id, "ProfileId");
@@ -228,7 +228,7 @@ public class ProfileFacadeImpl implements ProfileFacade {
     }
 
     @Override
-    public Profile getProfileByUserLogin(String login) {
+    public Profile getProfileByLogin(String login) {
         log.info("getProfile -> start");
 
         User user = userService.findUserByLogin(login).orElseThrow(() -> {

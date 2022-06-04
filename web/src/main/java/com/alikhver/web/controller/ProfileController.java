@@ -63,7 +63,7 @@ public class ProfileController {
     public ModelAndView viewProfiles(@PathVariable @Positive Long profileId,
                                      ModelAndView modelAndView) {
 
-        var profile = profileFacade.getProfileByUserLogin(profileId);
+        var profile = profileFacade.getProfileById(profileId);
         var user = userFacade.getUser(profile.getUserId());
 
         modelAndView.addObject("profile", profile);
@@ -128,7 +128,7 @@ public class ProfileController {
         String login = ((User) authentication.getPrincipal()).getUsername();
 
         var user = userFacade.findByLogin(login);
-        Profile profile = profileFacade.getProfileByUserLogin(login);
+        Profile profile = profileFacade.getProfileByLogin(login);
 
 
         modelAndView.addObject("profile", profile);

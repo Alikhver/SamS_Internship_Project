@@ -3,6 +3,8 @@ package com.alikhver.model.repository;
 import com.alikhver.model.entity.ScheduleRecord;
 import com.alikhver.model.entity.ScheduleRecordStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -20,4 +22,12 @@ public interface ScheduleRecordRepository extends JpaRepository<ScheduleRecord, 
     List<ScheduleRecord> findAllByDate(Date date);
 
     List<ScheduleRecord> findAllByWorkerIdAndDateAfter(Long workerId, Date date);
+
+
+    @Query(value = "select r from ScheduleRecord r " +
+            "where (r.status=com.alikhver.model.entity.ScheduleRecordStatus.AVAILABLE or" +
+            " r.status=com.alikhver.model.entity.ScheduleRecordStatus.BOOKED) and " +
+            "r.date >= :after and r.date < :before " +
+            "and r.worker.id=:workerId")
+    List<ScheduleRecord> findRecordsOfDay(@Param("workerId") Long workerId, @Param("after") Date after, @Param("before") Date before);
 }

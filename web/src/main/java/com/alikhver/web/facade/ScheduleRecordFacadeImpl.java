@@ -15,6 +15,7 @@ import com.alikhver.web.converter.scheduleRecord.ScheduleRecordConverter;
 import com.alikhver.web.dto.record.request.CancelRecordsRequest;
 import com.alikhver.web.dto.record.request.CreateRecordRequest;
 import com.alikhver.web.dto.record.request.CreateRecordsRequest;
+import com.alikhver.web.dto.record.response.GetRecordProfileUtilityResponse;
 import com.alikhver.web.dto.record.response.GetRecordResponse;
 import com.alikhver.web.exception.profile.NoProfileFoundException;
 import com.alikhver.web.exception.scheduleRecord.NoScheduleRecordFoundException;
@@ -29,7 +30,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -302,5 +305,25 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
         scheduleRecordService.save(record);
 
         log.info("setRecordDone -> done");
+    }
+
+    @Override
+    public List<GetRecordResponse> getRecordsOfDay(Long workerId, LocalDate start) {
+        log.info("getRecordsOfDay -> start");
+
+        LocalDate end = start.plusDays(1);
+
+        List<ScheduleRecord> records = scheduleRecordService.findAllRecordsOfWorkerByTimeAndStatus(workerId, start, end);
+
+
+        var response = scheduleRecordConverter.mapToListOfGetRecordResponse(records);
+
+        log.info("getRecordsOfDay -> done");
+        return response;
+    }
+
+    @Override
+    public List<GetRecordProfileUtilityResponse> getFullRecordData(List<GetRecordResponse> records) {
+        return null;
     }
 }

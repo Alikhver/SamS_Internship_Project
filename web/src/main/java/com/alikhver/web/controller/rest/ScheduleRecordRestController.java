@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.Positive;
 
 @RestController
@@ -83,7 +84,7 @@ public class ScheduleRecordRestController {
 
     @PutMapping("/{recordId}/cancel")
     @ApiOperation("Cancel ScheduleRecord")
-    public ResponseEntity<Void> cancelRecord(@PathVariable @Positive Long recordId) {
+    public ResponseEntity<Void> cancelRecord(@PathVariable @Positive Long recordId, HttpSession session) {
 
         scheduleRecordFacade.cancelRecord(recordId);
 

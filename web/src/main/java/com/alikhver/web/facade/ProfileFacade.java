@@ -11,7 +11,7 @@ import org.springframework.data.domain.Page;
 public interface ProfileFacade {
     CreateProfileResponse createProfile(CreateProfileRequest request);
 
-    GetProfileResponse getProfileByUserLogin(Long id);
+    GetProfileResponse getProfileById(Long id);
 
     Page<GetProfileResponse> getProfiles(int page, int size);
 
@@ -25,5 +25,5 @@ public interface ProfileFacade {
 
     boolean phoneNumberExists(String phoneNumber);
 
-    Profile getProfileByUserLogin(String login);
+    Profile getProfileByLogin(String login);
 }
