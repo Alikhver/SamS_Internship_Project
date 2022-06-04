@@ -23,5 +23,5 @@ public interface ScheduleRecordService {
 
     List<ScheduleRecord> findAllRecordsOfWorkersAfterDate(Long id, Date date);
 
-    List<ScheduleRecord> findAllRecordsOfWorkerByTimeAndStatus(Long workerId, LocalDate start, LocalDate end);
+    List<ScheduleRecord> findAllRecordsOfWorkerByTime(Long workerId, LocalDate start, LocalDate end);
 }

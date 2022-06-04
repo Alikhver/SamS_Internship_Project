@@ -3,10 +3,10 @@ package com.alikhver.web.facade;
 import com.alikhver.web.dto.record.request.CancelRecordsRequest;
 import com.alikhver.web.dto.record.request.CreateRecordRequest;
 import com.alikhver.web.dto.record.request.CreateRecordsRequest;
-import com.alikhver.web.dto.record.response.GetRecordProfileUtilityResponse;
 import com.alikhver.web.dto.record.response.GetRecordResponse;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ScheduleRecordFacade {
@@ -30,5 +30,5 @@ public interface ScheduleRecordFacade {
 
     List<GetRecordResponse> getRecordsOfDay(Long workerId, LocalDate start);
 
-    List<GetRecordProfileUtilityResponse> getFullRecordData(List<GetRecordResponse> records);
+    List<GetRecordResponse> getAvailableRecordsOfDay(Long workerId, LocalDateTime atStartOfDay);
 }

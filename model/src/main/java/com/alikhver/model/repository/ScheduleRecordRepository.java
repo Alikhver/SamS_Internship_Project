@@ -25,9 +25,8 @@ public interface ScheduleRecordRepository extends JpaRepository<ScheduleRecord, 
 
 
     @Query(value = "select r from ScheduleRecord r " +
-            "where (r.status=com.alikhver.model.entity.ScheduleRecordStatus.AVAILABLE or" +
-            " r.status=com.alikhver.model.entity.ScheduleRecordStatus.BOOKED) and " +
+            "where " +
             "r.date >= :after and r.date < :before " +
             "and r.worker.id=:workerId")
-    List<ScheduleRecord> findRecordsOfDay(@Param("workerId") Long workerId, @Param("after") Date after, @Param("before") Date before);
+    List<ScheduleRecord> findRecordsOfTime(@Param("workerId") Long workerId, @Param("after") Date after, @Param("before") Date before);
 }

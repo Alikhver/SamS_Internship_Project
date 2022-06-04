@@ -27,7 +27,9 @@ $('#trash-worker').on('click', function () {
 $('.select-time').on('click', function () {
 
     if (!$('.select-time').hasClass('inactive')) {
-        window.location.href = "#";
+        const url = new URL(window.location.href);
+        url.pathname = url.pathname + '/records';
+        window.location.href = url.href;
     }
 })
 

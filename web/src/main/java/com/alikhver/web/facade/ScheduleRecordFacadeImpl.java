@@ -15,7 +15,6 @@ import com.alikhver.web.converter.scheduleRecord.ScheduleRecordConverter;
 import com.alikhver.web.dto.record.request.CancelRecordsRequest;
 import com.alikhver.web.dto.record.request.CreateRecordRequest;
 import com.alikhver.web.dto.record.request.CreateRecordsRequest;
-import com.alikhver.web.dto.record.response.GetRecordProfileUtilityResponse;
 import com.alikhver.web.dto.record.response.GetRecordResponse;
 import com.alikhver.web.exception.profile.NoProfileFoundException;
 import com.alikhver.web.exception.scheduleRecord.NoScheduleRecordFoundException;
@@ -31,8 +30,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -313,7 +315,9 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
 
         LocalDate end = start.plusDays(1);
 
-        List<ScheduleRecord> records = scheduleRecordService.findAllRecordsOfWorkerByTimeAndStatus(workerId, start, end);
+        List<ScheduleRecord> records = scheduleRecordService.findAllRecordsOfWorkerByTime(workerId, start, end).stream()
+                .filter(record -> record.getStatus().equals(ScheduleRecordStatus.AVAILABLE) || record.getStatus().equals(ScheduleRecordStatus.BOOKED))
+                .collect(Collectors.toList());;
 
 
         var response = scheduleRecordConverter.mapToListOfGetRecordResponse(records);
@@ -323,7 +327,20 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
     }
 
     @Override
-    public List<GetRecordProfileUtilityResponse> getFullRecordData(List<GetRecordResponse> records) {
-        return null;
+    public List<GetRecordResponse> getAvailableRecordsOfDay(Long workerId, LocalDateTime start) {
+        log.info("getAvailableRecordsOfDay -> start");
+
+        LocalDate startDate = start.toLocalDate();
+        LocalDate endDate = startDate.plusDays(1);
+
+        List<ScheduleRecord> records = scheduleRecordService.findAllRecordsOfWorkerByTime(workerId, startDate, endDate).stream()
+                .filter(record -> record.getStatus().equals(ScheduleRecordStatus.AVAILABLE))
+                .sorted(Comparator.comparing(ScheduleRecord::getDate))
+                .collect(Collectors.toList());
+
+        List<GetRecordResponse> response = scheduleRecordConverter.mapToListOfGetRecordResponse(records);
+
+        log.info("getAvailableRecordsOfDay -> done");
+        return response;
     }
 }

@@ -4,6 +4,7 @@ import com.alikhver.web.dto.profile.response.GetProfileResponse;
 import com.alikhver.web.dto.record.response.GetRecordProfileUtilityResponse;
 import com.alikhver.web.dto.record.response.GetRecordResponse;
 import com.alikhver.web.dto.utility.response.GetUtilityResponse;
+import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import com.alikhver.web.facade.OrganisationFacade;
 import com.alikhver.web.facade.ProfileFacade;
 import com.alikhver.web.facade.ScheduleRecordFacade;
@@ -107,6 +108,41 @@ public class ScheduleRecordController {
         modelAndView.addObject("recordData", recordData);
 
         modelAndView.setViewName("select-time/assignSchedule");
+
+        return modelAndView;
+    }
+
+    @GetMapping("/records")
+    @ApiOperation("Select records of worker")
+    public ModelAndView selectRecordsOfWorker(@PathVariable @Positive Long orgId,
+                                              @RequestParam("worker") @Positive Long workerId,
+                                              @RequestParam(required = false) Date date,
+                                              ModelAndView modelAndView) {
+        GetWorkerResponse worker = workerFacade.getWorkerById(workerId);
+        //todo check if worker belongs to organisation
+
+
+        List<GetRecordResponse> records = new ArrayList<>();
+
+        if (!Objects.isNull(date)) {
+            LocalDate start = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+
+            records = recordFacade.getAvailableRecordsOfDay(workerId, start.atStartOfDay());
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
+            String dateResult = dateFormat.format(date);
+
+            dateFormat = new SimpleDateFormat("HH:mm");
+
+            modelAndView.addObject("dateFormat", dateFormat);
+            modelAndView.addObject("date", dateResult);
+        }
+
+        modelAndView.addObject("worker", worker);
+        modelAndView.addObject("records", records);
+
+        modelAndView.setViewName("select-time/select-time");
 
         return modelAndView;
     }

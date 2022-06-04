@@ -44,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/users/loginExists")
                                 .permitAll()
                 .antMatchers("/login", "/auth/login", "/organisation/*", "/authenticate",
-                        "/organisation/*/workers", "/organisation/*/utilities")
+                        "/organisation/*/workers", "/organisation/*/utilities", "/organisation/*/records")
                                 .permitAll()
                 .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**")
                                 .permitAll()

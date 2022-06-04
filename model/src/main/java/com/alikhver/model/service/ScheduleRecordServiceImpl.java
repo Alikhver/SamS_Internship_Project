@@ -81,6 +81,7 @@ public class ScheduleRecordServiceImpl implements ScheduleRecordService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ScheduleRecord> getUtilitiesByTime(Date current) {
         log.info("getUtilitiesByTime -> start");
 
@@ -91,6 +92,7 @@ public class ScheduleRecordServiceImpl implements ScheduleRecordService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ScheduleRecord> findAllRecordsOfWorkersAfterDate(Long recordId, Date date) {
         log.info("findAllRecordsOfWorkersAfterDate -> start");
 
@@ -104,15 +106,14 @@ public class ScheduleRecordServiceImpl implements ScheduleRecordService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ScheduleRecord> findAllRecordsOfWorkerByTimeAndStatus(Long workerId, LocalDate start, LocalDate end) {
+    public List<ScheduleRecord> findAllRecordsOfWorkerByTime(Long workerId, LocalDate start, LocalDate end) {
         log.info("findAllRecordsOfWorkerByTime -> start");
 
         Date startDate = Date.from(start.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 
         Date endDate = Date.from(end.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 
-        List<ScheduleRecord> records = repository.findRecordsOfDay(workerId, startDate, endDate);
-//        List<ScheduleRecord> records = repository.findAllByWorkerIdAndDateAfterAndDateBeforeAndStatusOrStatus(workerId, startDate, endDate, ScheduleRecordStatus.AVAILABLE, ScheduleRecordStatus.BOOKED);
+        List<ScheduleRecord> records = repository.findRecordsOfTime(workerId, startDate, endDate);
 
         log.info("findAllRecordsOfWorkerByTime -> done");
         return records;

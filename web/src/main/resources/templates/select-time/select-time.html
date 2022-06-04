@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -10,35 +10,83 @@
           rel="stylesheet"
           integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
           crossorigin="anonymous"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
     <link th:href="@{/css/utilities.css}" rel="stylesheet"/>
+    <link th:href="@{/css/select-time.css}" rel="stylesheet"/>
     <link th:href="@{/css/main.css}" rel="stylesheet"/>
 
 </head>
 <body class="container" style="background-color: rgb(247, 247, 247)">
 <div
-        class="d-flex container col-6 justify-content-center d-flex navbar sticky-top fixed-top"
+        class="d-flex container col-10 justify-content-center d-flex navbar sticky-top fixed-top"
         style="background-color: rgb(255, 255, 255)"
 >
     <div class="col-1 h-100">
         <img th:src="@{/img/arrow-left-circle.svg}" class="img-fluid go-back-button"
              width="24"
-             onclick="history.back()">
+             onclick="goBack()">
     </div>
     <div class="d-flex flex-column col-11">
         <p class="org_name text-center p-2">Услуги</p>
     </div>
 </div>
 
-<th:block th:each="utility:${utilities}">
-    <div class="utility d-flex container-fluid col-6 my-3">
-        <a th:href="@{/utility/{id}/workers(id=${utility.id})}">
-            <div class="d-flex flex-column">
-                <p th:text="${utility.description}"></p>
-                <p th:text="${utility.price}"></p>
+<div id="deleteRecords" class="option d-flex container-fluid col-10 px-0 my-3 justify-content-center">
+    <div class="d-flex my-3 container-fluid col-4 mx-1">
+        <section class="container-fluid">
+            <form class="row">
+                <div class="col-2">
+                    <label for="datepicker1" class="col-form-label" th:text="#{date}"></label>
+                </div>
+                <div class="col-10">
+                    <div class="input-group date" id="datepicker1">
+                        <input type="text" class="form-control" id="date1" th:value="${date}"/>
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                        </span>
+                    </div>
+                    <p id="incorrect-date1" class="incorrect" th:text="#{date.incorrect}"></p>
+                </div>
+            </form>
+
+            <script type="text/javascript">
+                $(function () {
+                    $('#datepicker1').datepicker({format: 'd MM yyyy'});
+                });
+            </script>
+        </section>
+    </div>
+</div>
+
+<th:block th:unless="${records.isEmpty()}">
+    <th:block th:each="record:${records}">
+        <div th:id="|record${record.id}|" class="option container col-3 mb-3" th:onclick="chooseTime([[${record.id}]])">
+            <div class="row">
+                <div class="text-center">
+                    <p th:text="${dateFormat.format(record.date)}"></p>
+                </div>
             </div>
-        </a>
+        </div>
+    </th:block>
+</th:block>
+<th:block th:if="${records.isEmpty()}">
+    <div class="option d-flex container-fluid col-3 px-0 my-3 justify-content-center">
+        <p th:text="#{record.noRecords}"></p>
     </div>
 </th:block>
+
+
+<script type="text/javascript" th:src="@{/js/scheduleRecord/select-time.js}"></script>
 
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
