@@ -9,6 +9,7 @@ import com.alikhver.web.exception.profile.NoProfileFoundException;
 import com.alikhver.web.exception.profile.ProfileAlreadyExistsException;
 import com.alikhver.web.exception.profile.UserIsAlreadyBoundedProfileException;
 import com.alikhver.web.exception.scheduleRecord.NoScheduleRecordFoundException;
+import com.alikhver.web.exception.scheduleRecord.RecordCannotBeBookedException;
 import com.alikhver.web.exception.scheduleRecord.ScheduleRecordWithSuchWorkerAndTimeAlreadyExists;
 import com.alikhver.web.exception.scheduleRecord.UtilityIsAlreadyAvailableException;
 import com.alikhver.web.exception.user.NoUserFoundException;
@@ -198,6 +199,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(WorkerDoesNotBelongToOrganisationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<ErrorResponse> handle(WorkerDoesNotBelongToOrganisationException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(RecordCannotBeBookedException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handle(RecordCannotBeBookedException e, HttpServletRequest request) {
         ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }

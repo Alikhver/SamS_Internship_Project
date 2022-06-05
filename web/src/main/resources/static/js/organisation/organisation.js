@@ -79,6 +79,8 @@ function createRecord() {
             const url = new URL(window.location.href);
             url.pathname = url.pathname + '/completed';
             window.location.href = url.href;
+        }, error: function (request, status, error) {
+            alertUser(request, status, error);
         }
     });
 }

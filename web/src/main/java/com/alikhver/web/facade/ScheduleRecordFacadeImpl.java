@@ -18,6 +18,7 @@ import com.alikhver.web.dto.record.request.CreateRecordsRequest;
 import com.alikhver.web.dto.record.response.GetRecordResponse;
 import com.alikhver.web.exception.profile.NoProfileFoundException;
 import com.alikhver.web.exception.scheduleRecord.NoScheduleRecordFoundException;
+import com.alikhver.web.exception.scheduleRecord.RecordCannotBeBookedException;
 import com.alikhver.web.exception.scheduleRecord.ScheduleRecordWithSuchWorkerAndTimeAlreadyExists;
 import com.alikhver.web.exception.scheduleRecord.UtilityIsAlreadyAvailableException;
 import com.alikhver.web.exception.user.UsersRoleIsNotUserException;
@@ -130,6 +131,13 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
                     "No ScheduleRecord with id = " + recordId + "found"
             );
         });
+
+        if (!record.getStatus().equals(ScheduleRecordStatus.AVAILABLE)) {
+            log.warn("RecordCannotBeBookedException is thrown");
+            throw new RecordCannotBeBookedException(
+                    "Record with id = " + record.getId() + " is not available already"
+            );
+        }
 
         Worker worker = record.getWorker();
 
