@@ -21,6 +21,7 @@ import com.alikhver.web.exception.worker.AttemptToAssignUtilityOfOtherOrganisati
 import com.alikhver.web.exception.worker.AttemptToDeleteUtilityFromWorkerOfOtherOrganisationException;
 import com.alikhver.web.exception.worker.NoWorkerFoundException;
 import com.alikhver.web.exception.worker.WorkerAlreadyHasProvidedUtilityException;
+import com.alikhver.web.exception.worker.WorkerDoesNotBelongToOrganisationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -190,6 +191,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ProfileAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<ErrorResponse> handle(ProfileAlreadyExistsException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(WorkerDoesNotBelongToOrganisationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handle(WorkerDoesNotBelongToOrganisationException e, HttpServletRequest request) {
         ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }

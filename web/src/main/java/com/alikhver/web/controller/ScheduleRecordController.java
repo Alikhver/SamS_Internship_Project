@@ -5,6 +5,7 @@ import com.alikhver.web.dto.record.response.GetRecordProfileUtilityResponse;
 import com.alikhver.web.dto.record.response.GetRecordResponse;
 import com.alikhver.web.dto.utility.response.GetUtilityResponse;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
+import com.alikhver.web.exception.worker.WorkerDoesNotBelongToOrganisationException;
 import com.alikhver.web.facade.OrganisationFacade;
 import com.alikhver.web.facade.ProfileFacade;
 import com.alikhver.web.facade.ScheduleRecordFacade;
@@ -12,6 +13,7 @@ import com.alikhver.web.facade.UtilityFacade;
 import com.alikhver.web.facade.WorkerFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -37,6 +39,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/organisation/{orgId}")
 @RequiredArgsConstructor
 @Validated
+@Slf4j
 public class ScheduleRecordController {
     private final OrganisationFacade organisationFacade;
     private final WorkerFacade workerFacade;
@@ -119,7 +122,12 @@ public class ScheduleRecordController {
                                               @RequestParam(required = false) Date date,
                                               ModelAndView modelAndView) {
         GetWorkerResponse worker = workerFacade.getWorkerById(workerId);
-        //todo check if worker belongs to organisation
+
+        if (worker.getOrganisationId() != orgId) {
+            log.warn("WorkerDoesNotBelongToOrganisationException is thrown");
+            throw new WorkerDoesNotBelongToOrganisationException(
+                    "Worker with id = " + workerId + " does not belong to Organisation with id = " + orgId);
+        }
 
 
         List<GetRecordResponse> records = new ArrayList<>();
