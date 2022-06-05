@@ -1,6 +1,7 @@
 package com.alikhver.web.controller;
 
 import com.alikhver.model.entity.Profile;
+import com.alikhver.web.dto.record.response.GetRecordUtilityWorkerResponse;
 import com.alikhver.web.facade.ProfileFacade;
 import com.alikhver.web.facade.UserFacade;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +26,9 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/profile")
@@ -84,9 +87,10 @@ public class ProfileController {
 
             if (
                     host.equals(hostName) &&
-                    !path.equals("/profile/current") &&
-                    !path.equals("/profile/update") &&
-                    !path.equals("/register")
+                            !path.equals("/profile/current") &&
+                            !path.equals("/profile/update") &&
+                            !path.equals("/register") &&
+                            !path.equals("/profile/records")
 
             ) {
                 session.setAttribute("referer", url.toString());
@@ -122,8 +126,7 @@ public class ProfileController {
     @GetMapping("/update")
     @ApiOperation("Update profile by USER")
     @PreAuthorize("hasAuthority('USER')")
-    public ModelAndView updateProfile(Authentication authentication, ModelAndView modelAndView, HttpSession
-                                      session) {
+    public ModelAndView updateProfile(Authentication authentication, ModelAndView modelAndView) {
 
         String login = ((User) authentication.getPrincipal()).getUsername();
 
@@ -134,6 +137,27 @@ public class ProfileController {
         modelAndView.addObject("profile", profile);
         modelAndView.addObject("user", user);
         modelAndView.setViewName("profile/updateProfile");
+
+        return modelAndView;
+    }
+
+    @GetMapping("/records")
+    @PreAuthorize("hasAuthority('USER')")
+    @ApiOperation("View Records of profile")
+    public ModelAndView viewRecordsOfProfile(ModelAndView modelAndView) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+
+        List<GetRecordUtilityWorkerResponse> recordData = profileFacade.getRecordDataOfProfile(user.getUsername());
+
+
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm", LocaleContextHolder.getLocale());
+
+        modelAndView.addObject("dateFormat", dateFormat);
+        modelAndView.addObject("recordData", recordData);
+        modelAndView.setViewName("profile/recordsOfProfile");
 
         return modelAndView;
     }

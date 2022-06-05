@@ -6,7 +6,10 @@ import com.alikhver.web.dto.profile.request.CreateUserAndProfileRequest;
 import com.alikhver.web.dto.profile.request.UpdateProfileRequest;
 import com.alikhver.web.dto.profile.response.CreateProfileResponse;
 import com.alikhver.web.dto.profile.response.GetProfileResponse;
+import com.alikhver.web.dto.record.response.GetRecordUtilityWorkerResponse;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface ProfileFacade {
     CreateProfileResponse createProfile(CreateProfileRequest request);
@@ -26,4 +29,6 @@ public interface ProfileFacade {
     boolean phoneNumberExists(String phoneNumber);
 
     Profile getProfileByLogin(String login);
+
+    List<GetRecordUtilityWorkerResponse> getRecordDataOfProfile(String username);
 }

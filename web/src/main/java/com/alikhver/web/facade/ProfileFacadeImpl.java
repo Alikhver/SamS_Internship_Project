@@ -1,18 +1,25 @@
 package com.alikhver.web.facade;
 
 import com.alikhver.model.entity.Profile;
+import com.alikhver.model.entity.ScheduleRecord;
 import com.alikhver.model.entity.User;
 import com.alikhver.model.entity.UserRole;
+import com.alikhver.model.entity.Utility;
+import com.alikhver.model.entity.Worker;
 import com.alikhver.model.service.ProfileService;
 import com.alikhver.model.service.UserService;
 import com.alikhver.model.util.ValidationHelper;
 import com.alikhver.web.converter.profile.ProfileConverter;
+import com.alikhver.web.converter.scheduleRecord.ScheduleRecordConverter;
 import com.alikhver.web.converter.user.UserConverter;
+import com.alikhver.web.converter.utility.UtilityConverter;
+import com.alikhver.web.converter.worker.WorkerConverter;
 import com.alikhver.web.dto.profile.request.CreateProfileRequest;
 import com.alikhver.web.dto.profile.request.CreateUserAndProfileRequest;
 import com.alikhver.web.dto.profile.request.UpdateProfileRequest;
 import com.alikhver.web.dto.profile.response.CreateProfileResponse;
 import com.alikhver.web.dto.profile.response.GetProfileResponse;
+import com.alikhver.web.dto.record.response.GetRecordUtilityWorkerResponse;
 import com.alikhver.web.exception.profile.AttemptToAssignProfileToUserWithWrongRole;
 import com.alikhver.web.exception.profile.NoProfileFoundException;
 import com.alikhver.web.exception.profile.ProfileAlreadyExistsException;
@@ -28,7 +35,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -40,6 +50,9 @@ public class ProfileFacadeImpl implements ProfileFacade {
     private final UserConverter userConverter;
     private final ValidationHelper validationHelper;
     private final PasswordEncoder passwordEncoder;
+    private final UtilityConverter utilityConverter;
+    private final WorkerConverter workerConverter;
+    private final ScheduleRecordConverter recordConverter;
 
     @Override
     @Transactional
@@ -228,6 +241,7 @@ public class ProfileFacadeImpl implements ProfileFacade {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Profile getProfileByLogin(String login) {
         log.info("getProfile -> start");
 
@@ -247,5 +261,31 @@ public class ProfileFacadeImpl implements ProfileFacade {
 
         log.info("getProfile -> done");
         return profile;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<GetRecordUtilityWorkerResponse> getRecordDataOfProfile(String login) {
+        log.info("getRecordDataOfProfile -> start");
+
+        Profile profile = getProfileByLogin(login);
+
+        List<ScheduleRecord> records = profile.getRecords();
+
+        List<GetRecordUtilityWorkerResponse> response = records.stream().map(record -> {
+                    Utility utility = record.getUtility();
+                    Worker worker = record.getWorker();
+
+                    return GetRecordUtilityWorkerResponse.builder()
+                            .utility(utilityConverter.mapToGetUtilityResponse(utility))
+                            .record(recordConverter.mapToGetRecordResponse(record))
+                            .worker(workerConverter.mapToGetWorkerResponse(worker))
+                            .build();
+                }).sorted(Comparator.comparing(o -> o.getRecord().getDate()))
+                .collect(Collectors.toList());
+
+
+        log.info("getRecordDataOfProfile -> done");
+        return response;
     }
 }
