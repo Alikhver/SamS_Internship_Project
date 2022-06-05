@@ -11,8 +11,8 @@
             <p class="org_description p-2" th:text="${org.description}"></p>
             <p class="org_address text-center p-2" th:text="${org.address}"></p>
         </div>
-            <img th:src="@{/img/person.svg}" class="d-block mx-auto profile-link"
-                 width="35">
+        <img th:src="@{/img/person.svg}" class="d-block mx-auto profile-link"
+             width="35">
     </div>
 
     <div id="suspended" class="container-fluid mt-3 p-2 h-auto align-middle col-6 d-flex" th:unless="${org.isActive}">
@@ -68,9 +68,13 @@
     </th:block>
 
     <th:block th:if="${utility}">
-        <div class="option d-flex container-fluid col-6 my-3">
-            <div class="select-utility container-fluid">
-                <div class="d-flex flex-column col-11">
+        <div class="option d-flex container-fluid col-6 px-0 my-3">
+            <div class="select-utility d-flex my-3 col-11">
+                <div class="col-1 my-auto mx-auto center-box">
+                    <img th:src="@{/img/receipt-cutoff.svg}" class="d-block mx-auto"
+                         width="40">
+                </div>
+                <div class="worker_info col-10">
                     <p th:text="${utility.description}"></p>
                     <p th:text="${utility.price}"></p>
                 </div>
@@ -93,11 +97,35 @@
         </div>
     </th:block>
 
-    <div class="select-time option d-flex container col-6 my-3">
+    <div th:if="${record}" class="option d-flex container-fluid col-6 px-0 my-3">
+        <div class="select-time d-flex my-3 col-11">
+            <div class="col-1 my-auto mx-auto center-box">
+                <img th:src="@{/img/clock.svg}" class="d-block mx-auto"
+                     width="40">
+            </div>
+            <div class="worker_info col-10">
+                <p class="master_name mt-1" th:text="${date}"></p>
+                <p class="" th:text="${time}"></p>
+            </div>
+        </div>
+        <div id="trash-record" class="col-1 d-flex">
+            <img th:src="@{/img/icons8-trash.svg}" class="img-fluid"
+                 width="30"
+                 style="opacity: 0.5">
+        </div>
+    </div>
+
+    <div th:unless="${record}" class="select-time option d-flex container col-6 my-3">
         <div class="d-flex">
             <img th:src="@{/img/clock.svg}" class="img-fluid"
                  width="30">
             <p class="p-1 my-3 text-center" th:text="#{date_time.select}"></p>
+        </div>
+    </div>
+
+    <div class="align-items-center" onclick="createRecord()" th:if="${utility} != null and ${record} != null and ${worker} != null">
+        <div class="create-record option d-flex container-fluid col-3 px-0 my-3 justify-content-center ">
+            <p th:text="#{record.create}"></p>
         </div>
     </div>
 </th:block>

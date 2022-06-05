@@ -21,7 +21,13 @@ $('#trash-worker').on('click', function () {
     url.searchParams.delete('worker');
     window.location.href = url.href;
 
-    localStorage.removeItem("workerId");
+})
+
+$('#trash-record').on('click', function () {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('record');
+    window.location.href = url.href;
+
 })
 
 $('.select-time').on('click', function () {
@@ -49,6 +55,43 @@ const appendInactiveToSelectTime = function () {
         $('.select-time').addClass('inactive').removeClass('option');
     }
 }
+
+function createRecord() {
+    const url = new URL(window.location.href);
+
+    const recordId = url.searchParams.get("record");
+    const workerId = url.searchParams.get("worker");
+    const utilityId = url.searchParams.get("utility");
+
+    const profileId = getCookie("profileId");
+    url.searchParams.set("profile", profileId);
+    //TODO validate if data is actual
+
+    url.pathname = `/records/${recordId}/book`;
+    url.searchParams.delete("record");
+
+    console.log(url.href)
+
+    $.ajax({
+        url: url.href,
+        type: 'put',
+        success: function () {
+            const url = new URL(window.location.href);
+            url.pathname = url.pathname + '/completed';
+            window.location.href = url.href;
+        }
+    });
+}
+
+function getCookie(cookieName) {
+    let cookie = {};
+    document.cookie.split(';').forEach(function(el) {
+        let [key,value] = el.split('=');
+        cookie[key.trim()] = value;
+    })
+    return cookie[cookieName];
+}
+
 
 
 //REDACTOR
@@ -147,7 +190,6 @@ $('.select-suspend-organisation-admin').on('click', function () {
 $('#back').on('click', function () {
     const url = new URL(window.location.href);
 
-    const orgId = parseInt(url.pathname.split('/')[2]);
     url.pathname = '/organisation';
 
     window.location.href = url.href;

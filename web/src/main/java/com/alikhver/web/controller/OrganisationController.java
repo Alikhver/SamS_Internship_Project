@@ -1,10 +1,12 @@
 package com.alikhver.web.controller;
 
 import com.alikhver.web.facade.OrganisationFacade;
+import com.alikhver.web.facade.ScheduleRecordFacade;
 import com.alikhver.web.facade.UtilityFacade;
 import com.alikhver.web.facade.WorkerFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
+import java.text.SimpleDateFormat;
 
 @Controller
 @RequestMapping("/organisation")
@@ -26,6 +29,7 @@ public class OrganisationController {
     private final OrganisationFacade organisationFacade;
     private final WorkerFacade workerFacade;
     private final UtilityFacade utilityFacade;
+    private final ScheduleRecordFacade recordFacade;
 
     @GetMapping("/{orgId}")
     @PreAuthorize("permitAll()")
@@ -49,10 +53,17 @@ public class OrganisationController {
             modelAndView.addObject("utility", utility);
         }
 
-//        if (recordId != null) {
-//            var record = recordService.getRecord(recordId);
-//            modelAndView.addObject("record", record);
-//        }
+        if (recordId != null) {
+            var record = recordFacade.getRecord(recordId);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", LocaleContextHolder.getLocale());
+            String dateResult = dateFormat.format(record.getDate());
+            dateFormat = new SimpleDateFormat("HH:mm");
+
+            modelAndView.addObject("record", record);
+            modelAndView.addObject("time", dateFormat.format(record.getDate()));
+            modelAndView.addObject("date", dateResult);
+        }
 
         modelAndView.setViewName("organisation/organisation");
 

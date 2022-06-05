@@ -14,6 +14,7 @@ import com.alikhver.web.facade.WorkerFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -138,7 +139,7 @@ public class ScheduleRecordController {
 
             records = recordFacade.getAvailableRecordsOfDay(workerId, start.atStartOfDay());
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", LocaleContextHolder.getLocale());
             String dateResult = dateFormat.format(date);
 
             dateFormat = new SimpleDateFormat("HH:mm");

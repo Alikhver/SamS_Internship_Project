@@ -1,6 +1,8 @@
 package com.alikhver.web.security.handler;
 
+import com.alikhver.model.entity.Profile;
 import com.alikhver.web.facade.OrganisationFacade;
+import com.alikhver.web.facade.ProfileFacade;
 import com.alikhver.web.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +25,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
     private OrganisationFacade organisationFacade;
+    @Autowired
+    private ProfileFacade profileFacade;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -31,6 +35,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         String login = user.getUsername();
         String authority = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()).get(0);
 
+
         String token = jwtTokenProvider.createToken(login, authority);
 
         Cookie authCookie = new Cookie("Authorization", token);
@@ -38,6 +43,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         response.addCookie(authCookie);
 
         HttpSession session = request.getSession();
+
+        if (authority.equals("USER")) {
+            Profile profile = profileFacade.getProfileByLogin(login);
+            response.addCookie(new Cookie("profileId", profile.getId().toString()));
+        }
 
         String referer = (String) session.getAttribute("referer");
         String redirectTo = "/";
