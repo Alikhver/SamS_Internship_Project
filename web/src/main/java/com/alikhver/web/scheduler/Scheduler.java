@@ -11,6 +11,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -28,11 +30,7 @@ public class Scheduler {
 
         long hour = 60 * 60 * 1000;
 
-//        LocalDateTime current = LocalDateTime.now();
-        Date current = new Date();
-
-        current.setMinutes(0);
-        current.setSeconds(0);
+        Date current = Date.from(LocalDateTime.now().withMinute(0).withSecond(0).atZone(ZoneId.systemDefault()).toInstant());
 
         List<ScheduleRecord> records;
 
