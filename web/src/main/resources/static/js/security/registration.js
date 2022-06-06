@@ -88,6 +88,8 @@ function validateEmail() {
             } else {
                 $('#incorrect-email-exists').slideUp();
             }
+        }, error: function (request, status, error) {
+            alertUser(request, status, error);
         }
     });
 
@@ -127,6 +129,8 @@ function validatePhoneNumber() {
                 $('#incorrect-phoneNumber-exists').slideUp();
 
             }
+        }, error: function (request, status, error) {
+            alertUser(request, status, error);
         }
     });
     return phoneNumber;
@@ -167,6 +171,8 @@ $('#register').on('click', function () {
             success: function () {
                 url.pathname = "/login";
                 window.location.href = url.href;
+            }, error: function (request, status, error) {
+                alertUser(request, status, error);
             }
         });
     }

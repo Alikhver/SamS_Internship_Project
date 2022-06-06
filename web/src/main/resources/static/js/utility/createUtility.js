@@ -29,6 +29,8 @@ $('#create').on('click', function () {
             contentType: "application/json",
             success: function () {
                 goBackCreate();
+            }, error: function (request, status, error) {
+                alertUser(request, status, error);
             }
         });
     }

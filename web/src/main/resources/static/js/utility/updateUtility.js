@@ -23,6 +23,8 @@ $('#update').on('click', function () {
             contentType: "application/json",
             success: function () {
                 goBack();
+            }, error: function (request, status, error) {
+                alertUser(request, status, error);
             }
         });
     }
@@ -39,6 +41,8 @@ $('#delete').on('click', function () {
         type: 'DELETE',
         success: function () {
             goBack()
+        }, error: function (request, status, error) {
+            alertUser(request, status, error);
         }
     });
 });

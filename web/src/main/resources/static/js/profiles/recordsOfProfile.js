@@ -11,7 +11,8 @@ const cancelRecord = function (recordId) {
         success: function () {
             $(`#status${recordId}`).text("CANCELED");
             $(`#btn${recordId}`).remove();
-
+        }, error: function (request, status, error) {
+            alertUser(request, status, error);
         }
     });
 }

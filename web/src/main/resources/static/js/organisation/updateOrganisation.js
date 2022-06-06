@@ -24,6 +24,8 @@ $('#update').on('click', function () {
             contentType: "application/json",
             success: function () {
                 goBack();
+            }, error: function (request, status, error) {
+                alertUser(request, status, error);
             }
         });
     }
@@ -40,8 +42,9 @@ $('#delete').on('click', function () {
         url: restUrl,
         type: 'DELETE',
         success: function () {
-            window.location.href = '/#';
-        //    TODO insert correct link
+            window.location.href = '/';
+        }, error: function (request, status, error) {
+            alertUser(request, status, error);
         }
     });
 });
@@ -110,7 +113,7 @@ $('#suspend').on('click', function () {
         url: restUrl,
         type: 'PATCH',
         success: function () {
-            //    TODO insert correct link
+
         }
     });
 
@@ -131,7 +134,9 @@ $('#launch').on('click', function () {
         url: restUrl,
         type: 'PATCH',
         success: function () {
-            //    TODO insert correct link
+
+        }, error: function (request, status, error) {
+            alertUser(request, status, error);
         }
     });
 

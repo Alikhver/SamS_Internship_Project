@@ -23,6 +23,8 @@ const updateWorker = function (workerId) {
             success: function () {
                 url.pathname = url.pathname.replace('/' + workerId + '/update', '');
                 window.location.href = url.href;
+            }, error: function (request, status, error) {
+                alertUser(request, status, error);
             }
         });
     }

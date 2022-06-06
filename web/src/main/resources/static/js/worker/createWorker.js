@@ -29,6 +29,8 @@ $('.btn').on('click', function () {
         success: function () {
             url.pathname = url.pathname.replace('/create', '');
             window.location.href = url.href;
+        }, error: function (request, status, error) {
+            alertUser(request, status, error);
         }
     });
 });

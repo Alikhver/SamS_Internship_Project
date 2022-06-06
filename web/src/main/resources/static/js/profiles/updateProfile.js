@@ -20,6 +20,8 @@ function validateEmail(currentEmail) {
             } else {
                 $('#incorrect-email-exists').slideUp();
             }
+        }, error: function (request, status, error) {
+            alertUser(request, status, error);
         }
     });
 
@@ -55,6 +57,8 @@ function validatePhoneNumber(currentNumber) {
             } else {
                 $('#incorrect-phoneNumber-exists').slideUp();
             }
+        }, error: function (request, status, error) {
+            alertUser(request, status, error);
         }
     });
     return phoneNumber;
@@ -148,6 +152,8 @@ function updateProfile(profile) {
             contentType: "application/json",
             success: function () {
                 goBack()
+            }, error: function (request, status, error) {
+                alertUser(request, status, error);
             }
         });
     }
@@ -167,6 +173,8 @@ const deleteProfile = function (profileId) {
         success: function () {
             url.pathname = "/logout";
             window.location.href = url.href;
+        }, error: function (request, status, error) {
+            alertUser(request, status, error);
         }
     });
 }

@@ -32,7 +32,8 @@ const removeUtility = function (utilityId) {
         url: restUrl,
         type: 'DELETE',
         success: function () {
-            // goBack();
+        }, error: function (request, status, error) {
+            alertUser(request, status, error);
         }
     });
 

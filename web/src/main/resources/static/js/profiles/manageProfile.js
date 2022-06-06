@@ -9,6 +9,8 @@ const deleteProfile = function (profileId) {
         type: 'DELETE',
         success: function () {
             goBack();
+        }, error: function (request, status, error) {
+            alertUser(request, status, error);
         }
     });
 }

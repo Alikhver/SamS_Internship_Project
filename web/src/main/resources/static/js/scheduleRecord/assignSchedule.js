@@ -125,6 +125,8 @@ const createRecords = function () {
                 $('#date').val(null);
                 $('#start-time').val(null);
                 $('#end-time').val(null);
+            }, error: function (request, status, error) {
+                alertUser(request, status, error);
             }
         });
     }
@@ -226,6 +228,8 @@ const deleteRecords = function () {
                 $('#d-date').val(null);
                 $('#d-start-time').val(null);
                 $('#d-end-time').val(null);
+            }, error: function (request, status, error) {
+                alertUser(request, status, error);
             }
         });
     }
@@ -252,6 +256,8 @@ const deleteRequest = function (data) {
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function () {
+        }, error: function (request, status, error) {
+            alertUser(request, status, error);
         }
     });
 }
@@ -286,6 +292,8 @@ const cancelRecord = function (recordId) {
         contentType: "application/json",
         success: function () {
             $(`#record${recordId}`).remove();
+        }, error: function (request, status, error) {
+            alertUser(request, status, error);
         }
     });
 }
