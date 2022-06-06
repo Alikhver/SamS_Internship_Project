@@ -13,11 +13,10 @@ public class Messages {
                 .getString(messageKey);
     }
 
-    public static String getMessageForLocale(String messageKey, Locale locale, Long param) {
+    public static String getMessageForLocale(String messageKey, Locale locale, String param) {
 
         String pattern = getMessageForLocale(messageKey, locale);
-        String message = MessageFormat.format(pattern, param);
-        return message;
+        return MessageFormat.format(pattern, param);
     }
 
 }

@@ -16,7 +16,6 @@ import com.alikhver.web.dto.worker.response.GetWorkerResponse;
 import com.alikhver.web.exception.organisation.NoOrganisationFoundException;
 import com.alikhver.web.exception.utility.NoUtilityFoundException;
 import com.alikhver.web.exception.utility.UtilityAlreadyExistsException;
-import com.alikhver.web.exception.worker.NoWorkerFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -48,9 +47,7 @@ public class UtilityFacadeImpl implements UtilityFacade {
         Optional<Utility> optionalUtility = utilityService.getUtility(id);
         if (optionalUtility.isEmpty()) {
             log.warn("NoUtilityFoundException is thrown");
-            throw new NoUtilityFoundException(
-                    "No Utility with id = " + id + " found"
-            );
+            throw new NoUtilityFoundException(id);
         }
         Utility utility = optionalUtility.get();
 
@@ -71,9 +68,7 @@ public class UtilityFacadeImpl implements UtilityFacade {
         Utility utility;
         if (optionalUtility.isEmpty()) {
             log.warn("NoUtilityFoundException is thrown");
-            throw new NoUtilityFoundException(
-                    "No utility with id = " + id + " found"
-            );
+            throw new NoUtilityFoundException(id);
         } else {
             utility = optionalUtility.get();
         }
@@ -95,9 +90,7 @@ public class UtilityFacadeImpl implements UtilityFacade {
 
         if (!utilityService.existsUtility(id)) {
             log.warn("NoUtilityFoundException is thrown");
-            throw new NoUtilityFoundException(
-                    "No utility with id = " + id + " found"
-            );
+            throw new NoUtilityFoundException(id);
         } else {
             utilityService.deleteUtility(id);
 
@@ -111,9 +104,7 @@ public class UtilityFacadeImpl implements UtilityFacade {
 
         validationHelper.validateForCorrectId(utilityId, "WorkerId");
         if (!utilityService.existsUtility(utilityId)) {
-            throw new NoWorkerFoundException(
-                    "Utility with id " + utilityId + " was not found"
-            );
+            throw new NoUtilityFoundException(utilityId);
         }
         Pageable pageable = PageRequest.of(page, size);
         var workers = workerService.getWorkersByUtilityId(utilityId, pageable);
@@ -130,9 +121,7 @@ public class UtilityFacadeImpl implements UtilityFacade {
 
         validationHelper.validateForCorrectId(utilityId, "WorkerId");
         if (!utilityService.existsUtility(utilityId)) {
-            throw new NoWorkerFoundException(
-                    "Utility with id " + utilityId + " was not found"
-            );
+            throw new NoUtilityFoundException(utilityId);
         }
         var workers = workerService.getWorkersByUtilityId(utilityId);
 
@@ -155,18 +144,13 @@ public class UtilityFacadeImpl implements UtilityFacade {
             organisation = optionalOrganisation.get();
         } else {
             log.warn("NoOrganisationFoundException is thrown");
-            throw new NoOrganisationFoundException(
-                    "No Organisation with id = " + request.getOrganisationId() + " found"
-            );
+            throw new NoOrganisationFoundException(request.getOrganisationId());
         }
 
         Utility utility = utilityConverter.mapToUtility(request);
         utility.setOrganisation(organisation);
         if (utilityService.existsUtility(utility)) {
-            throw new UtilityAlreadyExistsException(
-                    "Utility with name = '" + utility.getName() + "', price = '" + utility.getPrice() +
-                            "', description = '" + utility.getDescription() + "' already exists"
-            );
+            throw new UtilityAlreadyExistsException();
         }
 
         utilityService.saveUtility(utility);

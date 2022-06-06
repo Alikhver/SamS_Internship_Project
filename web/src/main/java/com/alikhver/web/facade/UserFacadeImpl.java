@@ -46,9 +46,7 @@ public class UserFacadeImpl implements UserFacade {
             return response;
         } else {
             log.warn("NoUserFoundException is thrown");
-            throw new NoUserFoundException(
-                    "User with id = " + id + " does not exist"
-            );
+            throw new NoUserFoundException(id);
         }
     }
 
@@ -74,9 +72,7 @@ public class UserFacadeImpl implements UserFacade {
 
         if (userService.existsUserByLogin(request.getLogin())) {
             log.warn("UserAlreadyExistsException is thrown");
-            throw new UserAlreadyExistsException(
-                    "User with login = " + request.getLogin() + " already exists"
-            );
+            throw new UserAlreadyExistsException(request.getLogin());
         } else {
             User user = userConverter.mapToUser(request);
             user.setPassword(encodePassword(user.getPassword()));
@@ -96,9 +92,7 @@ public class UserFacadeImpl implements UserFacade {
 
         if (!userService.existsUserById(id)) {
             log.warn("NoUserFoundException is thrown");
-            throw new NoUserFoundException(
-                    "No User with id = " + id + " found"
-            );
+            throw new NoUserFoundException(id);
         } else {
             userService.deleteUser(id);
         }
@@ -117,9 +111,7 @@ public class UserFacadeImpl implements UserFacade {
             user = optionalUser.get();
         } else {
             log.warn("NoUserFoundException is thrown");
-            throw new NoUserFoundException(
-                    "No user with id = " + id + " found"
-            );
+            throw new NoUserFoundException(id);
         }
         Optional.ofNullable(request.getLogin()).ifPresent(user::setLogin);
         Optional.ofNullable(request.getPassword()).map(this::encodePassword).ifPresent(user::setPassword);
@@ -136,10 +128,7 @@ public class UserFacadeImpl implements UserFacade {
 
         User user = userService.findUserByLogin(login).orElseThrow(() -> {
             log.warn("NoUserFoundException is thrown");
-            throw new NoUserFoundException(
-              "User with logi"
-            );
-//            TOdo message
+            throw new NoUserFoundException(login);
         });
 
         var response = userConverter.mapToGetUserResponse(user);

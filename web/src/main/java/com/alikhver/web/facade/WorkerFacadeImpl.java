@@ -65,9 +65,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
             return response;
         } else {
             log.warn("NoWorkerFoundException is thrown");
-            throw new NoWorkerFoundException(
-                    "No Worker with id = " + id + " found"
-            );
+            throw new NoWorkerFoundException(id);
         }
     }
 
@@ -84,9 +82,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
             worker = optionalWorker.get();
         } else {
             log.warn("NoWorkerFoundException is thrown");
-            throw new NoWorkerFoundException(
-                    "No Worker with id = " + id + " found"
-            );
+            throw new NoWorkerFoundException(id);
         }
         Optional.ofNullable(request.getFirstName()).ifPresent(worker::setFirstName);
         Optional.ofNullable(request.getLastName()).ifPresent(worker::setLastName);
@@ -108,9 +104,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
             log.info("deleteWorker -> done");
         } else {
             log.warn("NoWorkerFoundException");
-            throw new NoWorkerFoundException(
-                    "No Worker with id = " + id + " found"
-            );
+            throw new NoWorkerFoundException(id);
         }
     }
 
@@ -128,9 +122,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
             worker = optionalWorker.get();
         } else {
             log.warn("NoWorkerFoundException is thrown");
-            throw new NoWorkerFoundException(
-                    "Worker with id = " + id + " was not found"
-            );
+            throw new NoWorkerFoundException(id);
         }
 
         Optional<Utility> optionalUtility = utilityService.getUtility(utilityId);
@@ -140,26 +132,18 @@ public class WorkerFacadeImpl implements WorkerFacade {
             utility = optionalUtility.get();
         } else {
             log.warn("NoUtilityFoundException is thrown");
-            throw new NoUtilityFoundException(
-                    "Utility with id = " + id + " was not found"
-            );
+            throw new NoUtilityFoundException(id);
         }
 
         if (!Objects.equals(utility.getOrganisation().getId(), worker.getOrganisation().getId())) {
             log.warn("AttemptToAssignUtilityOfOtherOrganisationException is thrown");
-            throw new AttemptToAssignUtilityOfOtherOrganisationException(
-                    "Utility belongs to other Organisation than Worker"
-            );
+            throw new AttemptToAssignUtilityOfOtherOrganisationException();
         } else if (utilityService.utilityAlreadyHasWorker(utilityId, id)) {
             log.warn("UtilityAlreadyHasProvidedWorkerException is thrown");
-            throw new UtilityAlreadyHasProvidedWorkerException(
-                    "Utility with id = " + utilityId + " already has worker with id = " + id
-            );
+            throw new UtilityAlreadyHasProvidedWorkerException();
         } else if (workerService.workerAlreadyHasUtility(id, utilityId)) {
             log.warn("WorkerAlreadyHasProvidedUtilityException is thrown");
-            throw new WorkerAlreadyHasProvidedUtilityException(
-                    "Worker with id = " + id + " already has utility with id = " + utilityId
-            );
+            throw new WorkerAlreadyHasProvidedUtilityException();
         } else {
             worker.getUtilities().add(utility);
             utility.getWorkers().add(worker);
@@ -185,9 +169,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
             worker = optionalWorker.get();
         } else {
             log.warn("NoWorkerFoundException is thrown");
-            throw new NoWorkerFoundException(
-                    "Worker with id = " + workerId + " was not found"
-            );
+            throw new NoWorkerFoundException(workerId);
         }
 
         Optional<Utility> optionalUtility = utilityService.getUtility(utilityId);
@@ -197,26 +179,18 @@ public class WorkerFacadeImpl implements WorkerFacade {
             utility = optionalUtility.get();
         } else {
             log.warn("NoUtilityFoundException is thrown");
-            throw new NoUtilityFoundException(
-                    "Utility with id = " + workerId + " was not found"
-            );
+            throw new NoUtilityFoundException(workerId);
         }
 
         if (!Objects.equals(utility.getOrganisation().getId(), worker.getOrganisation().getId())) {
             log.warn("AttemptToDeleteUtilityOfOtherOrganisationException is thrown");
-            throw new AttemptToDeleteUtilityFromWorkerOfOtherOrganisationException(
-                    "Utility belongs to other Organisation than Worker"
-            );
+            throw new AttemptToDeleteUtilityFromWorkerOfOtherOrganisationException();
         } else if (!utilityService.utilityAlreadyHasWorker(utilityId, workerId)) {
             log.warn("UtilityDoesNotHaveProvidedWorkerException is thrown");
-            throw new UtilityDoesNotHaveProvidedWorkerException(
-                    "Utility with id = " + utilityId + " does not have worker with id = " + workerId
-            );
+            throw new UtilityDoesNotHaveProvidedWorkerException();
         } else if (!workerService.workerAlreadyHasUtility(workerId, utilityId)) {
             log.warn("WorkerDoesNotHaveProvidedUtilityException is thrown");
-            throw new WorkerDoesNotHaveProvidedUtilityException(
-                    "Worker with id = " + workerId + " does not have utility with id = " + utilityId
-            );
+            throw new WorkerDoesNotHaveProvidedUtilityException();
 
         }
 
@@ -236,9 +210,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
 
         validationHelper.validateForCorrectId(workerId, "WorkerId");
         if (!workerService.existsWorker(workerId)) {
-            throw new NoWorkerFoundException(
-                    "Worker with id " + workerId + " was not found"
-            );
+            throw new NoWorkerFoundException(workerId);
         }
         Pageable pageable = PageRequest.of(page, size);
         var utilities = utilityService.getUtilitiesByWorkerId(workerId, pageable);
@@ -256,9 +228,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
 
         if (!workerService.existsWorker(workerId)) {
             log.warn("NoWorkerFoundException is thrown");
-            throw new NoWorkerFoundException(
-              "No Worker with id = " + workerId + " found"
-            );
+            throw new NoWorkerFoundException(workerId);
         }
 
         var futureRecords = scheduleRecordService.findAllRecordsOfWorker(workerId);
@@ -274,9 +244,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
 
         validationHelper.validateForCorrectId(workerId, "WorkerId");
         if (!workerService.existsWorker(workerId)) {
-            throw new NoWorkerFoundException(
-                    "Worker with id " + workerId + " was not found"
-            );
+            throw new NoWorkerFoundException(workerId);
         }
         List<Utility> utilities = utilityService.getUtilitiesByWorkerId(workerId);
 
@@ -298,9 +266,7 @@ public class WorkerFacadeImpl implements WorkerFacade {
             organisation = optionalOrganisation.get();
         } else {
             log.warn("NoOrganisationFoundException is thrown");
-            throw new NoOrganisationFoundException(
-                    "No Organisation with id = " + request.getOrganisationId() + " found"
-            );
+            throw new NoOrganisationFoundException(request.getOrganisationId());
         }
         Worker worker = workerConverter.mapToWorker(request);
         worker.setOrganisation(organisation);

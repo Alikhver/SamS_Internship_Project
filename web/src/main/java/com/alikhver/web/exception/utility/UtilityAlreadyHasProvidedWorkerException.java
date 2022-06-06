@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
 public class UtilityAlreadyHasProvidedWorkerException extends RuntimeException {
-    public UtilityAlreadyHasProvidedWorkerException(String message) {
-        super(message);
+    public UtilityAlreadyHasProvidedWorkerException() {
+        super("UtilityAlreadyHasProvidedWorkerException.msg");
     }
 }

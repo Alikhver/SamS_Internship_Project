@@ -109,11 +109,6 @@ public class ProfileController {
 
         String authority = new ArrayList<>(authentication.getAuthorities()).get(0).getAuthority();
 
-
-        if (authority.equals("USER")) {
-
-        }
-
         String locale = LocaleContextHolder.getLocale().toLanguageTag();
         modelAndView.addObject("locale", locale);
 

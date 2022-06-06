@@ -65,22 +65,16 @@ public class ProfileFacadeImpl implements ProfileFacade {
             user = optionalUser.get();
         } else {
             log.warn("NoUserFoundException is thrown");
-            throw new NoUserFoundException(
-                    "No user with id = " + request.getUserId() + " found"
-            );
+            throw new NoUserFoundException(request.getUserId());
         }
         if (user.getRole() != UserRole.USER) {
-            log.warn("");
-            throw new AttemptToAssignProfileToUserWithWrongRole(
-                    "Provided user with id = " + user.getId() + " has not role of UserRole.User"
-            );
+            log.warn("AttemptToAssignProfileToUserWithWrongRole is thrown");
+            throw new AttemptToAssignProfileToUserWithWrongRole(user.getId());
         }
 
         if (profileService.isUserAlreadyBounded(user.getId())) {
             log.warn("UserIsAlreadyBoundedProfileException is thrown");
-            throw new UserIsAlreadyBoundedProfileException(
-                    "User with id = " + user.getId() + " is already bounded"
-            );
+            throw new UserIsAlreadyBoundedProfileException(user.getId());
         }
 
         Profile profile = profileConverter.mapToCreateProfileRequest(request);
@@ -110,9 +104,7 @@ public class ProfileFacadeImpl implements ProfileFacade {
             return response;
         } else {
             log.warn("NoProfileFoundException is thrown");
-            throw new NoProfileFoundException(
-                    "No Profile with id = " + id + " found"
-            );
+            throw new NoProfileFoundException(id);
         }
     }
 
@@ -142,9 +134,7 @@ public class ProfileFacadeImpl implements ProfileFacade {
             profile = optionalProfile.get();
         } else {
             log.warn("NoProfileFoundException is thrown");
-            throw new NoProfileFoundException(
-                    "No profile with id = " + id + "found"
-            );
+            throw new NoProfileFoundException(id);
         }
 
         User user = profile.getUser();
@@ -167,9 +157,7 @@ public class ProfileFacadeImpl implements ProfileFacade {
 
         Profile profile = profileService.getProfile(id).orElseThrow(() -> {
             log.warn("NoProfileFoundException is thrown");
-            throw new NoProfileFoundException(
-                    "No Profile with id = " + id + " found"
-            );
+            throw new NoProfileFoundException(id);
         });
 
         User user = profile.getUser();
@@ -190,9 +178,7 @@ public class ProfileFacadeImpl implements ProfileFacade {
 
         if (userService.existsUserByLogin(user.getLogin())) {
             log.warn("UserAlreadyExistsException is thrown");
-            throw new UserAlreadyExistsException(
-                    "User with login=" + user.getLogin() + " already exists"
-            );
+            throw new UserAlreadyExistsException(user.getLogin());
         }
 
         Profile profile = profileConverter.mapToProfile(request);
@@ -247,16 +233,12 @@ public class ProfileFacadeImpl implements ProfileFacade {
 
         User user = userService.findUserByLogin(login).orElseThrow(() -> {
             log.warn("NoProfileFoundException is thrown");
-            throw new NoUserFoundException(
-                    "No User with login = " + login + " found"
-            );
+            throw new NoUserFoundException(login);
         });
 
         Profile profile = profileService.getProfileByUserId(user.getId()).orElseThrow(() -> {
             log.warn("NoProfileFoundException is thrown");
-            throw new NoProfileFoundException(
-                    "No Profile with userId = " + user.getId() + " found"
-            );
+            throw new NoProfileFoundException(user.getId());
         });
 
         log.info("getProfile -> done");

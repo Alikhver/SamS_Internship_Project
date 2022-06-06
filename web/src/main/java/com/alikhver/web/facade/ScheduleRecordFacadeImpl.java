@@ -20,23 +20,22 @@ import com.alikhver.web.exception.profile.NoProfileFoundException;
 import com.alikhver.web.exception.scheduleRecord.NoScheduleRecordFoundException;
 import com.alikhver.web.exception.scheduleRecord.RecordCannotBeBookedException;
 import com.alikhver.web.exception.scheduleRecord.ScheduleRecordWithSuchWorkerAndTimeAlreadyExists;
-import com.alikhver.web.exception.scheduleRecord.UtilityIsAlreadyAvailableException;
+import com.alikhver.web.exception.scheduleRecord.RecordIsAlreadyAvailableException;
 import com.alikhver.web.exception.user.UsersRoleIsNotUserException;
 import com.alikhver.web.exception.utility.NoUtilityFoundException;
 import com.alikhver.web.exception.worker.NoWorkerFoundException;
 import com.alikhver.web.exception.worker.WorkerDoesNotHaveProvidedUtilityException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -61,8 +60,7 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
 
         ScheduleRecord record = scheduleRecordService.get(recordId).orElseThrow(() -> {
             log.warn("NoScheduleRecordFoundException is thrown");
-            Locale locale = LocaleContextHolder.getLocale();
-            throw new NoScheduleRecordFoundException("NoScheduleRecordFoundException", locale, recordId);
+            throw new NoScheduleRecordFoundException(recordId);
         });
 
         var response = scheduleRecordConverter.mapToGetRecordResponse(record);
@@ -78,18 +76,14 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
 
         Worker worker = workerService.getWorker(request.getWorkerId()).orElseThrow(() -> {
             log.warn("NoWorkerFoundException is thrown");
-            throw new NoWorkerFoundException(
-                    "No Worker with id = " + request.getWorkerId() + " found"
-            );
+            throw new NoWorkerFoundException(request.getWorkerId());
         });
 
         ScheduleRecord record = scheduleRecordConverter.mapToScheduleRecord(request);
 
         if (scheduleRecordService.existsByWorkerIdAndDateAndStatus(worker.getId(), record.getDate(), ScheduleRecordStatus.AVAILABLE)) {
             log.warn("ScheduleRecordWithSuchWorkerAndTimeAlreadyExists is thrown");
-            throw new ScheduleRecordWithSuchWorkerAndTimeAlreadyExists(
-                    "ScheduleRecord with workerId = " + worker.getId() + " and date = " + record.getDate() + " already exists"
-            );
+            throw new ScheduleRecordWithSuchWorkerAndTimeAlreadyExists();
         }
 
         record.setWorker(worker);
@@ -112,48 +106,36 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
 
         Utility utility = utilityService.getUtility(utilityId).orElseThrow(() -> {
                     log.warn("NoUtilityFoundException is thrown");
-                    throw new NoUtilityFoundException(
-                            "No Utility with id = " + utilityId + " found");
+                    throw new NoUtilityFoundException(utilityId);
                 }
         );
 
         Profile profile = profileService.getProfile(profileId).orElseThrow(() -> {
             log.warn("NoProfileFoundException is thrown");
-            throw new NoProfileFoundException(
-                    "No Profile with id = " + profileId + " found"
-            );
+            throw new NoProfileFoundException(profileId);
         });
 
         if (profile.getUser().getRole() != UserRole.USER) {
             log.warn("UsersRoleIsNotUserException thrown");
-            throw new UsersRoleIsNotUserException(
-                    "Provided Profile's UsersRole is not USER"
-            );
+            throw new UsersRoleIsNotUserException();
         }
 
 
         ScheduleRecord record = scheduleRecordService.get(recordId).orElseThrow(() -> {
             log.warn("NoScheduleRecordFoundException is thrown");
-            Locale locale = LocaleContextHolder.getLocale();
-            throw new NoScheduleRecordFoundException("NoScheduleRecordFoundException", locale, recordId);
+            throw new NoScheduleRecordFoundException(recordId);
         });
 
         if (!record.getStatus().equals(ScheduleRecordStatus.AVAILABLE)) {
             log.warn("RecordCannotBeBookedException is thrown");
-            Locale locale = LocaleContextHolder.getLocale();
-
-            throw new RecordCannotBeBookedException(
-                    "message.exception1", locale, recordId
-            );
+            throw new RecordCannotBeBookedException(recordId);
         }
 
         Worker worker = record.getWorker();
 
         if (!workerService.workerAlreadyHasUtility(worker.getId(), utility.getId())) {
             log.warn("WorkerDoesNotHaveProvidedUtilityException is thrown");
-            throw new WorkerDoesNotHaveProvidedUtilityException(
-                    "Worker with id = " + worker.getId() + "does not have Utility with id " + utility.getId()
-            );
+            throw new WorkerDoesNotHaveProvidedUtilityException();
         }
 
         record.setUtility(utility);
@@ -173,16 +155,13 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
 
         ScheduleRecord record = scheduleRecordService.get(recordId).orElseThrow(() -> {
             log.warn("NoScheduleRecordFoundException is thrown");
-            Locale locale = LocaleContextHolder.getLocale();
-            throw new NoScheduleRecordFoundException("NoScheduleRecordFoundException", locale, recordId);
+            throw new NoScheduleRecordFoundException(recordId);
         });
 
         if (record.getUtility() == null && record.getClientProfile() == null &&
                 record.getStatus() == ScheduleRecordStatus.AVAILABLE) {
-            log.warn("Utility with id = " + record + " is already Available");
-            throw new UtilityIsAlreadyAvailableException(
-                    "Utility with id = " + record + " is already Available"
-            );
+            log.warn("Record with id = " + record + " is already Available");
+            throw new RecordIsAlreadyAvailableException();
         } else {
             record.setUtility(null);
             record.setClientProfile(null);
@@ -203,8 +182,7 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
 
         ScheduleRecord record = scheduleRecordService.get(recordId).orElseThrow(() -> {
             log.warn("NoScheduleRecordFoundException is thrown");
-            Locale locale = LocaleContextHolder.getLocale();
-            throw new NoScheduleRecordFoundException("NoScheduleRecordFoundException", locale, recordId);
+            throw new NoScheduleRecordFoundException(recordId);
         });
 
         record.setStatus(ScheduleRecordStatus.CANCELED);
@@ -219,22 +197,22 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
     public void cancelRecords(CancelRecordsRequest request) {
         log.info("cancelRecords -> start");
 
-        Date date = request.getDate();
+        LocalDate date = request.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         int startTime = request.getStartTime();
         int endTime = request.getEndTime();
         Long workerId = request.getWorkerId();
 
         if (!workerService.existsWorker(workerId)) {
             log.warn("NoWorkerFoundException is thrown");
-            throw new NoWorkerFoundException(
-                    "No Worker with id = " + workerId + " found"
-            );
+            throw new NoWorkerFoundException(workerId);
         }
 
 
         for (; startTime < endTime; startTime++) {
-            date.setHours(startTime);
-            var optionalRecord = scheduleRecordService.getRecordByWorkerIdAndDateAndStatus(workerId, date, ScheduleRecordStatus.AVAILABLE);
+            LocalDateTime time = date.atTime(startTime, 0);
+            var optionalRecord = scheduleRecordService.getRecordByWorkerIdAndDateAndStatus(workerId,
+                    Date.from(time.atZone(ZoneId.systemDefault()).toInstant()),
+                    ScheduleRecordStatus.AVAILABLE);
             ScheduleRecord record;
 
             if (optionalRecord.isPresent()) {
@@ -251,21 +229,19 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
     public void createRecords(CreateRecordsRequest request) {
         log.info("createRecords -> start");
 
-        Date date = request.getDate();
+        LocalDate date = request.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         int startTime = request.getStartTime();
         int endTime = request.getEndTime();
         Long workerId = request.getWorkerId();
 
         Worker worker = workerService.getWorker(workerId).orElseThrow(() -> {
             log.warn("NoWorkerFoundException is thrown");
-            throw new NoWorkerFoundException(
-                    "No Worker with id = " + workerId + " found"
-            );
+            throw new NoWorkerFoundException(workerId);
         });
 
         for (; startTime < endTime; startTime++) {
-            date.setHours(startTime);
-            Date dt = (Date) date.clone();
+            LocalDateTime time = date.atTime(startTime, 0);
+            Date dt = Date.from(time.atZone(ZoneId.systemDefault()).toInstant());
 
             if (!scheduleRecordService.existsByWorkerIdAndDateAndStatus(workerId, dt, ScheduleRecordStatus.AVAILABLE)) {
                 ScheduleRecord record = ScheduleRecord.builder()
@@ -290,8 +266,7 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
 
         ScheduleRecord record = scheduleRecordService.get(recordId).orElseThrow(() -> {
             log.warn("NoScheduleRecordFoundException is thrown");
-            Locale locale = LocaleContextHolder.getLocale();
-            throw new NoScheduleRecordFoundException("NoScheduleRecordFoundException", locale, recordId);
+            throw new NoScheduleRecordFoundException(recordId);
         });
 
         record.setStatus(ScheduleRecordStatus.EXPIRED);
@@ -310,8 +285,7 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
 
         ScheduleRecord record = scheduleRecordService.get(recordId).orElseThrow(() -> {
             log.warn("NoScheduleRecordFoundException is thrown");
-            Locale locale = LocaleContextHolder.getLocale();
-            throw new NoScheduleRecordFoundException("NoScheduleRecordFoundException", locale, recordId);
+            throw new NoScheduleRecordFoundException(recordId);
         });
 
         record.setStatus(ScheduleRecordStatus.DONE);
@@ -330,7 +304,6 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
         List<ScheduleRecord> records = scheduleRecordService.findAllRecordsOfWorkerByTime(workerId, start, end).stream()
                 .filter(record -> record.getStatus().equals(ScheduleRecordStatus.AVAILABLE) || record.getStatus().equals(ScheduleRecordStatus.BOOKED))
                 .collect(Collectors.toList());
-        ;
 
 
         var response = scheduleRecordConverter.mapToListOfGetRecordResponse(records);

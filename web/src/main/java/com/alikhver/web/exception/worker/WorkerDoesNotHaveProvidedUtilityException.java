@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
 public class WorkerDoesNotHaveProvidedUtilityException extends RuntimeException{
-    public WorkerDoesNotHaveProvidedUtilityException(String message) {
-        super(message);
+    public WorkerDoesNotHaveProvidedUtilityException() {
+        super("WorkerDoesNotHaveProvidedUtilityException.msg");
     }
 }

@@ -126,8 +126,7 @@ public class ScheduleRecordController {
 
         if (worker.getOrganisationId() != orgId) {
             log.warn("WorkerDoesNotBelongToOrganisationException is thrown");
-            throw new WorkerDoesNotBelongToOrganisationException(
-                    "Worker with id = " + workerId + " does not belong to Organisation with id = " + orgId);
+            throw new WorkerDoesNotBelongToOrganisationException();
         }
 
 

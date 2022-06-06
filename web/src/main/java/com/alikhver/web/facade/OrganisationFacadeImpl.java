@@ -85,9 +85,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         }
         {
             log.warn("NoOrganisationFoundException is thrown");
-            throw new NoOrganisationFoundException(
-                    "No Organisation with id = " + id + " found"
-            );
+            throw new NoOrganisationFoundException(id);
         }
     }
 
@@ -98,16 +96,12 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
         if (organisationService.existsOrganisationByName(request.getName())) {
             log.warn("OrganisationAlreadyExistsException is thrown");
-            throw new OrganisationAlreadyExistsException(
-                    "Organisation with name = " + request.getName() + " already exists"
-            );
+            throw new OrganisationAlreadyExistsException();
         }
 
         if (userService.existsUserByLogin(request.getRedactorLogin())) {
             log.warn("UserAlreadyException is thrown");
-            throw new UserAlreadyExistsException(
-                    "User with login = " + request.getRedactorLogin() + " already exists"
-            );
+            throw new UserAlreadyExistsException(request.getRedactorLogin());
         }
         User redactor = organisationConverter.mapToRedactor(request);
 
@@ -148,9 +142,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
         if (!organisationService.existsById(organisationId)) {
             log.warn("NoOrganisationFoundException is thrown");
-            throw new NoOrganisationFoundException(
-                    "No Organisation with id = " + organisationId + "found"
-            );
+            throw new NoOrganisationFoundException(organisationId);
         }
 
         Pageable pageable = PageRequest.of(page, size);
@@ -172,9 +164,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
         if (!organisationService.existsById(organisationId)) {
             log.warn("NoOrganisationFoundException is thrown");
-            throw new NoOrganisationFoundException(
-                    "No Organisation with id = " + organisationId + "found"
-            );
+            throw new NoOrganisationFoundException(organisationId);
         }
 
         Pageable pageable = PageRequest.of(page, size);
@@ -193,9 +183,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
         if (!organisationService.existsById(orgId)) {
             log.warn("NoOrganisationFoundException is thrown");
-            throw new NoOrganisationFoundException(
-                    "No Organisation with id = " + orgId + "found"
-            );
+            throw new NoOrganisationFoundException(orgId);
         }
 
         List<Worker> workers = workerService.findAllWorkersOfOrganisation(orgId);
@@ -215,9 +203,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
         if (!organisationService.existsById(orgId)) {
             log.warn("NoOrganisationFoundException is thrown");
-            throw new NoOrganisationFoundException(
-                    "No Organisation with id = " + orgId + "found"
-            );
+            throw new NoOrganisationFoundException(orgId);
         }
 
         List<Utility> utilities = utilityService.getAllUtilitiesOfOrganisation(orgId);
@@ -235,9 +221,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
 
         Organisation organisation = organisationService.getOrganisationByRedactorLogin(login).orElseThrow(() -> {
             log.warn("NoOrganisationFoundException is thrown");
-            throw new NoOrganisationFoundException(
-                    "No Organisation with Redactors Login = " + login + " found"
-            );
+            throw new NoOrganisationFoundException(login);
         });
 
         log.info("getOrganisationIdByRedactorLogin -> done");
@@ -254,9 +238,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             organisation = optionalOrganisation.get();
         } else {
             log.warn("NoOrganisationFoundException is thrown");
-            throw new NoOrganisationFoundException(
-                    "No Organisation with id = " + id + " found"
-            );
+            throw new NoOrganisationFoundException(id);
         }
         Optional.ofNullable(request.getName()).ifPresent(organisation::setName);
         Optional.ofNullable(request.getDescription()).ifPresent(organisation::setDescription);
@@ -277,9 +259,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             organisationService.deleteOrganisation(id);
         } else {
             log.warn("NoOrganisationFoundException is thrown");
-            throw new NoOrganisationFoundException(
-                    "No Organisation with id = " + id + " found"
-            );
+            throw new NoOrganisationFoundException(id);
         }
 
         log.info("deleteOrganisation -> done");
@@ -296,9 +276,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         Organisation organisation;
         if (optionalOrganisation.isEmpty()) {
             log.warn("NoOrganisationFoundException is thrown");
-            throw new NoOrganisationFoundException(
-                    "No organisation with id = " + orgId + " found"
-            );
+            throw new NoOrganisationFoundException(orgId);
         } else {
             organisation = optionalOrganisation.get();
         }
@@ -308,9 +286,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             organisationService.saveOrganisation(organisation);
         } else {
             log.warn("OrganisationIsAlreadySuspendedException is thrown");
-            throw new OrganisationIsAlreadySuspendedException(
-                    "Organisation with id = " + orgId + " is already suspended"
-            );
+            throw new OrganisationIsAlreadySuspendedException();
         }
 
         var workers = workerService.findAllWorkersOfOrganisation(orgId);
@@ -335,9 +311,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         Organisation organisation;
         if (optionalOrganisation.isEmpty()) {
             log.warn("NoOrganisationFoundException is thrown");
-            throw new NoOrganisationFoundException(
-                    "No organisation with id = " + id + " found"
-            );
+            throw new NoOrganisationFoundException(id);
         } else {
             organisation = optionalOrganisation.get();
         }
@@ -347,9 +321,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             organisationService.saveOrganisation(organisation);
         } else {
             log.warn("OrganisationIsAlreadyLaunched is thrown");
-            throw new OrganisationIsAlreadyLaunchedException(
-                    "Organisation with id = " + id + " is already running"
-            );
+            throw new OrganisationIsAlreadyLaunchedException(id);
         }
 
         log.info("launchOrganisation -> done");

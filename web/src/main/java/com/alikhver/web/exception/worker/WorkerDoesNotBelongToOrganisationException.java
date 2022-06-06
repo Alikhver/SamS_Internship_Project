@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
 public class WorkerDoesNotBelongToOrganisationException extends RuntimeException{
-    public WorkerDoesNotBelongToOrganisationException(String message) {
-        super(message);
+    public WorkerDoesNotBelongToOrganisationException() {
+        super("WorkerDoesNotBelongToOrganisationException.msg");
     }
 }

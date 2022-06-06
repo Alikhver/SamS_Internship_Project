@@ -1,5 +1,6 @@
 package com.alikhver.web.exception.handler;
 
+import com.alikhver.web.exception.CustomLocalizedException;
 import com.alikhver.web.exception.organisation.NoOrganisationFoundException;
 import com.alikhver.web.exception.organisation.OrganisationAlreadyExistsException;
 import com.alikhver.web.exception.organisation.OrganisationIsAlreadyLaunchedException;
@@ -11,7 +12,7 @@ import com.alikhver.web.exception.profile.UserIsAlreadyBoundedProfileException;
 import com.alikhver.web.exception.scheduleRecord.NoScheduleRecordFoundException;
 import com.alikhver.web.exception.scheduleRecord.RecordCannotBeBookedException;
 import com.alikhver.web.exception.scheduleRecord.ScheduleRecordWithSuchWorkerAndTimeAlreadyExists;
-import com.alikhver.web.exception.scheduleRecord.UtilityIsAlreadyAvailableException;
+import com.alikhver.web.exception.scheduleRecord.RecordIsAlreadyAvailableException;
 import com.alikhver.web.exception.user.NoUserFoundException;
 import com.alikhver.web.exception.user.UserAlreadyExistsException;
 import com.alikhver.web.exception.user.UsersRoleIsNotUserException;
@@ -23,6 +24,7 @@ import com.alikhver.web.exception.worker.AttemptToDeleteUtilityFromWorkerOfOther
 import com.alikhver.web.exception.worker.NoWorkerFoundException;
 import com.alikhver.web.exception.worker.WorkerAlreadyHasProvidedUtilityException;
 import com.alikhver.web.exception.worker.WorkerDoesNotBelongToOrganisationException;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -168,9 +171,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(UtilityIsAlreadyAvailableException.class)
+    @ExceptionHandler(RecordIsAlreadyAvailableException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ResponseEntity<ErrorResponse> handle(UtilityIsAlreadyAvailableException e, HttpServletRequest request) {
+    public ResponseEntity<ErrorResponse> handle(RecordIsAlreadyAvailableException e, HttpServletRequest request) {
         ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
@@ -213,11 +216,23 @@ public class GlobalExceptionHandler {
     private ErrorResponse buildErrorResponse(
             Exception e,
             HttpStatus httpStatus, HttpServletRequest request) {
-        return ErrorResponse.builder()
-                .message(e.getLocalizedMessage())
-                .status(httpStatus.value())
-                .error(httpStatus.getReasonPhrase())
-                .path(request.getServletPath())
-                .build();
+
+        Locale locale = LocaleContextHolder.getLocale();
+
+        if (e instanceof CustomLocalizedException) {
+            return ErrorResponse.builder()
+                    .message(((CustomLocalizedException) e).getLocalizedMessage(locale))
+                    .status(httpStatus.value())
+                    .error(httpStatus.getReasonPhrase())
+                    .path(request.getServletPath())
+                    .build();
+        } else {
+            return ErrorResponse.builder()
+                    .message(e.getLocalizedMessage())
+                    .status(httpStatus.value())
+                    .error(httpStatus.getReasonPhrase())
+                    .path(request.getServletPath())
+                    .build();
+        }
     }
 }
