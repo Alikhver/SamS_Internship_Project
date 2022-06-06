@@ -16,7 +16,7 @@ public class HomeController {
     @ApiOperation("View Home")
     public ModelAndView viewHome(ModelAndView modelAndView) {
 
-        modelAndView.setViewName("home/home");
+        modelAndView.setViewName("index");
 
         return modelAndView;
     }
