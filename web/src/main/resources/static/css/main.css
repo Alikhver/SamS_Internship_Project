@@ -22,3 +22,7 @@ a {
 body {
     background-color: rgb(247, 247, 247);
 }
+
+.profile-link:hover {
+    cursor: pointer;
+}

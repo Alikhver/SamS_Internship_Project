@@ -43,6 +43,6 @@ const onNext = function () {
 }
 
 const goBack = function () {
-    window.location.href = '/';
+    window.location.href = '/adminHome';
 }
 

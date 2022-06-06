@@ -8,7 +8,7 @@ const viewProfile = function (profileId) {
 
 
 const goBack = function () {
-    window.location.href = '/';
+    window.location.href = '/adminHome';
 }
 
 const switchPage = function (page) {

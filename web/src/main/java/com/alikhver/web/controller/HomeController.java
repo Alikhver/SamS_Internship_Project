@@ -2,6 +2,7 @@ package com.alikhver.web.controller;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,16 @@ public class HomeController {
     public ModelAndView viewHome(ModelAndView modelAndView) {
 
         modelAndView.setViewName("index");
+
+        return modelAndView;
+    }
+
+    @GetMapping("/adminHome")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @ApiOperation("View Home")
+    public ModelAndView viewAdminHome(ModelAndView modelAndView) {
+
+        modelAndView.setViewName("home/adminHome");
 
         return modelAndView;
     }
