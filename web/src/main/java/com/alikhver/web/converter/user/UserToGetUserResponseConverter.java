@@ -12,7 +12,6 @@ public class UserToGetUserResponseConverter implements Converter<User, GetUserRe
         return GetUserResponse.builder()
                 .id(user.getId())
                 .login(user.getLogin())
-                .password(user.getPassword())
                 .role(user.getRole().name())
                 .build();
     }

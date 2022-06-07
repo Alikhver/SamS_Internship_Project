@@ -12,7 +12,6 @@ public class UserToCreateUserResponseConverter implements Converter<User, Create
         return CreateUserResponse.builder()
                 .id(user.getId())
                 .login(user.getLogin())
-                .password(user.getPassword())
                 .role(user.getRole().toString())
                 .build();
     }
