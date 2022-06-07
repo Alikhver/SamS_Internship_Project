@@ -296,6 +296,7 @@ public class ScheduleRecordFacadeImpl implements ScheduleRecordFacade {
     }
 
     @Override
+    @Transactional
     public List<GetRecordResponse> getRecordsOfDay(Long workerId, LocalDate start) {
         log.info("getRecordsOfDay -> start");
 
