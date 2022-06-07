@@ -44,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/users/loginExists")
                                 .permitAll()
                 .antMatchers("/login", "/auth/login", "/organisation/*", "/authenticate",
-                        "/organisation/*/workers", "/organisation/*/utilities", "/organisation/*/records", "/organisations")
+                        "/organisation/*/workers", "/organisation/*/utilities", "/organisation/*/records", "/organisations", "/records/*/book")
                                 .permitAll()
                 .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**")
                                 .permitAll()
@@ -61,6 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                                 .logoutUrl("/logout")
                                 .invalidateHttpSession(true)
                                 .deleteCookies("Authorization")
+                                .deleteCookies("profileId")
                                 .addLogoutHandler(customLogoutHandler)
 //                                .logoutSuccessHandler(logoutSuccessHandler)
                     .and()

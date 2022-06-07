@@ -43,6 +43,7 @@ public class LoginController {
     }
 
     @GetMapping("/login")
+//    @PutMapping("/login")
     public ModelAndView getLoginPage(ModelAndView modelAndView, HttpServletRequest request, HttpSession session) throws MalformedURLException {
 
         try {

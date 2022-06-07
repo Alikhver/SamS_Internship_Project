@@ -13,6 +13,7 @@ import com.alikhver.web.exception.scheduleRecord.NoScheduleRecordFoundException;
 import com.alikhver.web.exception.scheduleRecord.RecordCannotBeBookedException;
 import com.alikhver.web.exception.scheduleRecord.ScheduleRecordWithSuchWorkerAndTimeAlreadyExists;
 import com.alikhver.web.exception.scheduleRecord.RecordIsAlreadyAvailableException;
+import com.alikhver.web.exception.scheduleRecord.WrongUtilityAndWorkerParamsException;
 import com.alikhver.web.exception.user.NoUserFoundException;
 import com.alikhver.web.exception.user.UserAlreadyExistsException;
 import com.alikhver.web.exception.user.UsersRoleIsNotUserException;
@@ -211,6 +212,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handle(RecordCannotBeBookedException e, HttpServletRequest request) {
         ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(WrongUtilityAndWorkerParamsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handle(WrongUtilityAndWorkerParamsException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.BAD_REQUEST, request);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     private ErrorResponse buildErrorResponse(

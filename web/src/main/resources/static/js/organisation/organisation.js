@@ -67,6 +67,10 @@ function createRecord() {
     const profileId = getCookie("profileId");
     url.searchParams.set("profile", profileId);
     //TODO validate if data is actual
+    if (profileId === undefined) {
+        window.location.href = "/login";
+        return;
+    }
 
     url.pathname = `/records/${recordId}/book`;
     url.searchParams.delete("record");
@@ -77,14 +81,18 @@ function createRecord() {
         url: url.href,
         type: 'put',
         success: function () {
-            const url = new URL(window.location.href);
-            url.pathname = url.pathname + '/completed';
-            window.location.href = url.href;
+            $('#completed').modal('show');
         }, error: function (request, status, error) {
             alertUser(request, status, error);
         }
     });
 }
+
+$("#completed").on("hidden.bs.modal", function () {
+    const url = new URL(window.location.href);
+
+    window.location.href = url.pathname;
+});
 
 function getCookie(cookieName) {
     let cookie = {};

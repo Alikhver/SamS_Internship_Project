@@ -1,5 +1,10 @@
 const alertUser = function (request, status, error) {
     const response = request.responseJSON;
-    const message = response.status + ': ' + response.message;
+    let message;
+    if (response.status == null) {
+        message = response.message;
+    } else {
+        message = response.status + ': ' + response.message;
+    }
     alert(message);
 }

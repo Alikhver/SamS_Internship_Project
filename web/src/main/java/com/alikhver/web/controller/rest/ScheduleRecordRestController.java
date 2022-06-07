@@ -4,11 +4,13 @@ import com.alikhver.web.dto.record.request.CancelRecordsRequest;
 import com.alikhver.web.dto.record.request.CreateRecordRequest;
 import com.alikhver.web.dto.record.request.CreateRecordsRequest;
 import com.alikhver.web.dto.record.response.GetRecordResponse;
+import com.alikhver.web.facade.ProfileFacade;
 import com.alikhver.web.facade.ScheduleRecordFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,7 @@ import javax.validation.constraints.Positive;
 @Validated
 public class ScheduleRecordRestController {
     public final ScheduleRecordFacade scheduleRecordFacade;
+    public final ProfileFacade profileFacade;
 
     @GetMapping("/{recordId}")
     @ApiOperation("Get ScheduleRecord")
@@ -62,10 +65,12 @@ public class ScheduleRecordRestController {
     }
 
     @PutMapping("/{recordId}/book")
+    @PreAuthorize("hasAuthority('USER')")
     @ApiOperation("Assign Utility and Profile")
     public ResponseEntity<Void> assignUtilityAndProfile(@PathVariable @Positive Long recordId,
                                                         @RequestParam(name = "utility") @Positive Long utilityId,
                                                         @RequestParam(name = "profile") @Positive Long profileId) {
+
 
         scheduleRecordFacade.bookRecord(recordId, utilityId, profileId);
 

@@ -1,11 +1,16 @@
 package com.alikhver.web.controller;
 
+import com.alikhver.web.dto.record.response.GetRecordResponse;
+import com.alikhver.web.dto.utility.response.GetUtilityResponse;
+import com.alikhver.web.dto.worker.response.GetWorkerResponse;
+import com.alikhver.web.exception.scheduleRecord.WrongUtilityAndWorkerParamsException;
 import com.alikhver.web.facade.OrganisationFacade;
 import com.alikhver.web.facade.ScheduleRecordFacade;
 import com.alikhver.web.facade.UtilityFacade;
 import com.alikhver.web.facade.WorkerFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -20,11 +25,13 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.text.SimpleDateFormat;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/organisation")
 @RequiredArgsConstructor
 @Validated
+@Slf4j
 public class OrganisationController {
     private final OrganisationFacade organisationFacade;
     private final WorkerFacade workerFacade;
@@ -119,8 +126,34 @@ public class OrganisationController {
     @GetMapping("/createOrganisation")
     @ApiOperation("Create Organisation and Redactor")
 //    @PreAuthorize("")
+    //TODO manage preauthorized
     public String viewCreateOrganisation() {
-
         return "organisation/createOrganisation";
+    }
+
+    @GetMapping("/completed")
+    @ApiOperation("/View Booking Success page")
+    @PreAuthorize("hasAuthority('USER')")
+    public ModelAndView viewBookingSuccessPage(@RequestParam(value = "worker") @Positive Long workerId,
+                                               @RequestParam(value = "utility") @Positive Long utilityId,
+                                               @RequestParam(value = "record") @Positive Long recordId,
+                                               ModelAndView modelAndView) {
+
+        GetRecordResponse record = recordFacade.getRecord(recordId);
+        GetUtilityResponse utility = utilityFacade.getUtility(utilityId);
+        GetWorkerResponse worker = workerFacade.getWorkerById(workerId);
+
+        if (!Objects.equals(record.getUtilityId(), utilityId) && !Objects.equals(record.getWorkerId(), workerId)) {
+            log.warn("WrongUtilityAndWorkerParamsException is thrown");
+            throw new WrongUtilityAndWorkerParamsException();
+        }
+
+        modelAndView.addObject("record", record);
+        modelAndView.addObject("worker", worker);
+        modelAndView.addObject("utility", utility);
+
+        modelAndView.setViewName("organisation/completed");
+
+        return modelAndView;
     }
 }

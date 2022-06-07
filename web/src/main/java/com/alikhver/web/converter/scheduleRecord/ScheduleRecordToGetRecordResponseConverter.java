@@ -1,21 +1,16 @@
 package com.alikhver.web.converter.scheduleRecord;
 
 import com.alikhver.model.entity.ScheduleRecord;
-import com.alikhver.model.entity.ScheduleRecordStatus;
-import com.alikhver.web.converter.profile.ProfileToGetProfileResponseConverter;
-import com.alikhver.web.converter.utility.UtilityToGetUtilityResponseConverter;
-import com.alikhver.web.converter.worker.WorkerToGetWorkerResponseConverter;
 import com.alikhver.web.dto.record.response.GetRecordResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class ScheduleRecordToGetRecordResponseConverter implements Converter<ScheduleRecord, GetRecordResponse> {
-    private final ProfileToGetProfileResponseConverter profileConverter;
-    private final UtilityToGetUtilityResponseConverter utilityConverter;
-    private final WorkerToGetWorkerResponseConverter workerConverter;
 
     @Override
     public GetRecordResponse convert(ScheduleRecord source) {
@@ -26,10 +21,8 @@ public class ScheduleRecordToGetRecordResponseConverter implements Converter<Sch
                 .workerId(source.getWorker().getId())
                 .build();
 
-        if (source.getStatus() != ScheduleRecordStatus.AVAILABLE) {
-            response.setProfileId(source.getClientProfile().getId());
-            response.setUtilityId(source.getUtility().getId());
-        }
+        Optional.ofNullable(response.getProfileId()).ifPresent(response::setProfileId);
+        Optional.ofNullable(response.getUtilityId()).ifPresent(response::setUtilityId);
 
         return response;
     }

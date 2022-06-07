@@ -128,6 +128,23 @@
             <p th:text="#{record.create}"></p>
         </div>
     </div>
+
+    <div class="modal fade" id="completed" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" th:if="${utility} != null and ${record} != null and ${worker} != null">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel2" th:text="#{record.completed}"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <p th:text="|#{record.time}: ${time}|"></p>
+                    <p th:text="|#{record.worker}: ${worker.firstName}|"></p>
+                    <p th:text="|#{record.utility}: ${utility.name}|"></p>
+                    <p th:text="|${utility.description}|"></p>
+                </div>
+            </div>
+        </div>
+    </div>
 </th:block>
 </body>
 </html>
