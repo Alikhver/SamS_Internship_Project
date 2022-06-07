@@ -79,8 +79,9 @@ function validateAddress() {
         return false;
     } else {
         input.parent().next().slideUp();
-        return true;
+
     }
+    return input.val();
 }
 
 function validateDescription() {

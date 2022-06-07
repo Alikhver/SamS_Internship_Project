@@ -91,6 +91,8 @@ public class ProfileController {
                             !path.equals("/profile/update") &&
                             !path.equals("/register") &&
                             !path.equals("/profile/records")
+//                            &&
+//                            !path.equals("/")
 
             ) {
                 session.setAttribute("referer", url.toString());

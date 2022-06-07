@@ -115,4 +115,12 @@ public class OrganisationController {
 
         return modelAndView;
     }
+
+    @GetMapping("/createOrganisation")
+    @ApiOperation("Create Organisation and Redactor")
+//    @PreAuthorize("")
+    public String viewCreateOrganisation() {
+
+        return "organisation/createOrganisation";
+    }
 }
