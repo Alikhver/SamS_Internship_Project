@@ -90,6 +90,8 @@ function validateLastName() {
     }
 }
 
+$('#updatePasswordCheckbox').on('click', enablePasswordChange);
+
 function enablePasswordChange() {
     const updatePasswordCheckbox = $('#updatePasswordCheckbox').is(':checked');
 

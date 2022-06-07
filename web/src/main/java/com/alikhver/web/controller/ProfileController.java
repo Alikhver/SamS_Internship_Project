@@ -1,6 +1,7 @@
 package com.alikhver.web.controller;
 
 import com.alikhver.model.entity.Profile;
+import com.alikhver.web.converter.profile.ProfileConverter;
 import com.alikhver.web.dto.record.response.GetRecordUtilityWorkerResponse;
 import com.alikhver.web.facade.ProfileFacade;
 import com.alikhver.web.facade.UserFacade;
@@ -37,6 +38,7 @@ import java.util.List;
 public class ProfileController {
     private final ProfileFacade profileFacade;
     private final UserFacade userFacade;
+    private final ProfileConverter profileConverter;
 
     @Value("${hostName}")
     private String hostName;
@@ -131,7 +133,7 @@ public class ProfileController {
         Profile profile = profileFacade.getProfileByLogin(login);
 
 
-        modelAndView.addObject("profile", profile);
+        modelAndView.addObject("profile", profileConverter.mapToGetProfileResponse(profile));
         modelAndView.addObject("user", user);
         modelAndView.setViewName("profile/updateProfile");
 

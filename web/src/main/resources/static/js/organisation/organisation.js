@@ -19,6 +19,7 @@ $('#trash-utility').on('click', function () {
 $('#trash-worker').on('click', function () {
     const url = new URL(window.location.href);
     url.searchParams.delete('worker');
+    url.searchParams.delete('record');
     window.location.href = url.href;
 
 })
