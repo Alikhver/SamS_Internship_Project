@@ -27,12 +27,11 @@ function setLocale(lang) {
 }
 
 function goBack (referer) {
-    if (referer == null) {
+    if (referer === "null" || referer === null) {
         history.back();
     }
-    const url = new URL(window.location.href);
-    url.href = referer;
-    window.location.href = url.href;
+
+    window.location.href = referer;
 }
 
 $('#view-profile').on('click', function () {

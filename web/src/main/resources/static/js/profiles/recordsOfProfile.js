@@ -1,5 +1,8 @@
 function goBack() {
-    window.location.href = '/profile/current';
+    const url = new URL(window.location.href);
+
+    url.pathname = "/profile/current";
+    window.location.href = url.href;
 }
 
 const cancelRecord = function (recordId) {

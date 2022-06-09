@@ -23,12 +23,15 @@ import com.alikhver.web.exception.organisation.NoOrganisationFoundException;
 import com.alikhver.web.exception.organisation.OrganisationAlreadyExistsException;
 import com.alikhver.web.exception.organisation.OrganisationIsAlreadyLaunchedException;
 import com.alikhver.web.exception.organisation.OrganisationIsAlreadySuspendedException;
+import com.alikhver.web.exception.user.ProvidedUserIsNotRedactorOfOrganisation;
 import com.alikhver.web.exception.user.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,7 +39,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -75,9 +80,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         if (optionalOrganisation.isPresent()) {
             Organisation organisation = optionalOrganisation.get();
 
-            var authentication = SecurityContextHolder.getContext().getAuthentication();
-//            UserDetails user = (UserDetails) authentication.getPrincipal();
-            // Todo refactor security redactor
+            checkThatRedactorBelongsToOrganisation(organisation);
             var result = organisationConverter.mapToGetOrganisationResponse(organisation);
 
             log.info("getOrganisation -> done");
@@ -145,6 +148,8 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             throw new NoOrganisationFoundException(organisationId);
         }
 
+        checkThatRedactorBelongsToOrganisation(organisationId);
+
         Pageable pageable = PageRequest.of(page, size);
         Page<Worker> workers = workerService.findAllWorkersOfOrganisation(organisationId, pageable);
 
@@ -167,6 +172,8 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             throw new NoOrganisationFoundException(organisationId);
         }
 
+        checkThatRedactorBelongsToOrganisation(organisationId);
+
         Pageable pageable = PageRequest.of(page, size);
         Page<Utility> utilities = utilityService.getAllUtilitiesOfOrganisation(organisationId, pageable);
 
@@ -185,6 +192,9 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             log.warn("NoOrganisationFoundException is thrown");
             throw new NoOrganisationFoundException(orgId);
         }
+
+
+        checkThatRedactorBelongsToOrganisation(orgId);
 
         List<Worker> workers = workerService.findAllWorkersOfOrganisation(orgId);
 
@@ -206,6 +216,8 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             throw new NoOrganisationFoundException(orgId);
         }
 
+        checkThatRedactorBelongsToOrganisation(orgId);
+
         List<Utility> utilities = utilityService.getAllUtilitiesOfOrganisation(orgId);
 
         var response = utilityConverter.mapToListOfGetUtilityResponse(utilities);
@@ -224,6 +236,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             throw new NoOrganisationFoundException(login);
         });
 
+
         log.info("getOrganisationIdByRedactorLogin -> done");
         return organisation.getId();
     }
@@ -240,6 +253,10 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             log.warn("NoOrganisationFoundException is thrown");
             throw new NoOrganisationFoundException(id);
         }
+
+
+        checkThatRedactorBelongsToOrganisation(organisation);
+
         Optional.ofNullable(request.getName()).ifPresent(organisation::setName);
         Optional.ofNullable(request.getDescription()).ifPresent(organisation::setDescription);
         Optional.ofNullable(request.getAddress()).ifPresent(organisation::setAddress);
@@ -254,6 +271,8 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         log.info("deleteOrganisation -> start");
 
         validationHelper.validateForCorrectId(id, "OrganisationId");
+
+        checkThatRedactorBelongsToOrganisation(id);
 
         if (organisationService.existsById(id)) {
             organisationService.deleteOrganisation(id);
@@ -280,6 +299,9 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         } else {
             organisation = optionalOrganisation.get();
         }
+
+
+        checkThatRedactorBelongsToOrganisation(orgId);
 
         if (organisation.isActive()) {
             organisation.setActive(false);
@@ -316,6 +338,8 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             organisation = optionalOrganisation.get();
         }
 
+        checkThatRedactorBelongsToOrganisation(id);
+
         if (!organisation.isActive()) {
             organisation.setActive(true);
             organisationService.saveOrganisation(organisation);
@@ -345,4 +369,38 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         }
         log.info("validatePageAndOrganisation -> done");
     }
+
+    private void checkThatRedactorBelongsToOrganisation(Organisation organisation) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String authority = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()).get(0);
+
+        if (Objects.equals(authority, "REDACTOR")) {
+            org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+            String login = user.getUsername();
+
+            if (!Objects.equals(organisation.getRedactor().getLogin(), login)) {
+                log.warn("ProvidedUserIsNotRedactorOfOrganisation is thrown");
+                throw new ProvidedUserIsNotRedactorOfOrganisation();
+            }
+        }
+    }
+
+    private void checkThatRedactorBelongsToOrganisation(Long orgId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        var user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+        String login = user.getUsername();
+        String authority = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()).get(0);
+
+        Organisation organisation = organisationService.getOrganisation(orgId).orElseThrow(() -> {
+            log.warn("NoOrganisationFoundException is thrown");
+            throw new NoOrganisationFoundException(orgId);
+        });
+
+        if (authority.equals("REDACTOR") && !Objects.equals(organisation.getRedactor().getLogin(), login)) {
+            log.warn("ProvidedUserIsNotRedactorOfOrganisation is thrown");
+            throw new ProvidedUserIsNotRedactorOfOrganisation();
+        }
+    }
 }
+

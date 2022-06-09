@@ -59,7 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .and()
                 .logout()
                                 .logoutUrl("/logout")
-                                .invalidateHttpSession(true)
+//                                .invalidateHttpSession(true)
                                 .deleteCookies("Authorization")
                                 .deleteCookies("profileId")
                                 .addLogoutHandler(customLogoutHandler)

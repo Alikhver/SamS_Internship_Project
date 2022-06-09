@@ -28,7 +28,6 @@ import javax.validation.constraints.PositiveOrZero;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -92,26 +91,19 @@ public class ProfileController {
                             !path.equals("/profile/current") &&
                             !path.equals("/profile/update") &&
                             !path.equals("/register") &&
-                            !path.equals("/profile/records")
-//                            &&
-//                            !path.equals("/")
-
+                            !path.equals("/profile/records") &&
+                            !path.equals("/")
             ) {
                 session.setAttribute("referer", url.toString());
-            } else if (path.equals("/profile/current")) {
-                url = new URL((String) session.getAttribute("referer"));
-            } else if (!host.equals(hostName)) {
-                session.setAttribute("referer", "/");
             }
+
+            url = new URL((String) session.getAttribute("referer"));
 
             modelAndView.addObject("referer", url);
         } catch (MalformedURLException e) {
-
+            session.setAttribute("referer", "/");
+            modelAndView.addObject("referer", "/");
         }
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        String authority = new ArrayList<>(authentication.getAuthorities()).get(0).getAuthority();
 
         String locale = LocaleContextHolder.getLocale().toLanguageTag();
         modelAndView.addObject("locale", locale);
@@ -125,7 +117,7 @@ public class ProfileController {
     @GetMapping("/update")
     @ApiOperation("Update profile by USER")
     @PreAuthorize("hasAuthority('USER')")
-    public ModelAndView updateProfile(Authentication authentication, ModelAndView modelAndView) {
+    public ModelAndView updateProfile(Authentication authentication, ModelAndView modelAndView, HttpSession session) {
 
         String login = ((User) authentication.getPrincipal()).getUsername();
 
@@ -143,13 +135,12 @@ public class ProfileController {
     @GetMapping("/records")
     @PreAuthorize("hasAuthority('USER')")
     @ApiOperation("View Records of profile")
-    public ModelAndView viewRecordsOfProfile(ModelAndView modelAndView) {
+    public ModelAndView viewRecordsOfProfile(ModelAndView modelAndView, HttpSession session) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
 
         List<GetRecordUtilityWorkerResponse> recordData = profileFacade.getRecordDataOfProfile(user.getUsername());
-
 
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm", LocaleContextHolder.getLocale());

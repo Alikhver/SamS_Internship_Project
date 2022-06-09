@@ -54,10 +54,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         if (Objects.isNull(referer)) {
             switch (authority) {
-                case "REDACTOR":
-                    Long organisationId = organisationFacade.getOrganisationIdByRedactorLogin(login);
-                    redirectTo = "/organisation/" + organisationId;
-                    break;
                 case "ADMIN":
                     redirectTo = "/adminHome";
                     break;
@@ -65,12 +61,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                     redirectTo = "/";
                     break;
             }
+        } else if (Objects.equals(authority, "REDACTOR")) {
+            Long organisationId = organisationFacade.getOrganisationIdByRedactorLogin(login);
+            redirectTo = "/organisation/" + organisationId;
         } else {
             redirectTo = referer;
         }
 
         response.sendRedirect(redirectTo);
     }
-
-
 }

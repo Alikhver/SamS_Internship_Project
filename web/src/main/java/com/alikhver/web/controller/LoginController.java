@@ -43,22 +43,28 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-//    @PutMapping("/login")
-    public ModelAndView getLoginPage(ModelAndView modelAndView, HttpServletRequest request, HttpSession session) throws MalformedURLException {
-
+    @ApiOperation(("View Login Page"))
+    public ModelAndView getLoginPage(ModelAndView modelAndView, HttpServletRequest request, HttpSession session) {
         try {
             URL url = new URL(request.getHeader("Referer"));
             String host = url.getHost();
             String path = url.getPath();
-            if (host.equals(hostName) && path.equals("/profile/current")) {
 
-            } else if (host.equals(hostName)) {
+            if (host.equals(hostName) &&
+                    !path.equals("/profile/current") &&
+                    !path.equals("/profile/update") &&
+                    !path.equals("/register") &&
+                    !path.equals("/profile/records") &&
+                    !path.equals("/") &&
+                    !path.equals("/login")
+            ) {
                 session.setAttribute("referer", url.toString());
-            } else {
-                session.removeAttribute("referer");
+            } else if (!host.equals(hostName)) {
+                session.setAttribute("referer", "/");
             }
+
         } catch (MalformedURLException e) {
-            session.removeAttribute("referer");
+            session.setAttribute("referer", "/");
         }
 
         modelAndView.addObject("authRequest", new AuthenticationRequest());
