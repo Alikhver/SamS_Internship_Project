@@ -26,7 +26,10 @@ import com.alikhver.web.exception.organisation.OrganisationIsAlreadySuspendedExc
 import com.alikhver.web.exception.user.ProvidedUserIsNotRedactorOfOrganisation;
 import com.alikhver.web.exception.user.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -45,7 +48,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class OrganisationFacadeImpl implements OrganisationFacade {
+public class OrganisationFacadeImpl implements OrganisationFacade, ApplicationContextAware {
     @Autowired
     private OrganisationService organisationService;
     @Autowired
@@ -66,8 +69,16 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
     private UtilityConverter utilityConverter;
     @Autowired
     private ValidationHelper validationHelper;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
+//    private PasswordEncoder passwordEncoder;
+//
+//    public void setPasswordEncoder(@Autowired @Qualifier("passwordEncoder") PasswordEncoder passwordEncoder) {
+//        this.passwordEncoder = passwordEncoder;
+//    }
+
+    //TODO paswordEncoder? correctness
+
+    private ApplicationContext context;
 
     @Override
     @Transactional
@@ -108,7 +119,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
         }
         User redactor = organisationConverter.mapToRedactor(request);
 
-        redactor.setPassword(passwordEncoder.encode(redactor.getPassword()));
+        redactor.setPassword(encodePassword(redactor.getPassword()));
 
         Organisation organisation = organisationConverter.mapToOrganisation(request);
         organisation.setRedactor(redactor);
@@ -401,6 +412,16 @@ public class OrganisationFacadeImpl implements OrganisationFacade {
             log.warn("ProvidedUserIsNotRedactorOfOrganisation is thrown");
             throw new ProvidedUserIsNotRedactorOfOrganisation();
         }
+    }
+
+    private String encodePassword(String password) {
+        PasswordEncoder encoder = context.getBean("passwordEncoder", PasswordEncoder.class);
+        return encoder.encode(password);
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.context = applicationContext;
     }
 }
 

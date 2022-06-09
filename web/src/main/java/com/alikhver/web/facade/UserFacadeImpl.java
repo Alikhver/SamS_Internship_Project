@@ -12,6 +12,7 @@ import com.alikhver.web.exception.user.NoUserFoundException;
 import com.alikhver.web.exception.user.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ public class UserFacadeImpl implements UserFacade {
     private final UserService userService;
     private final UserConverter userConverter;
     private final ValidationHelper validationHelper;
-    private final PasswordEncoder passwordEncoder;
+    private final @Lazy PasswordEncoder passwordEncoder;
 
     @Override
     public GetUserResponse getUser(Long id) {

@@ -26,8 +26,9 @@ import com.alikhver.web.exception.profile.ProfileAlreadyExistsException;
 import com.alikhver.web.exception.profile.UserIsAlreadyBoundedProfileException;
 import com.alikhver.web.exception.user.NoUserFoundException;
 import com.alikhver.web.exception.user.UserAlreadyExistsException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,17 +43,26 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class ProfileFacadeImpl implements ProfileFacade {
-    private final ProfileService profileService;
-    private final UserService userService;
-    private final ProfileConverter profileConverter;
-    private final UserConverter userConverter;
-    private final ValidationHelper validationHelper;
-    private final PasswordEncoder passwordEncoder;
-    private final UtilityConverter utilityConverter;
-    private final WorkerConverter workerConverter;
-    private final ScheduleRecordConverter recordConverter;
+    @Autowired
+    private ProfileService profileService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ProfileConverter profileConverter;
+    @Autowired
+    private UserConverter userConverter;
+    @Autowired
+    private ValidationHelper validationHelper;
+    @Autowired
+    @Lazy
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UtilityConverter utilityConverter;
+    @Autowired
+    private WorkerConverter workerConverter;
+    @Autowired
+    private ScheduleRecordConverter recordConverter;
 
     @Override
     @Transactional

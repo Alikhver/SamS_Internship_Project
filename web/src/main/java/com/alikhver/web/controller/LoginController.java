@@ -5,7 +5,6 @@ import com.alikhver.web.dto.user.response.GetUserResponse;
 import com.alikhver.web.facade.UserFacade;
 import com.alikhver.web.security.JwtTokenProvider;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,8 +28,8 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
-    @Value("${hostName}")
-    private String hostName;
+//    @Value("${hostName}")
+//    private String hostName;
 
     private final AuthenticationManager authenticationManager;
     private final UserFacade userFacade;
@@ -46,6 +45,8 @@ public class LoginController {
     @ApiOperation(("View Login Page"))
     public ModelAndView getLoginPage(ModelAndView modelAndView, HttpServletRequest request, HttpSession session) {
         try {
+
+            String hostName = "localhost";
             URL url = new URL(request.getHeader("Referer"));
             String host = url.getHost();
             String path = url.getPath();
