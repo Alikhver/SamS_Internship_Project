@@ -27,7 +27,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <spring.fox>3.0.0</spring.fox>
-        <jacarta.validation>2.0.2</jacarta.validation>
+        <jakarta.validation>2.0.2</jakarta.validation>
         <junit>4.13.2</junit>
         <org.jeasy>4.0.0</org.jeasy>
         <org.springframework>5.3.18</org.springframework>
@@ -41,6 +41,7 @@
         <org.projectlombok>1.18.24</org.projectlombok>
         <jjwt.version>0.9.1</jjwt.version>
         <org.thymeleaf.extras>3.0.4.RELEASE</org.thymeleaf.extras>
+        <spring-security-test>5.7.1</spring-security-test>
     </properties>
 
     <dependencyManagement>
@@ -51,10 +52,6 @@
                 <version>${spring.fox}</version>
             </dependency>
             <dependency>
-                <groupId>org.thymeleaf.extras</groupId>
-                <artifactId>thymeleaf-extras-springsecurity5</artifactId>
-            </dependency>
-            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${org.projectlombok}</version>
@@ -63,7 +60,7 @@
             <dependency>
                 <groupId>jakarta.validation</groupId>
                 <artifactId>jakarta.validation-api</artifactId>
-                <version>${jacarta.validation}</version>
+                <version>${jakarta.validation}</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
@@ -80,6 +77,7 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-test</artifactId>
                 <scope>test</scope>
+                <version>${spring-security-test}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>

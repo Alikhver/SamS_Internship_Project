@@ -96,8 +96,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade, ApplicationCo
 
             log.info("getOrganisation -> done");
             return result;
-        }
-        {
+        } else {
             log.warn("NoOrganisationFoundException is thrown");
             throw new NoOrganisationFoundException(id);
         }
@@ -204,7 +203,6 @@ public class OrganisationFacadeImpl implements OrganisationFacade, ApplicationCo
             throw new NoOrganisationFoundException(orgId);
         }
 
-
         checkThatRedactorBelongsToOrganisation(orgId);
 
         List<Worker> workers = workerService.findAllWorkersOfOrganisation(orgId);
@@ -247,9 +245,10 @@ public class OrganisationFacadeImpl implements OrganisationFacade, ApplicationCo
             throw new NoOrganisationFoundException(login);
         });
 
+        Long orgId = organisation.getId();
 
         log.info("getOrganisationIdByRedactorLogin -> done");
-        return organisation.getId();
+        return orgId;
     }
 
     @Override
@@ -264,7 +263,6 @@ public class OrganisationFacadeImpl implements OrganisationFacade, ApplicationCo
             log.warn("NoOrganisationFoundException is thrown");
             throw new NoOrganisationFoundException(id);
         }
-
 
         checkThatRedactorBelongsToOrganisation(organisation);
 
@@ -355,7 +353,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade, ApplicationCo
             organisation.setActive(true);
             organisationService.saveOrganisation(organisation);
         } else {
-            log.warn("OrganisationIsAlreadyLaunched is thrown");
+            log.warn("OrganisationIsAlreadyLaunchedException is thrown");
             throw new OrganisationIsAlreadyLaunchedException(id);
         }
 
@@ -397,7 +395,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade, ApplicationCo
         }
     }
 
-    private void checkThatRedactorBelongsToOrganisation(Long orgId) {
+    public void checkThatRedactorBelongsToOrganisation(Long orgId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         var user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
         String login = user.getUsername();
