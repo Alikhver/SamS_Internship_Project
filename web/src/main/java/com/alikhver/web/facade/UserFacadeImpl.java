@@ -89,7 +89,7 @@ public class UserFacadeImpl implements UserFacade {
     @Transactional
     @Override
     public void deleteUser(Long id) {
-        log.info("profileFacade::deleteUser -> start");
+        log.info("deleteUser -> start");
 
         if (!userService.existsUserById(id)) {
             log.warn("NoUserFoundException is thrown");
@@ -114,7 +114,6 @@ public class UserFacadeImpl implements UserFacade {
             log.warn("NoUserFoundException is thrown");
             throw new NoUserFoundException(id);
         }
-        Optional.ofNullable(request.getLogin()).ifPresent(user::setLogin);
         Optional.ofNullable(request.getPassword()).map(this::encodePassword).ifPresent(user::setPassword);
 
         log.info("updateUser -> done");
