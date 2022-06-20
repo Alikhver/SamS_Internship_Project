@@ -11,8 +11,8 @@ import com.alikhver.web.exception.profile.ProfileAlreadyExistsException;
 import com.alikhver.web.exception.profile.UserIsAlreadyBoundedProfileException;
 import com.alikhver.web.exception.scheduleRecord.NoScheduleRecordFoundException;
 import com.alikhver.web.exception.scheduleRecord.RecordCannotBeBookedException;
-import com.alikhver.web.exception.scheduleRecord.ScheduleRecordWithSuchWorkerAndTimeAlreadyExists;
 import com.alikhver.web.exception.scheduleRecord.RecordIsAlreadyAvailableException;
+import com.alikhver.web.exception.scheduleRecord.ScheduleRecordWithSuchWorkerAndTimeAlreadyExists;
 import com.alikhver.web.exception.scheduleRecord.WrongUtilityAndWorkerParamsException;
 import com.alikhver.web.exception.user.NoUserFoundException;
 import com.alikhver.web.exception.user.ProvidedUserIsNotRedactorOfOrganisation;
@@ -26,6 +26,7 @@ import com.alikhver.web.exception.worker.AttemptToDeleteUtilityFromWorkerOfOther
 import com.alikhver.web.exception.worker.NoWorkerFoundException;
 import com.alikhver.web.exception.worker.WorkerAlreadyHasProvidedUtilityException;
 import com.alikhver.web.exception.worker.WorkerDoesNotBelongToOrganisationException;
+import com.alikhver.web.exception.worker.WorkerDoesNotHaveProvidedUtilityException;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -216,10 +217,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(WrongUtilityAndWorkerParamsException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handle(WrongUtilityAndWorkerParamsException e, HttpServletRequest request) {
         ErrorResponse response = buildErrorResponse(e, HttpStatus.BAD_REQUEST, request);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(WorkerDoesNotHaveProvidedUtilityException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponse> handle(WorkerDoesNotHaveProvidedUtilityException e, HttpServletRequest request) {
+        ErrorResponse response = buildErrorResponse(e, HttpStatus.CONFLICT, request);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(ProvidedUserIsNotRedactorOfOrganisation.class)
