@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,8 +44,8 @@ public class OrganisationController {
                                          @RequestParam(value = "worker", required = false) @Positive Long workerId,
                                          @RequestParam(value = "utility", required = false) @Positive Long utilityId,
                                          @RequestParam(value = "record", required = false) @Positive Long recordId,
-                                         ModelAndView modelAndView,
-                                         Authentication authentication) {
+                                         ModelAndView modelAndView) {
+//        try {
         var org = organisationFacade.getOrganisation(orgId);
         modelAndView.addObject("org", org);
 
@@ -75,6 +74,9 @@ public class OrganisationController {
         modelAndView.setViewName("organisation/organisation");
 
         return modelAndView;
+//        } catch (NoOrganisationFoundException e) {
+//            return new ModelAndView("index");
+//        }
     }
 
 

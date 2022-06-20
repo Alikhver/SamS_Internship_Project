@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
@@ -43,7 +44,9 @@ public class LoginController {
 
     @GetMapping("/login")
     @ApiOperation(("View Login Page"))
-    public ModelAndView getLoginPage(ModelAndView modelAndView, HttpServletRequest request, HttpSession session) {
+    public ModelAndView getLoginPage(@RequestParam(required = false) String error,
+                                     ModelAndView modelAndView,
+                                     HttpServletRequest request, HttpSession session) {
         try {
 
             String hostName = "localhost";
