@@ -42,6 +42,7 @@
         <jjwt.version>0.9.1</jjwt.version>
         <org.thymeleaf.extras>3.0.4.RELEASE</org.thymeleaf.extras>
         <spring-security-test>5.7.1</spring-security-test>
+        <slf4j.version>1.7.36</slf4j.version>
     </properties>
 
     <dependencyManagement>
@@ -145,6 +146,16 @@
                 <groupId>org.thymeleaf.extras</groupId>
                 <artifactId>thymeleaf-extras-springsecurity5</artifactId>
                 <version>${org.thymeleaf.extras}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
             </dependency>
 
 
