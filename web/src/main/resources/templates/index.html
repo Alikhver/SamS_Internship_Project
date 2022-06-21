@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
-    <title>Carousel Template · Bootstrap v5.0</title>
+    <title>Internship Project</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/carousel/">
 
@@ -61,8 +61,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
             </div>
-            <form class="d-flex" action="/login">
+            <form class="d-flex" action="/login" sec:authorize="isAnonymous()">
                 <button class="btn btn-outline-success" type="submit">Login</button>
+            </form>
+            <form class="d-flex" action="/profile/current" sec:authorize="!isAnonymous()">
+                <button class="btn btn-outline-success" type="submit">Profile</button>
             </form>
         </div>
         </div>
@@ -80,26 +83,25 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-<!--                <svg class="bd-placeholder-img" width="100%" height="100%"-->
-<!--                     aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="@{/img/info-circle.svg}">-->
-<!--                    <rect width="100%" height="100%" fill="#777"/>-->
-<!--                </svg>-->
 
                 <img class="bd-placeholder-img" width="100%" height="100%"
-                     aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="@{/img/calendar-ge59501769_1920.jpeg}">
+                     aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"
+                     th:src="@{/img/calendar-ge59501769_1920.jpeg}">
 
                 <div class="container">
                     <div class="carousel-caption text-start">
                         <h1>Comprehensive management platform for your business</h1>
                         <p>Automated online solution for your business: online booking, scheduling, client relationship
                             management and more.</p>
-                        <p><a class="btn btn-lg btn-primary" href="organisation/createOrganisation">Create Organisation today</a></p>
+                        <p><a class="btn btn-lg btn-primary" href="organisation/createOrganisation">Create Organisation
+                            today</a></p>
                     </div>
                 </div>
             </div>
             <div class="carousel-item">
                 <img class="bd-placeholder-img" width="100%" height="100%"
-                     aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="@{/img/charlesdeluvio-Lks7vei-eAg-unsplash.jpeg}">
+                     aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"
+                     th:src="@{/img/charlesdeluvio-Lks7vei-eAg-unsplash.jpeg}">
 
                 <div class="container">
                     <div class="carousel-caption">
@@ -110,7 +112,8 @@
             </div>
             <div class="carousel-item">
                 <img class="bd-placeholder-img" width="100%" height="100%"
-                                            aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false" th:src="@{/img/markus-spiske-XrIfY_4cK1w-unsplash.jpeg}">
+                     aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"
+                     th:src="@{/img/markus-spiske-XrIfY_4cK1w-unsplash.jpeg}">
 
                 <div class="container">
                     <div class="carousel-caption text-end">
@@ -144,7 +147,7 @@
             <div class="col-lg-4">
                 <svg class="bd-placeholder-img rounded-circle" width="140" height="140"
                      xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140"
-                     preserveAspectRatio="xMidYMid slice"  focusable="false"><title>Placeholder</title>
+                     preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
                     <rect width="100%" height="100%" fill="#777"/>
                     <text x="50%" y="50%" fill="#777" dy=".3em">140x140</text>
                 </svg>
@@ -172,7 +175,8 @@
                 </svg>
 
                 <h2>Get bookings online</h2>
-                <p>Manage your schedule, employees, clients and online payments with an automated budget-friendly solution.</p>
+                <p>Manage your schedule, employees, clients and online payments with an automated budget-friendly
+                    solution.</p>
             </div><!-- /.col-lg-4 -->
         </div><!-- /.row -->
 

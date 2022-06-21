@@ -396,20 +396,12 @@ public class OrganisationFacadeImpl implements OrganisationFacade, ApplicationCo
     }
 
     public void checkThatRedactorBelongsToOrganisation(Long orgId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        var user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
-        String login = user.getUsername();
-        String authority = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()).get(0);
-
         Organisation organisation = organisationService.getOrganisation(orgId).orElseThrow(() -> {
             log.warn("NoOrganisationFoundException is thrown");
             throw new NoOrganisationFoundException(orgId);
         });
 
-        if (authority.equals("REDACTOR") && !Objects.equals(organisation.getRedactor().getLogin(), login)) {
-            log.warn("ProvidedUserIsNotRedactorOfOrganisation is thrown");
-            throw new ProvidedUserIsNotRedactorOfOrganisation();
-        }
+        checkThatRedactorBelongsToOrganisation(organisation);
     }
 
     private String encodePassword(String password) {

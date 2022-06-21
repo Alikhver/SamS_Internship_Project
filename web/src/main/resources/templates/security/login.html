@@ -22,6 +22,7 @@
                      class="img-fluid" alt="Sample image">
             </div>
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <p th:if="${wrongCredentials}" th:text="#{wrongCredentials}" class="incorrect-creds"></p>
                 <form th:action="@{/authenticate}" th:object="${authRequest}" method="post">
                     <div class="form-outline mb-4">
                         <p id="incorrect-login" class='my-0 incorrect' th:text="#{log.incorrect-login}"></p>

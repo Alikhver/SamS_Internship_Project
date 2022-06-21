@@ -63,7 +63,6 @@ public class LoginController {
                     !path.equals("/profile/update") &&
                     !path.equals("/register") &&
                     !path.equals("/profile/records") &&
-                    !path.equals("/") &&
                     !path.equals("/login")
             ) {
                 session.setAttribute("referer", url.toString());
@@ -73,6 +72,10 @@ public class LoginController {
 
         } catch (MalformedURLException e) {
             session.setAttribute("referer", "/");
+        }
+
+        if (error != null) {
+            modelAndView.addObject("wrongCredentials", true);
         }
 
         modelAndView.addObject("authRequest", new AuthenticationRequest());
