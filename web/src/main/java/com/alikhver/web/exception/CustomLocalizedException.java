@@ -1,10 +1,12 @@
 package com.alikhver.web.exception;
 
 import com.alikhver.web.exception.handler.Messages;
+import org.springframework.http.HttpStatus;
 
 import java.util.Locale;
 
-public class CustomLocalizedException extends RuntimeException {
+public abstract class CustomLocalizedException extends RuntimeException {
+    public HttpStatus status;
     private String param;
 
     public CustomLocalizedException(String message) {

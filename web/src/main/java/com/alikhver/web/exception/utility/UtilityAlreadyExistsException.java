@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
 public class UtilityAlreadyExistsException extends CustomLocalizedException {
+    {
+        status = HttpStatus.CONFLICT;
+    }
+
     public UtilityAlreadyExistsException() {
         super("UtilityAlreadyExistsException.msg");
     }

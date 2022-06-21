@@ -11,36 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class CustomErrorController implements ErrorController {
 
-//    @Override
-//    public ModelAndView resolveErrorView(HttpServletRequest request, HttpStatus status, Map<String, Object> model) {
-//
-//            if (status == HttpStatus.NOT_FOUND) {
-//                return new ModelAndView("404");
-//            } else if (status == HttpStatus.INTERNAL_SERVER_ERROR) {
-//                return new ModelAndView("500");
-//            }
-//
-//        return null;
-//    }
-
-//    @RequestMapping("/404")
-//    public String handleError(HttpServletRequest response, HttpServletRequest request) {
-//
-//
-//        return "error/404";
-//    }
-
     @RequestMapping("/error")
     public String handleError(HttpServletRequest response) {
-        Object status = response.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+        Object statusCode = response.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
-        if (status != null) {
-            int statusCode = Integer.parseInt(status.toString());
+        if (statusCode != null) {
+            HttpStatus status = HttpStatus.resolve(Integer.parseInt(statusCode.toString()));
 
-            if (statusCode == HttpStatus.NOT_FOUND.value()) {
+            if (status == HttpStatus.NOT_FOUND) {
                 return "error/404";
-            } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
+            } else if (status == HttpStatus.INTERNAL_SERVER_ERROR) {
                 return "error/500";
+            } else if (status == HttpStatus.BAD_REQUEST) {
+                return "error/400";
             }
         }
 

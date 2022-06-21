@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
 public class AttemptToAssignProfileToUserWithWrongRole extends CustomLocalizedException {
+    {
+        status = HttpStatus.CONFLICT;
+    }
+
     public AttemptToAssignProfileToUserWithWrongRole(Long id) {
         super("AttemptToAssignProfileToUserWithWrongRole.msg", id.toString());
     }

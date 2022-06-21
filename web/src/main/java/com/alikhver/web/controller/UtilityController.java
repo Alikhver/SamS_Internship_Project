@@ -2,14 +2,17 @@ package com.alikhver.web.controller;
 
 
 import com.alikhver.web.dto.utility.response.GetUtilityResponse;
+import com.alikhver.web.exception.CustomLocalizedException;
 import com.alikhver.web.facade.OrganisationFacade;
 import com.alikhver.web.facade.UtilityFacade;
 import com.alikhver.web.facade.WorkerFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Controller
@@ -86,6 +90,19 @@ public class UtilityController {
 
         modelAndView.addObject("orgName", organisation.getName());
         modelAndView.setViewName("utility/createUtility");
+
+        return modelAndView;
+    }
+
+    @ExceptionHandler(CustomLocalizedException.class)
+    public ModelAndView handleNoOrganisationFoundException(CustomLocalizedException e) {
+        ModelAndView modelAndView = new ModelAndView("error/customError");
+
+
+        Locale locale = LocaleContextHolder.getLocale();
+
+        modelAndView.addObject("msg", e.getLocalizedMessage(locale));
+        modelAndView.addObject("status", e.status);
 
         return modelAndView;
     }

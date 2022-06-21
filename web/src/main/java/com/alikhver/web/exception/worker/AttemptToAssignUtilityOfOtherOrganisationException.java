@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
 public class AttemptToAssignUtilityOfOtherOrganisationException extends CustomLocalizedException {
+    {
+        status = HttpStatus.CONFLICT;
+    }
+
     public AttemptToAssignUtilityOfOtherOrganisationException() {
         super("AttemptToAssignUtilityOfOtherOrganisationException.msg");
     }

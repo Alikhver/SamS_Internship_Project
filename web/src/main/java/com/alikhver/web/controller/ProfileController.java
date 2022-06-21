@@ -3,6 +3,7 @@ package com.alikhver.web.controller;
 import com.alikhver.model.entity.Profile;
 import com.alikhver.web.converter.profile.ProfileConverter;
 import com.alikhver.web.dto.record.response.GetRecordUtilityWorkerResponse;
+import com.alikhver.web.exception.CustomLocalizedException;
 import com.alikhver.web.facade.ProfileFacade;
 import com.alikhver.web.facade.UserFacade;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/profile")
@@ -153,4 +156,18 @@ public class ProfileController {
         return modelAndView;
     }
 
+
+
+    @ExceptionHandler(CustomLocalizedException.class)
+    public ModelAndView handleNoOrganisationFoundException(CustomLocalizedException e) {
+        ModelAndView modelAndView = new ModelAndView("error/customError");
+
+
+        Locale locale = LocaleContextHolder.getLocale();
+
+        modelAndView.addObject("msg", e.getLocalizedMessage(locale));
+        modelAndView.addObject("status", e.status);
+
+        return modelAndView;
+    }
 }

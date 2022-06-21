@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
 public class RecordIsAlreadyAvailableException extends CustomLocalizedException {
+    {
+        status = HttpStatus.CONFLICT;
+    }
     public RecordIsAlreadyAvailableException() {
         super("RecordIsAlreadyAvailableException.msg");
     }

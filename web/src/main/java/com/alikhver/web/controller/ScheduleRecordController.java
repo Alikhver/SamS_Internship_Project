@@ -5,6 +5,7 @@ import com.alikhver.web.dto.record.response.GetRecordProfileUtilityResponse;
 import com.alikhver.web.dto.record.response.GetRecordResponse;
 import com.alikhver.web.dto.utility.response.GetUtilityResponse;
 import com.alikhver.web.dto.worker.response.GetWorkerResponse;
+import com.alikhver.web.exception.CustomLocalizedException;
 import com.alikhver.web.exception.worker.WorkerDoesNotBelongToOrganisationException;
 import com.alikhver.web.facade.OrganisationFacade;
 import com.alikhver.web.facade.ProfileFacade;
@@ -18,6 +19,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -151,6 +154,19 @@ public class ScheduleRecordController {
         modelAndView.addObject("records", records);
 
         modelAndView.setViewName("select-time/select-time");
+
+        return modelAndView;
+    }
+
+    @ExceptionHandler(CustomLocalizedException.class)
+    public ModelAndView handleNoOrganisationFoundException(CustomLocalizedException e) {
+        ModelAndView modelAndView = new ModelAndView("error/customError");
+
+
+        Locale locale = LocaleContextHolder.getLocale();
+
+        modelAndView.addObject("msg", e.getLocalizedMessage(locale));
+        modelAndView.addObject("status", e.status);
 
         return modelAndView;
     }

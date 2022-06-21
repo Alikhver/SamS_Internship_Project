@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
 public class UtilityDoesNotHaveProvidedWorkerException extends CustomLocalizedException {
+    {
+        status = HttpStatus.CONFLICT;
+    }
     public UtilityDoesNotHaveProvidedWorkerException() {
         super("UtilityDoesNotHaveProvidedWorkerException.msg");
     }

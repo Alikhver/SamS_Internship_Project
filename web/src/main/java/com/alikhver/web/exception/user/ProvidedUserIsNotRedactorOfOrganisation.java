@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.FORBIDDEN)
 public class ProvidedUserIsNotRedactorOfOrganisation extends CustomLocalizedException {
+    {
+        status = HttpStatus.FORBIDDEN;
+    }
+
     public ProvidedUserIsNotRedactorOfOrganisation() {
         super("ProvidedUserIsNotRedactorOfOrganisation.msg");
     }

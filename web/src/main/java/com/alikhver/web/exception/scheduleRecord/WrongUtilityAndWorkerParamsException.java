@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class WrongUtilityAndWorkerParamsException extends CustomLocalizedException {
+    {
+        status = HttpStatus.BAD_REQUEST;
+    }
+
     public WrongUtilityAndWorkerParamsException() {
         super("WrongUtilityAndWorkerParamsException.msg");
     }

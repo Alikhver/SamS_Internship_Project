@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
 public class ProfileAlreadyExistsException extends CustomLocalizedException {
+    {
+        status = HttpStatus.CONFLICT;
+    }
+
     public ProfileAlreadyExistsException(String message) {
         super(message);
     }

@@ -6,9 +6,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class NoOrganisationFoundException extends CustomLocalizedException {
+    {
+        status = HttpStatus.NOT_FOUND;
+    }
+
     public NoOrganisationFoundException(Long id) {
         super("NoOrganisationFoundException.msg.id", id.toString());
     }
+
     public NoOrganisationFoundException(String login) {
         super("NoOrganisationFoundException.msg.login", login);
     }

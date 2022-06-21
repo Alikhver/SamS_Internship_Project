@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
 public class WorkerDoesNotBelongToOrganisationException extends CustomLocalizedException {
+    {
+        status = HttpStatus.CONFLICT;
+    }
+
     public WorkerDoesNotBelongToOrganisationException() {
         super("WorkerDoesNotBelongToOrganisationException.msg");
     }

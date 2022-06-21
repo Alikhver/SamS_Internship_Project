@@ -21,17 +21,4 @@ public class WebApplication {
         return new BCryptPasswordEncoder(12);
     }
 
-//    @Bean
-//    public ErrorPageRegistrar errorPageRegistrar() {
-//        return new MyErrorPageRegistrar();
-//    }
-//
-//    private static class MyErrorPageRegistrar implements ErrorPageRegistrar {
-//
-//        @Override
-//        public void registerErrorPages(ErrorPageRegistry registry) {
-//            registry.addErrorPages(new ErrorPage(HttpStatus.BAD_REQUEST, "/400"));
-//            registry.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/404"));
-//        }
-//    }
 }

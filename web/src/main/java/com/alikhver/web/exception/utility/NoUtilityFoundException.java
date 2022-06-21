@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class NoUtilityFoundException extends CustomLocalizedException {
+    {
+        status = HttpStatus.NOT_FOUND;
+    }
+
     public NoUtilityFoundException(Long id) {
         super("NoUtilityFoundException.msg.id");
     }

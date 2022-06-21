@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
 public class ScheduleRecordWithSuchWorkerAndTimeAlreadyExists extends CustomLocalizedException {
+    {
+        status = HttpStatus.CONFLICT;
+    }
+
     public ScheduleRecordWithSuchWorkerAndTimeAlreadyExists() {
         super("ScheduleRecordWithSuchWorkerAndTimeAlreadyExists.msg");
     }
