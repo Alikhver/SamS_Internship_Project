@@ -22,8 +22,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private JwtConfigurer jwtConfigurer;
     @Autowired
     private CustomAuthenticationSuccessHandler authSuccessHandler;
-//    @Autowired
-//    private CustomLogoutSuccessHandler logoutSuccessHandler;
     @Autowired
     private CustomLogoutHandler customLogoutHandler;
 
@@ -56,11 +54,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .and()
                 .logout()
                                 .logoutUrl("/logout")
-//                                .invalidateHttpSession(true)
                                 .deleteCookies("Authorization")
                                 .deleteCookies("profileId")
                                 .addLogoutHandler(customLogoutHandler)
-//                                .logoutSuccessHandler(logoutSuccessHandler)
                     .and()
                 .apply(jwtConfigurer);
     }
@@ -70,9 +66,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-//    @Bean
-//    protected PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder(12);
-//    }
 }

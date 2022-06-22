@@ -170,11 +170,8 @@ public class ProfileFacadeImpl implements ProfileFacade {
             throw new NoProfileFoundException(id);
         });
 
-        User user = profile.getUser();
 
         profileService.delete(id);
-
-//        userService.deleteUser(user.getId());
 
         log.info("deleteProfile -> done");
     }

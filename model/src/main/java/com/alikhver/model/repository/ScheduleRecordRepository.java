@@ -13,8 +13,6 @@ import java.util.Optional;
 public interface ScheduleRecordRepository extends JpaRepository<ScheduleRecord, Long> {
     boolean existsByWorkerIdAndDateAndStatus(Long workerId, Date date, ScheduleRecordStatus status);
 
-    List<ScheduleRecord> findAllByDateAfter(Date date);
-
     List<ScheduleRecord> findAllByWorkerId(Long workerId);
 
     Optional<ScheduleRecord> findByWorkerIdAndDateAndStatus(Long workerId, Date date, ScheduleRecordStatus status);
