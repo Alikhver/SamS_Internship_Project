@@ -37,7 +37,7 @@
     <div th:id="${utility.id}" class="utility d-flex container-fluid col-6 my-3">
         <div class="d-flex flex-column col-10">
             <p th:text="${utility.description}"></p>
-            <p th:text="${utility.price}"></p>
+            <p th:text="|${utility.price}$|"></p>
         </div>
         <button th:id="'append' + ${utility.id}"  type="button" class="btn btn-primary" style="display: none" th:onclick="appendUtility([[${utility.id}]])" th:text="#{service.append}"></button>
         <button th:id="'remove' + ${utility.id}" type="button" class="btn btn-danger" th:onclick="removeUtility([[${utility.id}]])" th:text="#{service.remove}"></button>
@@ -48,7 +48,7 @@
     <div th:id="${utility.id}" class="utility d-flex container-fluid col-6 my-3">
         <div class="d-flex flex-column col-10">
             <p th:text="${utility.description}"></p>
-            <p th:text="${utility.price}"></p>
+            <p th:text="|${utility.price}$|"></p>
         </div>
         <button th:id="'append' + ${utility.id}" type="button" class="btn btn-primary" th:onclick="appendUtility([[${utility.id}]])" th:text="#{service.append}"></button>
         <button th:id="'remove' + ${utility.id}" type="button" class="btn btn-danger" style="display: none" th:onclick="removeUtility([[${utility.id}]])" th:text="#{service.remove}"></button>

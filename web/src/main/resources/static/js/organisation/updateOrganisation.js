@@ -88,7 +88,7 @@ function validateDescription() {
     const input = $('#description');
     const length = input.val().length;
 
-    if (length < 30 || length > 120) {
+    if (length < 30 || length > 300) {
         $('#incorrect-description').slideDown();
         return false;
     } else {

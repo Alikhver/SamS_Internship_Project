@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 public class UpdateOrganisationRequest {
     @Size(min = 2, max = 30)
     private String name;
-    @Size(min = 30, max = 120)
+    @Size(min = 30, max = 300)
     private String description;
     @Size(min = 5, max = 45)
     private String address;

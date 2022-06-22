@@ -12,6 +12,7 @@
             crossorigin="anonymous"
     />
     <link rel="stylesheet" th:href="@{/css/personal_cabinet.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
@@ -55,15 +56,15 @@
             <div id="view-profile" class="d-flex justify-content-start container my-3">
                 <img th:src="@{/img/free-icon-profile-3524752.png}" class="img-fluid go-back-button mx-2"
                      width="24">
-                <div class="col-10">
-                    <p th:text="#{my-profile}"></p>
+                <div class="col-10 personal-cab-link">
+                    <p class="link" th:text="#{my-profile}"></p>
                 </div>
             </div>
             <div id="view-records" class="d-flex justify-content-start container my-3">
                 <img th:src="@{/img/calendar.svg}" class="img-fluid go-back-button mx-2"
                      width="24">
-                <div class="col-10 align-middle">
-                    <p class="align-middle" th:text="#{my-records}"></p>
+                <div class="col-10 align-middle personal-cab-link">
+                    <p class="align-middle link" th:text="#{my-records}"></p>
                 </div>
             </div>
         </th:block>
