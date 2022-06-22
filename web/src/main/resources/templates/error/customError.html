@@ -18,6 +18,8 @@
         <p class="fs-3"> <span class="text-danger" th:text="#{oops}"></span> <span th:text="${msg}"></span></p>
         <p class="lead" th:if="${status.is4xxClientError()}" th:text="#{clientErrorMsg}"></p>
         <p class="lead" th:if="${status.is5xxServerError()}" th:text="#{serverErrorMsg}"></p>
+        <p><a href="/">Go to main page</a></p>
+        <p><a onclick="history.back()" href="#">Go back</a></p>
     </div>
 </div>
 </body>

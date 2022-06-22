@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `my_db`.`organisation`
 (
     `id`           BIGINT NOT NULL AUTO_INCREMENT,
     `name`         VARCHAR(30),
-    `description`  VARCHAR(120),
+    `description`  VARCHAR(300),
     `is_active`    TINYINT,
     `date_created` TIMESTAMP,
     `address`      VARCHAR(45),
