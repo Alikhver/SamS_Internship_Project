@@ -1,11 +1,15 @@
 package com.alikhver.web.converter.scheduleRecord;
 
+import com.alikhver.model.entity.Profile;
 import com.alikhver.model.entity.ScheduleRecord;
+import com.alikhver.model.entity.Utility;
 import com.alikhver.web.dto.record.response.GetRecordResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -21,17 +25,8 @@ public class ScheduleRecordToGetRecordResponseConverter implements Converter<Sch
                 .workerId(source.getWorker().getId())
                 .build();
 
-//        Optional.ofNullable(source.getClientProfile()).map(Profile::getId).ifPresent(response::setProfileId);
-//        Optional.ofNullable(source.getUtility().getId()).ifPresent(response::setUtilityId);
-        //TODO check
-
-        if (source.getClientProfile() != null) {
-            response.setProfileId(source.getClientProfile().getId());
-        }
-
-        if (source.getUtility() != null) {
-            response.setUtilityId(source.getUtility().getId());
-        }
+        Optional.ofNullable(source.getClientProfile()).map(Profile::getId).ifPresent(response::setProfileId);
+        Optional.ofNullable(source.getUtility()).map(Utility::getId).ifPresent(response::setUtilityId);
 
         return response;
     }
