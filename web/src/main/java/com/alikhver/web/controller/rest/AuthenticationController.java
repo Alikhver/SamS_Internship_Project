@@ -18,8 +18,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -72,7 +72,7 @@ public class AuthenticationController {
     @ApiOperation("Authenticate user with Rest")
     @PreAuthorize("permitAll()")
     public ResponseEntity<?> authenticate(HttpServletResponse httpServletResponse,
-                                          @ModelAttribute AuthenticationRequest authInfo) {
+                                          @RequestBody AuthenticationRequest authInfo) {
         try {
 //            TODO user not found not correct password
 //            TODO method in facade
