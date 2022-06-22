@@ -26,10 +26,8 @@ import com.alikhver.web.exception.organisation.OrganisationIsAlreadySuspendedExc
 import com.alikhver.web.exception.user.ProvidedUserIsNotRedactorOfOrganisation;
 import com.alikhver.web.exception.user.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,7 +46,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class OrganisationFacadeImpl implements OrganisationFacade, ApplicationContextAware {
+public class OrganisationFacadeImpl implements OrganisationFacade{
     @Autowired
     private OrganisationService organisationService;
     @Autowired
@@ -69,16 +67,8 @@ public class OrganisationFacadeImpl implements OrganisationFacade, ApplicationCo
     private UtilityConverter utilityConverter;
     @Autowired
     private ValidationHelper validationHelper;
-
-//    private PasswordEncoder passwordEncoder;
-//
-//    public void setPasswordEncoder(@Autowired @Qualifier("passwordEncoder") PasswordEncoder passwordEncoder) {
-//        this.passwordEncoder = passwordEncoder;
-//    }
-
-    //TODO paswordEncoder? correctness
-
-    private ApplicationContext context;
+    @Autowired
+    private @Lazy PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -405,13 +395,7 @@ public class OrganisationFacadeImpl implements OrganisationFacade, ApplicationCo
     }
 
     private String encodePassword(String password) {
-        PasswordEncoder encoder = context.getBean("passwordEncoder", PasswordEncoder.class);
-        return encoder.encode(password);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.context = applicationContext;
+        return passwordEncoder.encode(password);
     }
 }
 
