@@ -2,11 +2,9 @@ package com.alikhver.web.controller;
 
 import com.alikhver.web.dto.authentication.AuthenticationRequest;
 import com.alikhver.web.exception.CustomLocalizedException;
-import com.alikhver.web.facade.UserFacade;
-import com.alikhver.web.security.JwtTokenProvider;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,18 +20,8 @@ import java.util.Locale;
 @Controller
 public class LoginController {
 
-//    @Value("${hostName}")
-//    private String hostName;
-
-    private final AuthenticationManager authenticationManager;
-    private final UserFacade userFacade;
-    private final JwtTokenProvider jwtTokenProvider;
-
-    public LoginController(AuthenticationManager authenticationManager, UserFacade userFacade, JwtTokenProvider jwtTokenProvider) {
-        this.authenticationManager = authenticationManager;
-        this.userFacade = userFacade;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+    @Value("${hostName}")
+    private String hostName;
 
     @GetMapping("/login")
     @ApiOperation(("View Login Page"))
@@ -42,7 +30,6 @@ public class LoginController {
                                      HttpServletRequest request, HttpSession session) {
         try {
 
-            String hostName = "localhost";
             URL url = new URL(request.getHeader("Referer"));
             String host = url.getHost();
             String path = url.getPath();

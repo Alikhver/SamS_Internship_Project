@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -212,19 +213,19 @@ public class UserFacadeTest {
     }
 
     @Test
-//    @Ignore
     public void updateUserWhenCorrect() {
         //Given
         Long correctId = 1L;
+        String correctPassword = "correctPassword";
 
         UpdateUserRequest request = UpdateUserRequest.builder()
-                .password("correctPassword")
+                .password(correctPassword)
                 .build();
 
         User user = User.builder()
                 .id(correctId)
-                .password("correctPassword")
                 .login("correctLogin")
+                .password(correctPassword)
                 .role(UserRole.USER)
                 .build();
 
@@ -235,8 +236,7 @@ public class UserFacadeTest {
 
         //Then
         verify(userFacade, times(1)).updateUser(correctId, request);
-//        Assertions.assertEquals(passwordEncoder.encode(request.getPassword()), user.getPassword());
-        //TODO почему разные пароли?
+        assertTrue(passwordEncoder.matches(correctPassword, user.getPassword()));
     }
 
     @Test

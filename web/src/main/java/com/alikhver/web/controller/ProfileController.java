@@ -8,6 +8,7 @@ import com.alikhver.web.facade.ProfileFacade;
 import com.alikhver.web.facade.UserFacade;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -41,8 +42,8 @@ public class ProfileController {
     private final UserFacade userFacade;
     private final ProfileConverter profileConverter;
 
-//    @Value("${hostName}")
-//    private String hostName;
+    @Value("${hostName}")
+    private String hostName;
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -84,8 +85,6 @@ public class ProfileController {
     @ApiOperation("View Active Profile")
     public ModelAndView viewActiveProfile(HttpServletRequest request, HttpSession session, ModelAndView modelAndView) {
         try {
-
-            String hostName = "localhost";
             URL url = new URL(request.getHeader("Referer"));
             String host = url.getHost();
             String path = url.getPath();
@@ -113,7 +112,6 @@ public class ProfileController {
         modelAndView.addObject("locale", locale);
 
         modelAndView.setViewName("personal-cabinet/personal_cabinet");
-        //TODO fix on back from /profile/update null referer
 
         return modelAndView;
     }
@@ -155,7 +153,6 @@ public class ProfileController {
 
         return modelAndView;
     }
-
 
 
     @ExceptionHandler(CustomLocalizedException.class)
