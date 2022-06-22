@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ModelConfigurationTest.class,
         loader = AnnotationConfigContextLoader.class)
-public class UserServiceIT {
+public class UserServiceTest {
 
     @Autowired
     private UserService userService;

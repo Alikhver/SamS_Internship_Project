@@ -21,9 +21,9 @@ public class ScheduleRecordToGetRecordResponseConverter implements Converter<Sch
                 .workerId(source.getWorker().getId())
                 .build();
 
-//        Optional.ofNullable(source.getClientProfile().getId()).ifPresent(response::setProfileId);
+//        Optional.ofNullable(source.getClientProfile()).map(Profile::getId).ifPresent(response::setProfileId);
 //        Optional.ofNullable(source.getUtility().getId()).ifPresent(response::setUtilityId);
-        //TODO wtf? NullPointerException
+        //TODO check
 
         if (source.getClientProfile() != null) {
             response.setProfileId(source.getClientProfile().getId());

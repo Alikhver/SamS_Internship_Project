@@ -126,8 +126,7 @@ public class OrganisationController {
 
     @GetMapping("/createOrganisation")
     @ApiOperation("Create Organisation and Redactor")
-//    @PreAuthorize("")
-    //TODO manage preauthorized
+    @PreAuthorize("isAnonymous()")
     public String viewCreateOrganisation() {
         return "organisation/createOrganisation";
     }

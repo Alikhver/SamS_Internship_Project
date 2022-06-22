@@ -9,7 +9,7 @@ import java.util.Optional;
 @Slf4j
 public class ValidationHelper {
     public void validateForCorrectId(Long id, String varName) {
-        Optional.of(id)
+        Optional.ofNullable(id)
                 .filter(v -> v > 0)
                 .orElseThrow(() -> {
                     var errorMessage = varName + " must not be empty. It must be positive number";
@@ -20,7 +20,7 @@ public class ValidationHelper {
     }
 
     public void validateForCorrectString(String str, String varName) {
-        Optional.of(str)
+        Optional.ofNullable(str)
                 .filter(v -> !v.isBlank())
                 .orElseThrow(() -> {
                     var errorMessage = varName + " must not be empty";
@@ -30,7 +30,7 @@ public class ValidationHelper {
     }
 
     public void validateForCorrectPrice(Double price, String varName) {
-        Optional.of(price)
+        Optional.ofNullable(price)
                 .filter(v -> v > 0)
                 .orElseThrow(() -> {
                     var errorMessage = varName + " must not be empty. It must be positive number";

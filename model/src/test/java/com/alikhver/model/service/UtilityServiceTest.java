@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ModelConfigurationTest.class,
         loader = AnnotationConfigContextLoader.class)
-public class UtilityServiceIT {
+public class UtilityServiceTest {
 
     @Autowired
     private UtilityService utilityService;

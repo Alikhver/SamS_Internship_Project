@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ModelConfigurationTest.class,
         loader = AnnotationConfigContextLoader.class)
-public class ProfileServiceIT {
+public class ProfileServiceTest {
     @Autowired
     private ProfileService profileService;
 

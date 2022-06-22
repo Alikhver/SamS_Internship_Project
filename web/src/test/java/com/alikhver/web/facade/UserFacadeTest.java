@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = WebApplication.class)
-public class UserFacadeTests {
+public class UserFacadeTest {
     @SpyBean
     private UserFacade userFacade;
     @MockBean
