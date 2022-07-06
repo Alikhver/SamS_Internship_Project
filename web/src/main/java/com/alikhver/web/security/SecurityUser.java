@@ -17,11 +17,6 @@ public class SecurityUser implements UserDetails {
     private final String password;
     private final List<SimpleGrantedAuthority> authorities;
 
-//    public SecurityUser(String username, String password, List<SimpleGrantedAuthority> authorities) {
-//        this.username = username;
-//        this.password = password;
-//        this.authorities = Collections.singletonList(new SimpleGrantedAuthority(userEntity.getRoleEntity().getName()));
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
